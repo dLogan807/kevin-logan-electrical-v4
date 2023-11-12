@@ -1,21 +1,28 @@
 "use client"
 
-import { useMantineColorScheme, Button, Group, isMantineColorScheme } from '@mantine/core';
+import { ActionIcon, useMantineColorScheme, useComputedColorScheme } from '@mantine/core';
+import { IconSun, IconMoon } from '@tabler/icons-react';
+import cx from 'clsx';
+import classes from './themeSelector.module.css';
 
 export function ThemeSelector() {
   const { setColorScheme } = useMantineColorScheme();
-
-  setColorScheme('auto');
+  const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
   return (
-    <Button onClick={() => ToggleColourScheme}>Toggle Colour</Button>
+    <ActionIcon
+      onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+      variant="default"
+      size="xl"
+      aria-label="Toggle color scheme"
+    >
+      <ThemeIcon colorScheme={computedColorScheme}/>
+    </ActionIcon>
   );
 }
 
-function ToggleColourScheme() {
-  const { setColorScheme } = useMantineColorScheme();
-
-  if (isMantineColorScheme('light')) {
-    setColorScheme('dark')
-  }
+function ThemeIcon(colorScheme: any) {
+  return colorScheme.colorScheme === 'light' ? 
+    <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} /> :
+    <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />;
 }

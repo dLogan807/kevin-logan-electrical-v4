@@ -5,7 +5,7 @@ import '@mantine/core/styles.css';
 import { MantineProvider, ColorSchemeScript, createTheme } from '@mantine/core';
 
 export const metadata = {
-  title: 'Kevin Logan Electrical',
+  title: 'Kevin Logan Electrical - Your Trusted Electrician',
   description: 'Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.',
 };
 

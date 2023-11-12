@@ -6,6 +6,8 @@ import { useDisclosure } from '@mantine/hooks';
 import { MantineLogo } from '@mantine/ds';
 import classes from './navbar.module.css';
 import { ThemeSelector } from './themeSelector';
+import logo from '../assets/logo.png';
+import Image from 'next/image';
 
 const links = [
   { link: '/home', label: 'Home' },
@@ -36,11 +38,11 @@ export function Navbar() {
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
-        <MantineLogo size={28} />
-        <ThemeSelector />
+        <Image src={logo} height="25" alt="logo"/>
         <Group gap={5} visibleFrom="xs">
           {items}
         </Group>
+        <ThemeSelector />
 
         <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
       </Container>
