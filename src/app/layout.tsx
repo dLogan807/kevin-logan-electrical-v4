@@ -2,12 +2,22 @@
 // All packages except `@mantine/hooks` require styles imports
 import '@mantine/core/styles.css';
 
-import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import { MantineProvider, ColorSchemeScript, createTheme } from '@mantine/core';
 
 export const metadata = {
-  title: 'My Mantine app',
-  description: 'I have followed setup instructions carefully',
+  title: 'Kevin Logan Electrical',
+  description: 'Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.',
 };
+
+const theme = createTheme({
+  breakpoints: {
+    xs: '30em',
+    sm: '48em',
+    md: '64em',
+    lg: '74em',
+    xl: '90em',
+  },
+});
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,7 +26,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider theme={theme}>
+          {children}
+        </MantineProvider>
       </body>
     </html>
   );
