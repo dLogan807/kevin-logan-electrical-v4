@@ -1,0 +1,19 @@
+.body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--mantine-color-pleasant-blue-filled);
+}
+
+.grid {
+  display: grid;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  grid-template-columns: 1fr 6fr 1fr;
+  grid-template-rows: 1fr 11fr;
+  overflow: hidden;
+}
+
+.nav_container {
+  align-items: center;
+}

@@ -10,7 +10,7 @@ import Image from "next/image";
 
 const links = [
   { link: "/home", label: "Home" },
-  { link: "/about", label: "About Us" },
+  { link: "/aboutus", label: "About Us" },
   { link: "/rateandservices", label: "Rate & Services" },
   { link: "/contactus", label: "Contact Us" },
 ];

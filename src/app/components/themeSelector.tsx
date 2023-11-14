@@ -9,6 +9,7 @@ import { IconSun, IconMoon } from "@tabler/icons-react";
 import cx from "clsx";
 import classes from "./themeSelector.module.css";
 
+//Icon for switching between light or dark theme
 export function ThemeSelector() {
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("light", {
