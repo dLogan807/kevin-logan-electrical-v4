@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { Container, Group, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import classes from "./navbar.module.css";
 import { ThemeSelector } from "./themeSelector";
 import logo from "../assets/logo.png";
 import Image from "next/image";
+import classes from "./navbar.module.css";
 
 const links = [
   { link: "/home", label: "Home" },
