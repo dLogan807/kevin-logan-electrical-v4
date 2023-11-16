@@ -58,12 +58,17 @@ export default function RootLayout({
         <MantineProvider theme={theme}>
           <Box className={classes.grid}>
             <Box></Box>
-            <Paper className={classes.nav_container} radius="xs" shadow="sm">
+            <Paper
+              className={classes.nav_container}
+              radius="xs"
+              shadow="sm"
+              withBorder
+            >
               <Navbar />
             </Paper>
             <Box></Box>
             <Box></Box>
-            {children}
+            <Box className={classes.content_container}>{children}</Box>
           </Box>
         </MantineProvider>
       </body>
