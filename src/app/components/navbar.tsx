@@ -8,8 +8,14 @@ import logo from "../assets/logo.png";
 import Image from "next/image";
 import classes from "./navbar.module.css";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const links = [
+interface ILink {
+  link: string;
+  label: string;
+}
+
+const links: ILink[] = [
   { link: "/", label: "Home" },
   { link: "/aboutus", label: "About Us" },
   { link: "/rateandservices", label: "Rate & Services" },
@@ -17,8 +23,9 @@ const links = [
 ];
 
 export function Navbar() {
+  //const test: string = links[GetRouteIndex].link;
   const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
+  const [active, setActive] = useState(links[GetRouteIndex()].link);
 
   const items = links.map((link) => (
     <Link
@@ -47,4 +54,20 @@ export function Navbar() {
       </Container>
     </header>
   );
+}
+
+//Return the index of the currently navigated route
+function GetRouteIndex(): number {
+  const pathname = usePathname();
+
+  switch (pathname) {
+    case "/aboutus":
+      return 1;
+    case "/rateandservices":
+      return 2;
+    case "/contactus":
+      return 3;
+    default:
+      return 0;
+  }
 }
