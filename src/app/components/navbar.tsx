@@ -7,9 +7,10 @@ import { ThemeSelector } from "./themeSelector";
 import logo from "../assets/logo.png";
 import Image from "next/image";
 import classes from "./navbar.module.css";
+import Link from "next/link";
 
 const links = [
-  { link: "/home", label: "Home" },
+  { link: "/", label: "Home" },
   { link: "/aboutus", label: "About Us" },
   { link: "/rateandservices", label: "Rate & Services" },
   { link: "/contactus", label: "Contact Us" },
@@ -20,18 +21,17 @@ export function Navbar() {
   const [active, setActive] = useState(links[0].link);
 
   const items = links.map((link) => (
-    <a
+    <Link
       key={link.label}
       href={link.link}
       className={classes.link}
       data-active={active === link.link || undefined}
-      onClick={(event) => {
-        event.preventDefault();
+      onClick={() => {
         setActive(link.link);
       }}
     >
       {link.label}
-    </a>
+    </Link>
   ));
 
   return (
