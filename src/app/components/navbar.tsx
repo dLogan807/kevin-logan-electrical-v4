@@ -24,13 +24,13 @@ const links: ILink[] = [
 ];
 
 //Load the theme icon lazily
-const DynamicThemeSelector = dynamic(
+var DynamicThemeSelector = dynamic(
   () => import("./themeSelector").then((mod) => mod.ThemeSelector),
   {
     ssr: false,
     loading: () => (
       <ActionIcon variant="default" size="lg" aria-label="Toggle color theme">
-        <IconLoader2 className={classes.icon_loading} />
+        <IconLoader2 className={classes.theme_icon_loading} />
       </ActionIcon>
     ),
   }
@@ -58,13 +58,15 @@ export function Navbar() {
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
-        <Image src={logo} height="25" alt="logo" />
-        <Group gap={5} visibleFrom="xs">
+        <Image src={logo} height="25" alt="logo" className={classes.logo} />
+        <Group gap={5} visibleFrom="sm">
           {items}
         </Group>
-        <DynamicThemeSelector />
 
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+        <Container className={classes.inner_end}>
+          <DynamicThemeSelector />
+          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+        </Container>
       </Container>
     </header>
   );

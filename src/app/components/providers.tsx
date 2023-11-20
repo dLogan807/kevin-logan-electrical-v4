@@ -24,8 +24,8 @@ const siteColors: MantineColorsTuple = [
 
 const theme = createTheme({
   breakpoints: {
-    xs: "36em",
-    sm: "48em",
+    xs: "30em",
+    sm: "50em",
     md: "62em",
     lg: "71em",
     xl: "88em",

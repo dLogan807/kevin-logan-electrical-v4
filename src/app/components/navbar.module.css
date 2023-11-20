@@ -14,6 +14,26 @@
   align-items: center;
 }
 
+.logo {
+  height: auto;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    width: 17rem;
+  }
+}
+
+.inner_end {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 5rem;
+  }
+}
+
 .link {
   display: block;
   line-height: 1;
@@ -41,7 +61,7 @@
   }
 }
 
-.icon_loading {
+.theme_icon_loading {
   animation: rotate 1s infinite;
 }
 
