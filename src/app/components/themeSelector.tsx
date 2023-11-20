@@ -2,8 +2,6 @@
 
 import { ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
-import cx from "clsx";
-import classes from "./themeSelector.module.css";
 
 //Icon for switching between light or dark theme
 export function ThemeSelector() {
@@ -14,17 +12,10 @@ export function ThemeSelector() {
     <ActionIcon
       onClick={() => toggleColorScheme()}
       variant="default"
-      size="xl"
+      size="lg"
       aria-label="Toggle color scheme"
     >
-      {dark ? (
-        <IconMoonStars
-          className={cx(classes.icon, classes.dark)}
-          stroke={1.5}
-        />
-      ) : (
-        <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
-      )}
+      {dark ? <IconMoonStars stroke={1.5} /> : <IconSun stroke={1.5} />}
     </ActionIcon>
   );
 }
