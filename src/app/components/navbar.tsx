@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { Container, Group, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { ThemeSelector } from "./themeSelector";
 import logo from "../assets/logo.png";
 import Image from "next/image";
 import classes from "./navbar.module.css";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 
 interface ILink {
@@ -22,8 +22,12 @@ const links: ILink[] = [
   { link: "/contactus", label: "Contact Us" },
 ];
 
+const DynamicThemeSelector = dynamic(
+  () => import("./themeSelector").then((mod) => mod.ThemeSelector),
+  { ssr: false }
+);
+
 export function Navbar() {
-  //const test: string = links[GetRouteIndex].link;
   const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[GetRouteIndex()].link);
 
@@ -48,7 +52,7 @@ export function Navbar() {
         <Group gap={5} visibleFrom="xs">
           {items}
         </Group>
-        <ThemeSelector />
+        <DynamicThemeSelector />
 
         <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
       </Container>

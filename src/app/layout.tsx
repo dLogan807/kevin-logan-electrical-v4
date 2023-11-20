@@ -1,48 +1,15 @@
 import "@mantine/core/styles.css";
 import React from "react";
 import { Navbar } from "./components/navbar";
-import {
-  MantineProvider,
-  ColorSchemeScript,
-  createTheme,
-  MantineColorsTuple,
-  Box,
-  Paper,
-} from "@mantine/core";
+import { ColorSchemeScript, Box, Paper } from "@mantine/core";
 import classes from "./layout.module.css";
+import { Providers } from "./components/providers";
 
 export const metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
   description:
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
 };
-
-const siteColors: MantineColorsTuple = [
-  "#e4f8ff",
-  "#d2eafc",
-  "#a8d2f2",
-  "#7bb8e7",
-  "#56a3df",
-  "#3d96da",
-  "#2d8fd9",
-  "#1a7bc1",
-  "#056eae",
-  "#005f9c",
-];
-
-const theme = createTheme({
-  breakpoints: {
-    xs: "30em",
-    sm: "48em",
-    md: "64em",
-    lg: "74em",
-    xl: "90em",
-  },
-  primaryColor: "pleasant-blue",
-  colors: {
-    "pleasant-blue": siteColors,
-  },
-});
 
 export default function RootLayout({
   children,
@@ -55,7 +22,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className={classes.body}>
-        <MantineProvider theme={theme}>
+        <Providers>
           <Box className={classes.grid}>
             <Box></Box>
             <Paper
@@ -70,7 +37,7 @@ export default function RootLayout({
             <Box></Box>
             <Box className={classes.content_container}>{children}</Box>
           </Box>
-        </MantineProvider>
+        </Providers>
       </body>
     </html>
   );
