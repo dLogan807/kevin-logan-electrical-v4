@@ -13,18 +13,14 @@ export function ThemeSelector() {
       onClick={() => toggleColorScheme()}
       variant="default"
       size="lg"
-      aria-label="Toggle color scheme"
+      aria-label="Toggle color theme"
     >
-      {dark ? <IconMoonStars stroke={1.5} /> : <IconSun stroke={1.5} />}
+      <ThemeIcon dark={dark} />
     </ActionIcon>
   );
 }
 
 //Return a sun or moon icon depending on scheme
-// function ThemeIcon(colorScheme: any) {
-//   return colorScheme.colorScheme === "light" ? (
-//     <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} />
-//   ) : (
-//     <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
-//   );
-// }
+function ThemeIcon(dark: any) {
+  return dark.dark ? <IconMoonStars stroke={1.5} /> : <IconSun stroke={1.5} />;
+}

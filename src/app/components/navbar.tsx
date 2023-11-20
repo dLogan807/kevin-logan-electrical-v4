@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Container, Group, Burger } from "@mantine/core";
+import { Container, Group, Burger, ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import logo from "../assets/logo.png";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import classes from "./navbar.module.css";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
+import { IconLoader2 } from "@tabler/icons-react";
 
 interface ILink {
   link: string;
@@ -22,11 +23,20 @@ const links: ILink[] = [
   { link: "/contactus", label: "Contact Us" },
 ];
 
+//Load the theme icon lazily
 const DynamicThemeSelector = dynamic(
   () => import("./themeSelector").then((mod) => mod.ThemeSelector),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <ActionIcon variant="default" size="lg" aria-label="Toggle color theme">
+        <IconLoader2 className={classes.icon_loading} />
+      </ActionIcon>
+    ),
+  }
 );
 
+//Navbar component
 export function Navbar() {
   const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[GetRouteIndex()].link);
