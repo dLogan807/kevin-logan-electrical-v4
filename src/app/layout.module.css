@@ -13,6 +13,10 @@
   grid-template-rows: 1fr 11fr;
   overflow: hidden;
   z-index: 10;
+
+  @media (max-width: $mantine-breakpoint-lg) {
+    grid-template-columns: 0fr 6fr 0fr;
+  }
 }
 
 .nav_container {
