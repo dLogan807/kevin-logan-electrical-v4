@@ -40,7 +40,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   // set theme in local store
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "kle-colour-scheme",
-    defaultValue: "light",
+    defaultValue: "dark",
     getInitialValueInEffect: true,
   });
 
@@ -52,7 +52,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       colorScheme={colorScheme}
       toggleColorScheme={toggleColorScheme}
     >
-      <MantineProvider theme={theme}>{children}</MantineProvider>
+      <MantineProvider theme={theme} defaultColorScheme="auto">
+        {children}
+      </MantineProvider>
     </ColorSchemeProvider>
   );
 }
