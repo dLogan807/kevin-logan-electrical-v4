@@ -1,8 +1,8 @@
 import { Box, Paper, Text } from "@mantine/core";
 import Image from "next/image";
 import classes from "./page.module.css";
-import ewrb from "../assets/ewrb.png";
-import bulb from "../assets/bulb.jpg";
+import ewrb from "../assets/ewrb.webp";
+import bulb from "../assets/bulb.webp";
 
 export default function AboutUs() {
   return (
@@ -45,7 +45,7 @@ export default function AboutUs() {
         </Text>
       </Paper>
       <Paper className={classes.bulb_container}>
-        <Image src={bulb} alt="A blue lightbulb" />
+        <Image src={bulb} alt="A blue lightbulb" unoptimized />
       </Paper>
     </Box>
   );

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Container, Group, Burger, ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 import Image from "next/image";
 import classes from "./navbar.module.css";
 import Link from "next/link";
