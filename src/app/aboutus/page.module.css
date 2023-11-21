@@ -4,9 +4,23 @@
   top: 5%;
   left: 5%;
   width: 90%;
+  height: 75%;
   grid-template-rows: 3fr 5fr;
+  grid-template-columns: 4fr 4fr 4fr;
   grid-template-areas: "ewrb ewrb about-1" "about-2 about-2 bulb";
   gap: 4% 5%;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 2fr 0.5fr;
+    grid-template-areas: "about-1" "ewrb" "about-2" ".";
+    gap: 2% 5%;
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    grid-template-rows: 1fr 0.5fr 2fr 0.5fr;
+  }
 }
 
 .ewrb {
@@ -18,7 +32,7 @@
   background-color: #050529;
 
   a {
-    width: 80%;
+    width: 90%;
   }
 
   img {
@@ -40,10 +54,14 @@
   display: flex;
   justify-content: center;
   overflow: hidden;
-  border-radius: 0.8rem;
   background-color: black;
 
-  image {
+  img {
     height: 100%;
+    width: auto;
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    display: none;
   }
 }
