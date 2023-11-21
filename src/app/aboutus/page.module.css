@@ -32,7 +32,11 @@
   background-color: #050529;
 
   a {
-    width: 90%;
+    width: 70%;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+      width: 90%;
+    }
   }
 
   img {
