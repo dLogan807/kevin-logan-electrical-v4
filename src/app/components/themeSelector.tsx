@@ -1,6 +1,6 @@
 "use client";
 
-import { ActionIcon, useMantineColorScheme } from "@mantine/core";
+import { ActionIcon, Tooltip, useMantineColorScheme } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
 
@@ -17,16 +17,19 @@ export function ThemeSelector() {
   } else {
     isDark = currentColorScheme;
   }
+  var toolTiptext: string = isDark ? "Light theme" : "Dark theme";
 
   return (
-    <ActionIcon
-      onClick={() => toggleColorScheme()}
-      variant="default"
-      size="lg"
-      aria-label="Toggle color theme"
-    >
-      <ThemeIcon isDark={isDark} />
-    </ActionIcon>
+    <Tooltip label={toolTiptext}>
+      <ActionIcon
+        onClick={() => toggleColorScheme()}
+        variant="default"
+        size="lg"
+        aria-label="Toggle color theme"
+      >
+        <ThemeIcon isDark={isDark} />
+      </ActionIcon>
+    </Tooltip>
   );
 }
 

@@ -38,7 +38,10 @@ var DynamicThemeSelector = dynamic(
 
 //Navbar component
 export function Navbar() {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle }] = useDisclosure(false, {
+    onOpen: () => console.log("Opened"),
+    onClose: () => console.log("Closed"),
+  });
   const [active, setActive] = useState(links[GetRouteIndex()].link);
 
   const items = links.map((link) => (
@@ -65,7 +68,13 @@ export function Navbar() {
 
         <Container className={classes.inner_end}>
           <DynamicThemeSelector />
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            hiddenFrom="sm"
+            size="sm"
+            aria-label="Toggle navigation panel"
+          />
         </Container>
       </Container>
     </header>
