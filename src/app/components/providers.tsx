@@ -9,6 +9,7 @@ import {
 import { ColorScheme, ColorSchemeProvider } from "@mantine/styles";
 import { useLocalStorage } from "@mantine/hooks";
 
+//Theme colours
 const siteColors: MantineColorsTuple = [
   "#e4f8ff",
   "#d2eafc",
@@ -22,6 +23,7 @@ const siteColors: MantineColorsTuple = [
   "#005f9c",
 ];
 
+//Theme
 const theme = createTheme({
   breakpoints: {
     xs: "30em",
@@ -36,6 +38,7 @@ const theme = createTheme({
   },
 });
 
+//Overarching Mantine providers
 export function Providers({ children }: { children: React.ReactNode }) {
   // set theme in local store
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({

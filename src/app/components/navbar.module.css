@@ -48,16 +48,16 @@
     background-color: var(--mantine-color-blue-filled);
     color: var(--mantine-color-white);
   }
-}
 
-.link:hover {
-  background-color: light-dark(
-    var(--mantine-color-gray-2),
-    var(--mantine-color-dark-6)
-  );
+  @mixin hover {
+    background-color: light-dark(
+      var(--mantine-color-gray-2),
+      var(--mantine-color-dark-6)
+    );
 
-  &[data-active] {
-    background-color: var(--mantine-color-blue-filled);
+    &[data-active] {
+      background-color: var(--mantine-color-blue-filled);
+    }
   }
 }
 
