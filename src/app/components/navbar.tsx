@@ -1,7 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { Container, Group, Burger, ActionIcon } from "@mantine/core";
+import React, { useState } from "react";
+import {
+  Container,
+  Group,
+  Stack,
+  Burger,
+  ActionIcon,
+  Paper,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import logo from "../assets/logo.webp";
 import Image from "next/image";
@@ -9,18 +16,26 @@ import classes from "./navbar.module.css";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import { IconLoader2 } from "@tabler/icons-react";
+import {
+  Icon,
+  IconHome,
+  IconInfoSquare,
+  IconLoader2,
+  IconPhoneCall,
+  IconTools,
+} from "@tabler/icons-react";
 
 interface ILink {
   link: string;
   label: string;
+  icon: Icon;
 }
 
-const links: ILink[] = [
-  { link: "/", label: "Home" },
-  { link: "/aboutus", label: "About Us" },
-  { link: "/rateandservices", label: "Rate & Services" },
-  { link: "/contactus", label: "Contact Us" },
+const linkData: ILink[] = [
+  { link: "/", label: "Home", icon: IconHome },
+  { link: "/aboutus", label: "About Us", icon: IconInfoSquare },
+  { link: "/rateandservices", label: "Rate & Services", icon: IconTools },
+  { link: "/contactus", label: "Contact Us", icon: IconPhoneCall },
 ];
 
 //Load the theme icon lazily
@@ -42,9 +57,9 @@ export function Navbar() {
     onOpen: () => console.log("Opened"),
     onClose: () => console.log("Closed"),
   });
-  const [active, setActive] = useState(links[GetRouteIndex()].link);
+  const [active, setActive] = useState(linkData[GetRouteIndex()].link);
 
-  const items = links.map((link) => (
+  const links = linkData.map((link) => (
     <Link
       key={link.label}
       href={link.link}
@@ -54,17 +69,24 @@ export function Navbar() {
         setActive(link.link);
       }}
     >
-      {link.label}
+      <span>{link.label}</span>
+      <link.icon className={classes.link_icon} stroke={1.5} />
     </Link>
   ));
 
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
-        <Image src={logo} height="25" alt="logo" className={classes.logo} />
-        <Group gap={5} visibleFrom="sm">
-          {items}
-        </Group>
+        <Image src={logo} alt="logo" className={classes.logo} />
+        <nav>
+          <Group className={classes.navbar} gap={5}>
+            <Group>{links}</Group>
+            <div>
+              <div></div>
+            </div>
+            <Stack>{links}</Stack>
+          </Group>
+        </nav>
 
         <Container className={classes.inner_end}>
           <DynamicThemeSelector />
