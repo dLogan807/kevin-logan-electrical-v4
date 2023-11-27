@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Group,
   Stack,
   Burger,
   ActionIcon,
-  Paper,
+  Overlay,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import logo from "../assets/logo.webp";
@@ -38,7 +38,7 @@ const linkData: ILink[] = [
   { link: "/contactus", label: "Contact Us", icon: IconPhoneCall },
 ];
 
-//Load the theme icon lazily
+//Load theme icon lazily
 var DynamicThemeSelector = dynamic(
   () => import("./themeSelector").then((mod) => mod.ThemeSelector),
   {
@@ -53,11 +53,34 @@ var DynamicThemeSelector = dynamic(
 
 //Navbar component
 export function Navbar() {
-  const [opened, { toggle }] = useDisclosure(false, {
-    onOpen: () => console.log("Opened"),
-    onClose: () => console.log("Closed"),
-  });
+  const [opened, { toggle, close }] = useDisclosure(false);
   const [active, setActive] = useState(linkData[GetRouteIndex()].link);
+  //Close on escape keypress
+  useEffect(() => {
+    const handleEsc = (event: any) => {
+      if (event.key === "Escape" && opened) {
+        toggle();
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [opened, toggle]);
+  //Close on window resize
+  useEffect(() => {
+    const handleResize = (event: any) => {
+      if (event && opened) {
+        toggle();
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [opened, toggle]);
 
   const links = linkData.map((link) => (
     <Link
@@ -79,9 +102,15 @@ export function Navbar() {
       <Container size="md" className={classes.inner}>
         <Image src={logo} alt="logo" className={classes.logo} />
         <nav>
-          <Group className={classes.navbar} gap={5}>
+          <Group
+            className={[classes.navbar, opened ? classes.navbar_open : ""].join(
+              " "
+            )}
+            gap={5}
+          >
             <Group>{links}</Group>
             <Stack>{links}</Stack>
+            <Overlay onClick={close} />
           </Group>
         </nav>
 
