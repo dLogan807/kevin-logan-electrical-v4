@@ -69,8 +69,8 @@ export function Navbar() {
         setActive(link.link);
       }}
     >
-      <span>{link.label}</span>
       <link.icon className={classes.link_icon} stroke={1.5} />
+      <span>{link.label}</span>
     </Link>
   ));
 
@@ -81,9 +81,6 @@ export function Navbar() {
         <nav>
           <Group className={classes.navbar} gap={5}>
             <Group>{links}</Group>
-            <div>
-              <div></div>
-            </div>
             <Stack>{links}</Stack>
           </Group>
         </nav>
