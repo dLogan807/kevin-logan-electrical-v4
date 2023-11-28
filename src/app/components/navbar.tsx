@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Group,
@@ -9,10 +9,9 @@ import {
   ActionIcon,
   Overlay,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery, useWindowEvent } from "@mantine/hooks";
 import logo from "../assets/logo.webp";
 import Image from "next/image";
-import classes from "./navbar.module.css";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
@@ -22,8 +21,10 @@ import {
   IconInfoSquare,
   IconLoader2,
   IconPhoneCall,
-  IconTools,
+  IconPlugConnected,
 } from "@tabler/icons-react";
+import classes from "./navbar.module.css";
+import { theme } from "./theme";
 
 interface ILink {
   link: string;
@@ -34,7 +35,11 @@ interface ILink {
 const linkData: ILink[] = [
   { link: "/", label: "Home", icon: IconHome },
   { link: "/aboutus", label: "About Us", icon: IconInfoSquare },
-  { link: "/rateandservices", label: "Rate & Services", icon: IconTools },
+  {
+    link: "/rateandservices",
+    label: "Rate & Services",
+    icon: IconPlugConnected,
+  },
   { link: "/contactus", label: "Contact Us", icon: IconPhoneCall },
 ];
 
@@ -55,32 +60,20 @@ var DynamicThemeSelector = dynamic(
 export function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
   const [active, setActive] = useState(linkData[GetRouteIndex()].link);
+  const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
+
   //Close on escape keypress
-  useEffect(() => {
-    const handleEsc = (event: any) => {
-      if (event.key === "Escape" && opened) {
-        toggle();
-      }
-    };
-    window.addEventListener("keydown", handleEsc);
+  useWindowEvent("keydown", (event) => {
+    if (event.code === "Escape" && opened) {
+      event.preventDefault();
+      close();
+    }
+  });
 
-    return () => {
-      window.removeEventListener("keydown", handleEsc);
-    };
-  }, [opened, toggle]);
   //Close on window resize
-  useEffect(() => {
-    const handleResize = (event: any) => {
-      if (event && opened) {
-        toggle();
-      }
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [opened, toggle]);
+  if (isDesktop && opened) {
+    close();
+  }
 
   const links = linkData.map((link) => (
     <Link
@@ -90,6 +83,7 @@ export function Navbar() {
       data-active={active === link.link || undefined}
       onClick={() => {
         setActive(link.link);
+        close();
       }}
     >
       <link.icon className={classes.link_icon} stroke={1.5} />

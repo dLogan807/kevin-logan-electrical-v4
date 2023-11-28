@@ -21,6 +21,10 @@
   @media (max-width: $mantine-breakpoint-lg) {
     grid-template-columns: 0fr 6fr 0fr;
   }
+
+  @media (max-width: $mantine-breakpoint-sm) and (min-aspect-ratio: 1/9) and (max-aspect-ratio: 22/9) and (orientation: landscape) {
+    grid-template-rows: 1fr 6fr;
+  }
 }
 
 .nav_container {

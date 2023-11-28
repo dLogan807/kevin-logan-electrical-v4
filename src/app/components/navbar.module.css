@@ -18,12 +18,12 @@
 
 .logo {
   position: relative;
-  width: 20rem;
-  height: auto;
+  height: 1.5rem;
+  width: auto;
   z-index: 13;
 
   @media (max-width: $mantine-breakpoint-xs) {
-    width: 14rem;
+    height: 1rem;
   }
 }
 
@@ -138,6 +138,10 @@
 
   @media (max-width: $mantine-breakpoint-xs) {
     grid-template-columns: 1fr 4fr;
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) and (min-aspect-ratio: 1/9) and (max-aspect-ratio: 22/9) and (orientation: landscape) {
+    grid-template-rows: 1fr 6fr;
   }
 }
 
