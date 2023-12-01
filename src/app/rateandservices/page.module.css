@@ -1,0 +1,26 @@
+.rateservice_grid {
+  display: grid;
+  position: relative;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  grid-template-rows: 0.4fr 1.5fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "rate rate" "services services";
+  gap: 4% 5%;
+}
+
+.rateservice_rate {
+  grid-area: rate;
+}
+
+.rateservice_services {
+  grid-area: services;
+  display: grid;
+  text-align: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.1fr 0.1fr 4fr;
+  grid-template-areas: "serv-heading serv-heading serv-heading" "sub-head sub-head sub-head" "rate-serv_1 rate-serv_2 rate-serv_3";
+  gap: 1% 2%;
+  padding: 2%;
+}
