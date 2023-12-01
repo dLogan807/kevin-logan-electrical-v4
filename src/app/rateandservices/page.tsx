@@ -1,5 +1,15 @@
-import { Box, Paper, Text, Title } from "@mantine/core";
+import {
+  Box,
+  List,
+  ListItem,
+  Paper,
+  Text,
+  ThemeIcon,
+  Title,
+  rem,
+} from "@mantine/core";
 import classes from "./page.module.css";
+import { IconCircleCheck } from "@tabler/icons-react";
 
 export default function AboutUs() {
   return (
@@ -40,21 +50,82 @@ export default function AboutUs() {
           I offer a wide range of residential services. If you&apos;d like to
           inquire about a particular job, don&apos;t hesitate to give me a call.
         </Text>
-        <Paper shadow="sm" radius="md" withBorder p="xl"></Paper>
         <Paper
+          className={classes.rateservice_services_list}
           shadow="sm"
           radius="md"
           withBorder
-          p="xl"
-          className={classes.rateservice_services}
-        ></Paper>
+          p="md"
+        >
+          <Title order={5}>Interior</Title>
+          <List
+            spacing="xs"
+            size="sm"
+            center
+            icon={
+              <ThemeIcon size={24} radius="xl">
+                <IconCircleCheck style={{ width: rem(16), height: rem(16) }} />
+              </ThemeIcon>
+            }
+          >
+            <ListItem>Lighting</ListItem>
+            <ListItem>Power Points</ListItem>
+            <ListItem>Hot water faults</ListItem>
+            <ListItem>Hood / Fan Installations</ListItem>
+            <ListItem>Fault-finding</ListItem>
+          </List>
+        </Paper>
         <Paper
+          className={classes.rateservice_services_list}
           shadow="sm"
           radius="md"
           withBorder
-          p="xl"
-          className={classes.rateservice_services}
-        ></Paper>
+          p="md"
+        >
+          <Title order={5}>Exterior</Title>
+          <List
+            spacing="xs"
+            size="sm"
+            center
+            icon={
+              <ThemeIcon size={24} radius="xl">
+                <IconCircleCheck style={{ width: rem(16), height: rem(16) }} />
+              </ThemeIcon>
+            }
+          >
+            <ListItem>Outdoor lighting / sockets</ListItem>
+            <ListItem>Garden lighting</ListItem>
+            <ListItem>Security lights</ListItem>
+            <ListItem>Swimming pools / Spa pools</ListItem>
+            <ListItem>Sub mains to exterior buildings</ListItem>
+            <ListItem>EV charge stations</ListItem>
+          </List>
+        </Paper>
+        <Paper
+          className={classes.rateservice_services_list}
+          shadow="sm"
+          radius="md"
+          withBorder
+          p="md"
+        >
+          <Title order={5}>Renovations & Maintenance</Title>
+          <List
+            spacing="xs"
+            size="sm"
+            center
+            icon={
+              <ThemeIcon size={24} radius="xl">
+                <IconCircleCheck style={{ width: rem(16), height: rem(16) }} />
+              </ThemeIcon>
+            }
+          >
+            <ListItem>Switchboard upgrades</ListItem>
+            <ListItem>Oven / Hob repairs</ListItem>
+            <ListItem>Complete rewires</ListItem>
+            <ListItem>Kitchens</ListItem>
+            <ListItem>Bathrooms</ListItem>
+          </List>
+        </Paper>
       </Paper>
     </Box>
   );
