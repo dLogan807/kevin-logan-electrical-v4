@@ -22,7 +22,7 @@
     grid-template-columns: 0fr 6fr 0fr;
   }
 
-  @media (max-width: $mantine-breakpoint-sm) and (min-aspect-ratio: 1/9) and (max-aspect-ratio: 22/9) and (orientation: landscape) {
+  @media (max-width: $mantine-breakpoint-sm) and (min-aspect-ratio: 16/9) and (max-aspect-ratio: 22/9) and (orientation: landscape) {
     grid-template-rows: 1fr 6fr;
   }
 }
@@ -40,11 +40,7 @@
     var(--mantine-color-gray-1),
     var(--mantine-color-dark-6)
   );
+  overflow-y: auto;
+  padding-bottom: 5rem;
   z-index: 10;
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding-bottom: 5rem;
-  }
 }
