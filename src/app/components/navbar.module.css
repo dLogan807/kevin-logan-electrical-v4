@@ -140,7 +140,7 @@
     grid-template-columns: 1fr 4fr;
   }
 
-  @media (max-width: $mantine-breakpoint-sm) and (min-aspect-ratio: 1/9) and (max-aspect-ratio: 22/9) and (orientation: landscape) {
+  @media (max-width: $mantine-breakpoint-sm) and (min-aspect-ratio: 16/9) and (max-aspect-ratio: 22/9) and (orientation: landscape) {
     grid-template-rows: 1fr 6fr;
   }
 }

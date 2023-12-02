@@ -8,10 +8,31 @@
   grid-template-columns: 1fr;
   grid-template-areas: "rate rate" "services services";
   gap: 4% 5%;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    gap: 2% 5%;
+  }
 }
 
 .rateservice_rate {
   grid-area: rate;
+  display: flex;
+
+  div {
+    margin-right: 1rem;
+
+    h4 {
+      margin-bottom: 1rem;
+    }
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    display: block;
+
+    div {
+      margin-bottom: 1rem;
+    }
+  }
 }
 
 .rateservice_services {
@@ -32,7 +53,21 @@
     grid-area: serv-preamble;
     margin-bottom: 1rem;
   }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.1fr 0.1fr 1fr 1fr 1fr;
+    grid-template-areas: "serv-heading" "serv-preamble" "serv-list_1" "serv-list_2" "serv-list_3";
+    gap: 1rem 0;
+  }
 }
 
 .rateservice_services_list {
+  h5 {
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    text-align: left;
+  }
 }

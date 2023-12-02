@@ -6,10 +6,14 @@ import {
   Text,
   ThemeIcon,
   Title,
-  rem,
 } from "@mantine/core";
 import classes from "./page.module.css";
-import { IconCircleCheck } from "@tabler/icons-react";
+import {
+  IconBulb,
+  IconCircleCheck,
+  IconSun,
+  IconTool,
+} from "@tabler/icons-react";
 
 export default function AboutUs() {
   return (
@@ -24,8 +28,8 @@ export default function AboutUs() {
         <div>
           <Title order={4}>Standard Rate</Title>
           <Text>
-            Hourly rate — $90/hr incl GST Please note an additional travel
-            charge (Torbay is free) dependent on mileage.
+            Hourly rate — $90/hr incl. GST Please note an additional travel
+            charge dependent on mileage.
           </Text>
         </div>
         <div>
@@ -57,14 +61,17 @@ export default function AboutUs() {
           withBorder
           p="md"
         >
+          <ThemeIcon size="xl" variant="white">
+            <IconBulb />
+          </ThemeIcon>
           <Title order={5}>Interior</Title>
           <List
             spacing="xs"
             size="sm"
             center
             icon={
-              <ThemeIcon size={24} radius="xl">
-                <IconCircleCheck style={{ width: rem(16), height: rem(16) }} />
+              <ThemeIcon size={24} radius="xl" variant="light">
+                <IconCircleCheck />
               </ThemeIcon>
             }
           >
@@ -82,18 +89,21 @@ export default function AboutUs() {
           withBorder
           p="md"
         >
+          <ThemeIcon size="xl" variant="white">
+            <IconSun />
+          </ThemeIcon>
           <Title order={5}>Exterior</Title>
           <List
             spacing="xs"
             size="sm"
             center
             icon={
-              <ThemeIcon size={24} radius="xl">
-                <IconCircleCheck style={{ width: rem(16), height: rem(16) }} />
+              <ThemeIcon size={24} radius="xl" variant="light">
+                <IconCircleCheck />
               </ThemeIcon>
             }
           >
-            <ListItem>Outdoor lighting / sockets</ListItem>
+            <ListItem>Outdoor lighting / Sockets</ListItem>
             <ListItem>Garden lighting</ListItem>
             <ListItem>Security lights</ListItem>
             <ListItem>Swimming pools / Spa pools</ListItem>
@@ -108,14 +118,17 @@ export default function AboutUs() {
           withBorder
           p="md"
         >
+          <ThemeIcon size="xl" variant="white">
+            <IconTool />
+          </ThemeIcon>
           <Title order={5}>Renovations & Maintenance</Title>
           <List
             spacing="xs"
             size="sm"
             center
             icon={
-              <ThemeIcon size={24} radius="xl">
-                <IconCircleCheck style={{ width: rem(16), height: rem(16) }} />
+              <ThemeIcon size={24} radius="xl" variant="light">
+                <IconCircleCheck />
               </ThemeIcon>
             }
           >

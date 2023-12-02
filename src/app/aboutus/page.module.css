@@ -14,7 +14,7 @@
     height: auto;
     grid-template-columns: 1fr;
     grid-template-rows: 0.5fr 1fr 1.5fr;
-    grid-template-areas: "about-1" "ewrb" "about-2" ".";
+    grid-template-areas: "about-1" "ewrb" "about-2";
     gap: 2% 5%;
   }
 
