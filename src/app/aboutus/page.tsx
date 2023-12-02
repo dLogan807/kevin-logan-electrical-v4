@@ -1,6 +1,7 @@
 import { Box, Button, Paper, Text } from "@mantine/core";
 import classes from "./page.module.css";
 import Link from "next/link";
+import { IconCertificate } from "@tabler/icons-react";
 
 export default function AboutUs() {
   return (
@@ -16,14 +17,15 @@ export default function AboutUs() {
           I founded Kevin Logan Electrical in 1992 and have since been proudly
           serving the North Shore community. Based in Torbay, you can count on
           me as your local electrician.
-          <br />
-          <br />
-          <Button
-            component={Link}
-            href="https://kete.mbie.govt.nz/EW/EWPRSearch/practitioner/?id=efe7cde3-b142-df11-917a-005056ae567f"
-          >
-            Registered Electrician
-          </Button>
+          <div>
+            <Button
+              leftSection={<IconCertificate />}
+              component={Link}
+              href="https://kete.mbie.govt.nz/EW/EWPRSearch/practitioner/?id=efe7cde3-b142-df11-917a-005056ae567f"
+            >
+              Registered Electrician
+            </Button>
+          </div>
         </Text>
       </Paper>
       <Paper

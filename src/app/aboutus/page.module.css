@@ -5,9 +5,9 @@
   left: 5%;
   width: 90%;
   height: 75%;
-  grid-template-rows: 3fr 5fr;
-  grid-template-columns: 4fr 4fr 4fr;
-  grid-template-areas: "ewrb ewrb about-1" "about-2 about-2 bulb";
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "about-1" "about-2";
   gap: 4% 5%;
 
   @media (max-width: $mantine-breakpoint-sm) {
@@ -23,49 +23,15 @@
   }
 }
 
-.ewrb {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  grid-area: ewrb;
-  background-color: #050529;
-
-  a {
-    width: 70%;
-
-    @media (max-width: $mantine-breakpoint-xs) {
-      width: 90%;
-    }
-  }
-
-  img {
-    width: 100%;
-    height: auto;
-  }
-}
-
 .about_text_1 {
   grid-area: about-1;
+
+  div {
+    text-align: center;
+    margin-top: 1rem;
+  }
 }
 
 .about_text_2 {
   grid-area: about-2;
-}
-
-.bulb_container {
-  grid-area: bulb;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  background-color: black;
-
-  img {
-    height: 100%;
-    width: auto;
-  }
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    display: none;
-  }
 }
