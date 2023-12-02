@@ -61,7 +61,7 @@ export default function AboutUs() {
           withBorder
           p="md"
         >
-          <ThemeIcon size="xl" variant="white">
+          <ThemeIcon size="xl" variant="transparent">
             <IconBulb />
           </ThemeIcon>
           <Title order={5}>Interior</Title>
@@ -89,7 +89,7 @@ export default function AboutUs() {
           withBorder
           p="md"
         >
-          <ThemeIcon size="xl" variant="white">
+          <ThemeIcon size="xl" variant="transparent">
             <IconSun />
           </ThemeIcon>
           <Title order={5}>Exterior</Title>
@@ -118,7 +118,7 @@ export default function AboutUs() {
           withBorder
           p="md"
         >
-          <ThemeIcon size="xl" variant="white">
+          <ThemeIcon size="xl" variant="transparent">
             <IconTool />
           </ThemeIcon>
           <Title order={5}>Renovations & Maintenance</Title>
