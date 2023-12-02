@@ -25,12 +25,7 @@ export default function RootLayout({
         <Providers>
           <Box className={classes.grid}>
             <Box></Box>
-            <Paper
-              className={classes.nav_container}
-              radius="xs"
-              shadow="sm"
-              withBorder
-            >
+            <Paper className={classes.nav_container} shadow="sm">
               <Navbar />
             </Paper>
             <Box></Box>

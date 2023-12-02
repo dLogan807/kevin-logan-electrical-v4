@@ -1,42 +1,10 @@
 "use client";
 
 import React from "react";
-import {
-  MantineProvider,
-  createTheme,
-  MantineColorsTuple,
-} from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { ColorScheme, ColorSchemeProvider } from "@mantine/styles";
 import { useLocalStorage } from "@mantine/hooks";
-
-//Theme colours
-const siteColors: MantineColorsTuple = [
-  "#e4f8ff",
-  "#d2eafc",
-  "#a8d2f2",
-  "#7bb8e7",
-  "#56a3df",
-  "#3d96da",
-  "#2d8fd9",
-  "#1a7bc1",
-  "#056eae",
-  "#005f9c",
-];
-
-//Theme
-const theme = createTheme({
-  breakpoints: {
-    xs: "30em",
-    sm: "52em",
-    md: "62em",
-    lg: "71em",
-    xl: "88em",
-  },
-  primaryColor: "pleasant-blue",
-  colors: {
-    "pleasant-blue": siteColors,
-  },
-});
+import { theme } from "./theme";
 
 //Overarching Mantine providers
 export function Providers({ children }: { children: React.ReactNode }) {

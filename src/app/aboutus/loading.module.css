@@ -11,11 +11,11 @@
   gap: 4% 5%;
 
   @media (max-width: $mantine-breakpoint-sm) {
-    height: auto;
+    height: 110%;
     grid-template-columns: 1fr;
     grid-template-rows: 0.5fr 1fr 1.5fr;
-    grid-template-areas: "about-1" "ewrb" "about-2";
-    gap: 1rem 0;
+    grid-template-areas: "about-1" "ewrb" "about-2" ".";
+    gap: 2% 5%;
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
@@ -29,20 +29,6 @@
   align-items: center;
   width: 100%;
   grid-area: ewrb;
-  background-color: #050529;
-
-  a {
-    width: 70%;
-
-    @media (max-width: $mantine-breakpoint-xs) {
-      width: 90%;
-    }
-  }
-
-  img {
-    width: 100%;
-    height: auto;
-  }
 }
 
 .about_text_1 {
@@ -58,12 +44,6 @@
   display: flex;
   justify-content: center;
   overflow: hidden;
-  background-color: black;
-
-  img {
-    height: 100%;
-    width: auto;
-  }
 
   @media (max-width: $mantine-breakpoint-sm) {
     display: none;

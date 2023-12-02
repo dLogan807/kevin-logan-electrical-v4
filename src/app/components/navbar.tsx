@@ -1,29 +1,49 @@
 "use client";
 
-import { useState } from "react";
-import { Container, Group, Burger, ActionIcon } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import React, { useState } from "react";
+import {
+  Container,
+  Group,
+  Stack,
+  Burger,
+  ActionIcon,
+  Overlay,
+} from "@mantine/core";
+import { useDisclosure, useMediaQuery, useWindowEvent } from "@mantine/hooks";
 import logo from "../assets/logo.webp";
 import Image from "next/image";
-import classes from "./navbar.module.css";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import { IconLoader2 } from "@tabler/icons-react";
+import {
+  Icon,
+  IconHome,
+  IconInfoSquare,
+  IconLoader2,
+  IconPhoneCall,
+  IconPlugConnected,
+} from "@tabler/icons-react";
+import classes from "./navbar.module.css";
+import { theme } from "./theme";
 
 interface ILink {
   link: string;
   label: string;
+  icon: Icon;
 }
 
-const links: ILink[] = [
-  { link: "/", label: "Home" },
-  { link: "/aboutus", label: "About Us" },
-  { link: "/rateandservices", label: "Rate & Services" },
-  { link: "/contactus", label: "Contact Us" },
+const linkData: ILink[] = [
+  { link: "/", label: "Home", icon: IconHome },
+  { link: "/aboutus", label: "About Us", icon: IconInfoSquare },
+  {
+    link: "/rateandservices",
+    label: "Rate & Services",
+    icon: IconPlugConnected,
+  },
+  { link: "/contactus", label: "Contact Us", icon: IconPhoneCall },
 ];
 
-//Load the theme icon lazily
+//Load theme icon lazily
 var DynamicThemeSelector = dynamic(
   () => import("./themeSelector").then((mod) => mod.ThemeSelector),
   {
@@ -38,13 +58,24 @@ var DynamicThemeSelector = dynamic(
 
 //Navbar component
 export function Navbar() {
-  const [opened, { toggle }] = useDisclosure(false, {
-    onOpen: () => console.log("Opened"),
-    onClose: () => console.log("Closed"),
-  });
-  const [active, setActive] = useState(links[GetRouteIndex()].link);
+  const [opened, { toggle, close }] = useDisclosure(false);
+  const [active, setActive] = useState(linkData[GetRouteIndex()].link);
+  const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
 
-  const items = links.map((link) => (
+  //Close on escape keypress
+  useWindowEvent("keydown", (event) => {
+    if (event.code === "Escape" && opened) {
+      event.preventDefault();
+      close();
+    }
+  });
+
+  //Close on window resize
+  if (isDesktop && opened) {
+    close();
+  }
+
+  const links = linkData.map((link) => (
     <Link
       key={link.label}
       href={link.link}
@@ -52,19 +83,30 @@ export function Navbar() {
       data-active={active === link.link || undefined}
       onClick={() => {
         setActive(link.link);
+        close();
       }}
     >
-      {link.label}
+      <link.icon className={classes.link_icon} stroke={1.5} />
+      <span>{link.label}</span>
     </Link>
   ));
 
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
-        <Image src={logo} height="25" alt="logo" className={classes.logo} />
-        <Group gap={5} visibleFrom="sm">
-          {items}
-        </Group>
+        <Image src={logo} alt="logo" className={classes.logo} />
+        <nav>
+          <Group
+            className={[classes.navbar, opened ? classes.navbar_open : ""].join(
+              " "
+            )}
+            gap={5}
+          >
+            <Group>{links}</Group>
+            <Stack>{links}</Stack>
+            <Overlay onClick={close} />
+          </Group>
+        </nav>
 
         <Container className={classes.inner_end}>
           <DynamicThemeSelector />
