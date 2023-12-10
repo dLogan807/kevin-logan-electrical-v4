@@ -1,7 +1,9 @@
 import { Box, Button, Paper, Text } from "@mantine/core";
 import classes from "./page.module.css";
 import Link from "next/link";
+import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
+import bulb from "../assets/bulb.webp";
 
 export default function AboutUs() {
   return (
@@ -27,6 +29,15 @@ export default function AboutUs() {
             </Button>
           </div>
         </Text>
+      </Paper>
+      <Paper
+        shadow="sm"
+        radius="md"
+        withBorder
+        p="xl"
+        className={classes.about_bulb}
+      >
+        <Image src={bulb} alt="Blue bulb" loading="lazy" />
       </Paper>
       <Paper
         shadow="sm"
