@@ -4,18 +4,16 @@
   top: 5%;
   left: 5%;
   width: 90%;
-  height: 50%;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 0.8fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas: "about-1 about-1 bulb" "about-2 about-2 bulb";
+  grid-template-areas: "about-1 about-1 torbay" "about-2 about-2 torbay";
   gap: 2rem;
 
   @media (max-width: $mantine-breakpoint-sm) {
-    height: auto;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 0.5fr 1fr;
-    grid-template-areas: "about-1 about-1 bulb" "about-2 about-2 bulb";
-    gap: 1rem 0;
+    grid-template-rows: 0.8fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "about-1" "about-2" "torbay";
+    gap: 1rem;
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
@@ -25,9 +23,10 @@
 
 .about_text_1 {
   grid-area: about-1;
+  background-color: var(--mantine-color-body);
 
   div {
-    text-align: center;
+    justify-content: center;
     margin-top: 2rem;
   }
 }
@@ -36,13 +35,11 @@
   grid-area: about-2;
 }
 
-.about_bulb {
-  grid-area: bulb;
+.about_torbay {
+  grid-area: torbay;
   display: flex;
   position: relative;
   justify-content: center;
   align-items: center;
-
-  image {
-  }
+  overflow: hidden;
 }

@@ -1,14 +1,14 @@
-import { Box, Button, Paper, Text } from "@mantine/core";
+import { Box, Button, Card, Group, Paper, Text } from "@mantine/core";
 import classes from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
-import bulb from "../assets/bulb.webp";
+import waiake from "../assets/bulb.webp";
 
 export default function AboutUs() {
   return (
     <Box className={classes.about_grid}>
-      <Paper
+      <Card
         shadow="sm"
         radius="md"
         withBorder
@@ -19,25 +19,25 @@ export default function AboutUs() {
           I founded Kevin Logan Electrical in 1992 and have since been proudly
           serving the North Shore community. Based in Torbay, you can count on
           me as your local electrician.
-          <div>
-            <Button
-              leftSection={<IconCertificate />}
-              component={Link}
-              href="https://kete.mbie.govt.nz/EW/EWPRSearch/practitioner/?id=efe7cde3-b142-df11-917a-005056ae567f"
-            >
-              Registered Electrician
-            </Button>
-          </div>
         </Text>
-      </Paper>
+        <Group>
+          <Button
+            leftSection={<IconCertificate />}
+            component={Link}
+            href="https://kete.mbie.govt.nz/EW/EWPRSearch/practitioner/?id=efe7cde3-b142-df11-917a-005056ae567f"
+          >
+            Registered Electrician
+          </Button>
+        </Group>
+      </Card>
       <Paper
         shadow="sm"
         radius="md"
         withBorder
         p="xl"
-        className={classes.about_bulb}
+        className={classes.about_torbay}
       >
-        <Image src={bulb} alt="Blue bulb" loading="lazy" />
+        <Image src={waiake} alt="Waiake Beach" loading="lazy" />
       </Paper>
       <Paper
         shadow="sm"
