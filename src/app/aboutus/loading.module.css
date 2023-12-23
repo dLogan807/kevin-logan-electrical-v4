@@ -39,7 +39,7 @@
   grid-area: about-2;
 }
 
-.bulb_container {
+.about_torbay {
   grid-area: bulb;
   display: flex;
   justify-content: center;

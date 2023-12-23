@@ -18,7 +18,7 @@ export default function AboutUsLoading() {
       <Skeleton
         animate={false}
         radius="md"
-        className={classes.bulb_container}
+        className={classes.about_torbay}
       ></Skeleton>
     </Box>
   );
