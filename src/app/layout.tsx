@@ -1,11 +1,12 @@
 import "@mantine/core/styles.css";
 import React from "react";
+import type { Metadata } from "next";
 import { Navbar } from "./components/navbar";
 import { ColorSchemeScript, Box, Paper } from "@mantine/core";
 import classes from "./layout.module.css";
 import { Providers } from "./components/providers";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
   description:
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",

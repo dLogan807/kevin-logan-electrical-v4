@@ -14,8 +14,15 @@ import {
   IconSun,
   IconTool,
 } from "@tabler/icons-react";
+import { Metadata } from "next";
 
-export default function AboutUs() {
+export const metadata: Metadata = {
+  title: "Rate & Services | Kevin Logan Electrical - Your Trusted Electrician",
+  description:
+    "I offer a wide range of residential services at Kevin Logan Electrical for an affordable rate of $90/hr incl GST.",
+};
+
+export default function RateAndServices() {
   return (
     <Box className={classes.rateservice_grid}>
       <Paper

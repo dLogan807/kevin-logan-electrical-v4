@@ -4,6 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
 import waiake from "../assets/bulb.webp";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us | Kevin Logan Electrical - Your Trusted Electrician",
+  description:
+    "Find out more about Kevin Logan Electrical. Serving the North Shore community since 1992 and proud to be your local electrician of choice.",
+};
 
 export default function AboutUs() {
   return (
