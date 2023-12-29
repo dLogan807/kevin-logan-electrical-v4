@@ -10,6 +10,27 @@ export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
   description:
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
+  openGraph: {
+    title: "Kevin Logan Electrical - Your Trusted Electrician",
+    description:
+      "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
+    type: "website",
+    url: "https://www.kevinloganelectrical.co.nz",
+    siteName: "Kevin Logan Electrical",
+  },
+  robots: {
+    index: false,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: false,
+      noimageindex: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
