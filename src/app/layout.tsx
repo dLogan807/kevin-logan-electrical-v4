@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Kevin Logan Electrical - Your Trusted Electrician",
     description:
-      "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
+      "Providing the North Shore with a quality electrical service for over 30 years.",
     type: "website",
     url: "https://www.kevinloganelectrical.co.nz",
     siteName: "Kevin Logan Electrical",
