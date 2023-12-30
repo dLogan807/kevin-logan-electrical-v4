@@ -44,7 +44,7 @@ export default function AboutUs() {
         p="xl"
         className={classes.about_torbay}
       >
-        <Image src={waiake} alt="Waiake Beach" loading="lazy" />
+        <Image src={waiake} alt="Waiake Beach" />
       </Paper>
       <Paper
         shadow="sm"

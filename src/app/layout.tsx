@@ -18,19 +18,6 @@ export const metadata: Metadata = {
     url: "https://www.kevinloganelectrical.co.nz",
     siteName: "Kevin Logan Electrical",
   },
-  robots: {
-    index: false,
-    follow: true,
-    nocache: true,
-    googleBot: {
-      index: true,
-      follow: false,
-      noimageindex: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
 };
 
 export default function RootLayout({
