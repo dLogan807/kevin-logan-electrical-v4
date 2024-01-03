@@ -7,8 +7,14 @@ import { useLocalStorage } from "@mantine/hooks";
 import { theme } from "./theme";
 
 //Overarching Mantine providers
-export function Providers({ children }: { children: React.ReactNode }) {
-  // set theme in local store
+export function Providers({
+  children,
+  nonce,
+}: {
+  children: React.ReactNode;
+  nonce: string;
+}) {
+  //Set theme in local store
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "kle-colour-scheme",
     defaultValue: "dark",
@@ -23,7 +29,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
       colorScheme={colorScheme}
       toggleColorScheme={toggleColorScheme}
     >
-      <MantineProvider theme={theme} defaultColorScheme="auto">
+      <MantineProvider
+        theme={theme}
+        defaultColorScheme="auto"
+        getStyleNonce={() => {
+          console.log("Nonce (providers.tsx): " + nonce);
+          return nonce;
+        }}
+      >
         {children}
       </MantineProvider>
     </ColorSchemeProvider>

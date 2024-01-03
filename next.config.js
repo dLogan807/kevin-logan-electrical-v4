@@ -14,11 +14,6 @@ module.exports = {
             value: "DENY",
           },
           {
-            key: "Content-Security-Policy",
-            value:
-              "default-src 'self'; font-src 'self'; frame-src https://www.google.com; img-src 'self'; script-src 'self' https://www.google.com/recaptcha/api.js https://www.gstatic.com/; style-src 'self'; manifest-src 'self';",
-          },
-          {
             key: "X-Content-Type-Options",
             value: "nosniff",
           },
