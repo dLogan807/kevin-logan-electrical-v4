@@ -33,7 +33,6 @@ export function Providers({
         theme={theme}
         defaultColorScheme="auto"
         getStyleNonce={() => {
-          console.log("Nonce (providers.tsx): " + nonce);
           return nonce;
         }}
       >

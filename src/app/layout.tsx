@@ -6,6 +6,7 @@ import { ColorSchemeScript, Box, Paper } from "@mantine/core";
 import classes from "./layout.module.css";
 import { Providers } from "./components/providers";
 import { headers } from "next/headers";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
@@ -28,7 +29,6 @@ export default function RootLayout({
 }) {
   let rawNonce = headers().get("x-nonce");
   let nonce: string = rawNonce == undefined ? "" : rawNonce;
-  console.log("Nonce (layout.tsx): " + nonce);
 
   return (
     <html lang="en">

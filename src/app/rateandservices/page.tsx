@@ -7,7 +7,6 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import classes from "./page.module.css";
 import {
   IconBulb,
   IconCircleCheck,
@@ -15,6 +14,8 @@ import {
   IconTool,
 } from "@tabler/icons-react";
 import { Metadata } from "next";
+import classes from "./page.module.css";
+import "@mantine/core/styles.layer.css";
 
 export const metadata: Metadata = {
   title: "Rate & Services | Kevin Logan Electrical - Your Trusted Electrician",
@@ -23,24 +24,24 @@ export const metadata: Metadata = {
 };
 
 export default function RateAndServices() {
+  const mainSection: string = "main-section";
+  const h4Title: string = "h4-title";
+
   return (
     <Box className={classes.rateservice_grid}>
       <Paper
-        shadow="sm"
-        radius="md"
         withBorder
-        p="xl"
-        className={classes.rateservice_rate}
+        className={[classes.rateservice_rate, mainSection].join(" ")}
       >
         <div>
-          <Title order={4}>Standard Rate</Title>
+          <Title className={h4Title}>Standard Rate</Title>
           <Text>
             Hourly rate — $90/hr incl. GST Please note an additional travel
             charge dependent on mileage.
           </Text>
         </div>
         <div>
-          <Title order={4}>Estimates</Title>
+          <Title className={h4Title}>Estimates</Title>
           <Text>
             Please call if you would like an estimate on the cost of a job.
             Often the price indicated over the phone is very close to the actual
@@ -50,23 +51,17 @@ export default function RateAndServices() {
         </div>
       </Paper>
       <Paper
-        shadow="sm"
-        radius="md"
+        className={[classes.rateservice_services, mainSection].join(" ")}
         withBorder
-        p="xl"
-        className={classes.rateservice_services}
       >
-        <Title order={4}>Services</Title>
+        <Title className={h4Title}>Services</Title>
         <Text>
           I offer a wide range of residential services. If you&apos;d like to
           inquire about a particular job, don&apos;t hesitate to give me a call.
         </Text>
         <Paper
-          className={classes.rateservice_services_list}
-          shadow="sm"
-          radius="md"
+          className={[classes.rateservice_services_list, mainSection].join(" ")}
           withBorder
-          p="md"
         >
           <ThemeIcon size="xl" variant="transparent">
             <IconBulb />
@@ -90,11 +85,8 @@ export default function RateAndServices() {
           </List>
         </Paper>
         <Paper
-          className={classes.rateservice_services_list}
-          shadow="sm"
-          radius="md"
+          className={[classes.rateservice_services_list, mainSection].join(" ")}
           withBorder
-          p="md"
         >
           <ThemeIcon size="xl" variant="transparent">
             <IconSun />
@@ -119,11 +111,8 @@ export default function RateAndServices() {
           </List>
         </Paper>
         <Paper
-          className={classes.rateservice_services_list}
-          shadow="sm"
-          radius="md"
+          className={[classes.rateservice_services_list, mainSection].join(" ")}
           withBorder
-          p="md"
         >
           <ThemeIcon size="xl" variant="transparent">
             <IconTool />

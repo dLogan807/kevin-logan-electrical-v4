@@ -1,10 +1,11 @@
 import { Box, Button, Card, Group, Paper, Text } from "@mantine/core";
-import classes from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
 import waiake from "../assets/bulb.webp";
 import { Metadata } from "next";
+import "@mantine/core/styles.layer.css";
+import classes from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "About Us | Kevin Logan Electrical - Your Trusted Electrician",
@@ -13,14 +14,13 @@ export const metadata: Metadata = {
 };
 
 export default function AboutUs() {
+  const mainSection: string = "main-section";
+
   return (
     <Box className={classes.about_grid}>
       <Card
-        shadow="sm"
-        radius="md"
+        className={[classes.about_text_1, mainSection].join(" ")}
         withBorder
-        p="xl"
-        className={classes.about_text_1}
       >
         <Text>
           I founded Kevin Logan Electrical in 1992 and have since been proudly
@@ -38,20 +38,14 @@ export default function AboutUs() {
         </Group>
       </Card>
       <Paper
-        shadow="sm"
-        radius="md"
+        className={[classes.about_torbay, mainSection].join(" ")}
         withBorder
-        p="xl"
-        className={classes.about_torbay}
       >
         <Image src={waiake} alt="Waiake Beach" />
       </Paper>
       <Paper
-        shadow="sm"
-        radius="md"
+        className={[classes.about_text_2, mainSection].join(" ")}
         withBorder
-        p="xl"
-        className={classes.about_text_2}
       >
         <Text>
           I specialise in residential work, offering a competent and reliable
