@@ -1,12 +1,4 @@
-import {
-  Box,
-  List,
-  ListItem,
-  Paper,
-  Text,
-  ThemeIcon,
-  Title,
-} from "@mantine/core";
+import { Box, List, ListItem, Paper, Text, ThemeIcon } from "@mantine/core";
 import {
   IconBulb,
   IconCircleCheck,
@@ -15,7 +7,6 @@ import {
 } from "@tabler/icons-react";
 import { Metadata } from "next";
 import classes from "./page.module.css";
-import "@mantine/core/styles.layer.css";
 
 export const metadata: Metadata = {
   title: "Rate & Services | Kevin Logan Electrical - Your Trusted Electrician",
@@ -24,8 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default function RateAndServices() {
-  const mainSection: string = "main-section";
-  const h4Title: string = "h4-title";
+  const mainSection: string = "main_section";
 
   return (
     <Box className={classes.rateservice_grid}>
@@ -34,14 +24,14 @@ export default function RateAndServices() {
         className={[classes.rateservice_rate, mainSection].join(" ")}
       >
         <div>
-          <Title className={h4Title}>Standard Rate</Title>
+          <h4>Standard Rate</h4>
           <Text>
             Hourly rate — $90/hr incl. GST Please note an additional travel
             charge dependent on mileage.
           </Text>
         </div>
         <div>
-          <Title className={h4Title}>Estimates</Title>
+          <h4>Estimates</h4>
           <Text>
             Please call if you would like an estimate on the cost of a job.
             Often the price indicated over the phone is very close to the actual
@@ -54,7 +44,7 @@ export default function RateAndServices() {
         className={[classes.rateservice_services, mainSection].join(" ")}
         withBorder
       >
-        <Title className={h4Title}>Services</Title>
+        <h4>Services</h4>
         <Text>
           I offer a wide range of residential services. If you&apos;d like to
           inquire about a particular job, don&apos;t hesitate to give me a call.
@@ -63,16 +53,13 @@ export default function RateAndServices() {
           className={[classes.rateservice_services_list, mainSection].join(" ")}
           withBorder
         >
-          <ThemeIcon size="xl" variant="transparent">
+          <ThemeIcon className={classes.list_icon}>
             <IconBulb />
           </ThemeIcon>
-          <Title order={5}>Interior</Title>
+          <h5>Interior</h5>
           <List
-            spacing="xs"
-            size="sm"
-            center
             icon={
-              <ThemeIcon size={24} radius="xl" variant="light">
+              <ThemeIcon className={classes.checkmark}>
                 <IconCircleCheck />
               </ThemeIcon>
             }
@@ -88,16 +75,13 @@ export default function RateAndServices() {
           className={[classes.rateservice_services_list, mainSection].join(" ")}
           withBorder
         >
-          <ThemeIcon size="xl" variant="transparent">
+          <ThemeIcon className={classes.list_icon}>
             <IconSun />
           </ThemeIcon>
-          <Title order={5}>Exterior</Title>
+          <h5>Exterior</h5>
           <List
-            spacing="xs"
-            size="sm"
-            center
             icon={
-              <ThemeIcon size={24} radius="xl" variant="light">
+              <ThemeIcon className={classes.checkmark}>
                 <IconCircleCheck />
               </ThemeIcon>
             }
@@ -114,16 +98,13 @@ export default function RateAndServices() {
           className={[classes.rateservice_services_list, mainSection].join(" ")}
           withBorder
         >
-          <ThemeIcon size="xl" variant="transparent">
+          <ThemeIcon className={classes.list_icon}>
             <IconTool />
           </ThemeIcon>
-          <Title order={5}>Renovations & Maintenance</Title>
+          <h5>Renovations & Maintenance</h5>
           <List
-            spacing="xs"
-            size="sm"
-            center
             icon={
-              <ThemeIcon size={24} radius="xl" variant="light">
+              <ThemeIcon className={classes.checkmark}>
                 <IconCircleCheck />
               </ThemeIcon>
             }

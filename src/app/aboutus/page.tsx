@@ -4,7 +4,6 @@ import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
 import waiake from "../assets/bulb.webp";
 import { Metadata } from "next";
-import "@mantine/core/styles.layer.css";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {

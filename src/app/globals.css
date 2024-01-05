@@ -1,23 +1,25 @@
-@layer tailwind_base, mantine, tailwind_components_utilities;
-@import "@mantine/core/styles.layer.css" layer(mantine);
-
-@layer tailwind_base {
-  @tailwind base;
-}
-
-@layer tailwind_components_utilities {
-  @tailwind components;
-  @tailwind utilities;
-}
-
-.main-section {
+.main_section {
   --paper-radius: var(--mantine-radius-md);
   --paper-shadow: var(--mantine-shadow-sm);
   padding: var(--mantine-spacing-xl);
 }
 
-.h4-title {
+h4 {
   --title-fw: var(--mantine-h4-font-weight);
   --title-lh: var(--mantine-h4-line-height);
   --title-fz: var(--mantine-h4-font-size);
+  font-size: var(--title-fz);
+  font-weight: var(--title-fw);
+  line-height: var(--title-lh);
+  margin: 0;
+}
+
+h5 {
+  --title-fw: var(--mantine-h5-font-weight);
+  --title-lh: var(--mantine-h5-line-height);
+  --title-fz: var(--mantine-h5-font-size);
+  font-size: var(--title-fz);
+  font-weight: var(--title-fw);
+  line-height: var(--title-lh);
+  margin: 0;
 }

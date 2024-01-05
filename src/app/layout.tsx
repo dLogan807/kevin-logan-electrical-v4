@@ -1,11 +1,12 @@
-import "@mantine/core/styles.css";
 import React from "react";
 import type { Metadata } from "next";
 import { Navbar } from "./components/navbar";
 import { ColorSchemeScript, Box, Paper } from "@mantine/core";
-import classes from "./layout.module.css";
 import { Providers } from "./components/providers";
 import { headers } from "next/headers";
+
+import "@mantine/core/styles.css";
+import classes from "./layout.module.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
