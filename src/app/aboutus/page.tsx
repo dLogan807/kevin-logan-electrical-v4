@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function AboutUs() {
-  const mainSection: string = "main-section";
+  const mainSection: string = "main_section";
 
   return (
     <Box className={classes.about_grid}>

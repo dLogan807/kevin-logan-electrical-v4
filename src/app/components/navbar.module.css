@@ -14,6 +14,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  --container-size: var(--container-size-md);
 }
 
 .logo {
@@ -39,6 +40,14 @@
 
   @media (max-width: $mantine-breakpoint-sm) {
     width: 5rem;
+  }
+
+  button:last-child {
+    --burger-size: var(--burger-size-sm);
+
+    @media (min-width: $mantine-breakpoint-sm) {
+      visibility: hidden;
+    }
   }
 }
 
@@ -162,10 +171,19 @@
   @media (min-width: $mantine-breakpoint-sm) {
     display: none;
   }
+
+  stroke-width: 1.5;
 }
 
 .theme_icon_loading {
-  animation: rotate 1s infinite;
+  --ai-size: var(--ai-size-lg);
+  --ai-bg: var(--mantine-color-default);
+  --ai-bd: calc(0.0625rem * var(--mantine-scale)) solid
+    var(--mantine-color-default-border);
+
+  svg {
+    animation: rotate 1s infinite;
+  }
 }
 
 @keyframes rotate {

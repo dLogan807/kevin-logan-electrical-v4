@@ -49,8 +49,11 @@ var DynamicThemeSelector = dynamic(
   {
     ssr: false,
     loading: () => (
-      <ActionIcon variant="default" size="lg" aria-label="Toggle color theme">
-        <IconLoader2 className={classes.theme_icon_loading} />
+      <ActionIcon
+        className={classes.theme_icon_loading}
+        aria-label="Toggle color theme"
+      >
+        <IconLoader2 />
       </ActionIcon>
     ),
   }
@@ -86,21 +89,20 @@ export function Navbar() {
         close();
       }}
     >
-      <link.icon className={classes.link_icon} stroke={1.5} />
+      <link.icon className={classes.link_icon} />
       <span>{link.label}</span>
     </Link>
   ));
 
   return (
     <header className={classes.header}>
-      <Container size="md" className={classes.inner}>
+      <Container className={classes.inner}>
         <Image src={logo} alt="logo" className={classes.logo} />
         <nav>
           <Group
             className={[classes.navbar, opened ? classes.navbar_open : ""].join(
               " "
             )}
-            gap={5}
           >
             <Group>{links}</Group>
             <Stack>{links}</Stack>
@@ -113,8 +115,6 @@ export function Navbar() {
           <Burger
             opened={opened}
             onClick={toggle}
-            hiddenFrom="sm"
-            size="sm"
             aria-label="Toggle navigation panel"
           />
         </Container>

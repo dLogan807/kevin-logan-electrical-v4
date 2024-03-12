@@ -30,6 +30,7 @@
 .nav_container {
   position: relative;
   z-index: 12;
+  --paper-shadow: var(--mantine-shadow-sm);
 }
 
 .content_container {

@@ -40,7 +40,7 @@ export default function RootLayout({
         <Providers nonce={nonce}>
           <Box className={classes.grid}>
             <Box></Box>
-            <Paper className={classes.nav_container} shadow="sm">
+            <Paper className={classes.nav_container}>
               <Navbar />
             </Paper>
             <Box></Box>
