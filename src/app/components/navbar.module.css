@@ -182,6 +182,10 @@
     var(--mantine-color-default-border);
 
   svg {
+    color: light-dark(
+      var(--mantine-color-dark-7),
+      var(--mantine-color-gray-0)
+    );;
     animation: rotate 1s infinite;
   }
 }
