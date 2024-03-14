@@ -19,20 +19,24 @@
 
 .logo {
   position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 10 20rem;
   height: 1.5rem;
-  width: auto;
+  padding: 0;
+  margin: 0;
+  margin-right: 1rem;
   z-index: 13;
 
-  @media (max-width: $mantine-breakpoint-xs) {
-    height: 1rem;
+  img {
+    width: 100%;
+    height: auto;
   }
 }
 
 .inner_end {
   position: relative;
   display: flex;
-  height: 0;
-  right: 1rem;
   align-items: center;
   justify-content: space-between;
   margin: 0;
@@ -182,10 +186,7 @@
     var(--mantine-color-default-border);
 
   svg {
-    color: light-dark(
-      var(--mantine-color-dark-7),
-      var(--mantine-color-gray-0)
-    );;
+    color: light-dark(var(--mantine-color-dark-7), var(--mantine-color-gray-0));
     animation: rotate 1s infinite;
   }
 }

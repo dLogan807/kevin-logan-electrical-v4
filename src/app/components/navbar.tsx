@@ -97,7 +97,9 @@ export function Navbar() {
   return (
     <header className={classes.header}>
       <Container className={classes.inner}>
-        <Image src={logo} alt="logo" className={classes.logo} />
+        <Container className={classes.logo}>
+          <Image src={logo} alt="Logo" />
+        </Container>
         <nav>
           <Group
             className={[classes.navbar, opened ? classes.navbar_open : ""].join(
