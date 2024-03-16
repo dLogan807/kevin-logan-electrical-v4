@@ -28,13 +28,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  let rawNonce = headers().get("x-nonce");
-  let nonce: string = rawNonce == undefined ? "" : rawNonce;
+  const rawNonce = headers().get("x-nonce");
+  const nonce: string = rawNonce == undefined ? "" : rawNonce;
 
   return (
     <html lang="en">
       <head>
-        <ColorSchemeScript defaultColorScheme="auto" />
+        <ColorSchemeScript defaultColorScheme="auto" nonce={nonce} />
       </head>
       <body className={classes.body}>
         <Providers nonce={nonce}>

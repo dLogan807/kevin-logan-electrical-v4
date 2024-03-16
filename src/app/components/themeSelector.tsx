@@ -3,6 +3,7 @@
 import { ActionIcon, Tooltip, useMantineColorScheme } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
+import classes from "./themeSelector.module.css";
 
 //Icon for switching between light or dark theme
 export function ThemeSelector() {
@@ -22,9 +23,8 @@ export function ThemeSelector() {
   return (
     <Tooltip label={toolTiptext}>
       <ActionIcon
+        className={classes.icon}
         onClick={() => toggleColorScheme()}
-        variant="default"
-        size="lg"
         aria-label="Toggle color theme"
       >
         <ThemeIcon isDark={isDark} />
