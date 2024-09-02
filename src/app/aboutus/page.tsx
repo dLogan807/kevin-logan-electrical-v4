@@ -1,4 +1,4 @@
-import { Box, Button, Card, Group, Paper, Text } from "@mantine/core";
+import { Box, Button, Card, Paper, Stack, Text } from "@mantine/core";
 import Link from "next/link";
 import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
@@ -21,12 +21,12 @@ export default function AboutUs() {
         className={[classes.about_text_1, mainSection].join(" ")}
         withBorder
       >
-        <Text>
-          I founded Kevin Logan Electrical in 1992 and have since been proudly
-          serving the North Shore community. Based in Torbay, you can count on
-          me as your local electrician.
-        </Text>
-        <Group>
+        <Stack>
+          <Text>
+            I founded Kevin Logan Electrical in 1992 and have since been proudly
+            serving the North Shore community. Based in Torbay, you can count on
+            me as your local electrician.
+          </Text>
           <Button
             leftSection={<IconCertificate />}
             component={Link}
@@ -34,7 +34,7 @@ export default function AboutUs() {
           >
             Registered Electrician
           </Button>
-        </Group>
+        </Stack>
       </Card>
       <Paper
         className={[classes.about_torbay, mainSection].join(" ")}

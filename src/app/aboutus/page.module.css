@@ -10,17 +10,15 @@
   grid-template-areas: "about-1 torbay" "about-2 torbay";
   gap: 2rem;
 
+  @media (max-width: $mantine-breakpoint-xl) {
+    grid-template-columns: 1fr 1fr;
+  }
+
   @media (max-width: $mantine-breakpoint-sm) {
     grid-template-rows: 0.8fr 1fr;
     grid-template-columns: 2fr 1fr;
     grid-template-areas: "about-1 torbay" "about-2 about-2";
     gap: 1rem;
-
-    .about_text_1 {
-      div {
-        margin-top: 1rem;
-      }
-    }
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
@@ -37,8 +35,15 @@
   background-color: var(--mantine-color-body);
 
   div {
-    justify-content: center;
-    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+
+    a {
+      max-width: 100%;
+    }
   }
 }
 
