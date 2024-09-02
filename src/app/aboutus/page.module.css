@@ -4,9 +4,10 @@
   top: 5%;
   left: 5%;
   width: 90%;
+  height: 100%;
   grid-template-rows: 0.8fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas: "about-1 about-1 torbay" "about-2 about-2 torbay";
+  grid-template-columns: 1fr 1.5fr;
+  grid-template-areas: "about-1 torbay" "about-2 torbay";
   gap: 2rem;
 
   @media (max-width: $mantine-breakpoint-sm) {
@@ -23,6 +24,8 @@
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
+    height: auto;
+
     grid-template-rows: 0.6fr 0.5fr 1fr;
     grid-template-columns: 1fr;
     grid-template-areas: "about-1" "torbay" "about-2";
@@ -47,7 +50,18 @@
   grid-area: torbay;
   display: flex;
   position: relative;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   overflow: hidden;
+  padding: 0;
+
+  img {
+    width: auto;
+    height: 100%;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+      width: 100%;
+      height: auto;
+    }
+  }
 }
