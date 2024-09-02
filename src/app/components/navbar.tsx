@@ -98,7 +98,15 @@ export function Navbar() {
     <header className={classes.header}>
       <Container className={classes.inner}>
         <Container className={classes.logo}>
-          <Image src={logo} alt="Logo" />
+          <Link
+            href="/"
+            onClick={() => {
+              setActive(linkData[0].link);
+              close();
+            }}
+          >
+            <Image src={logo} alt="Kevin Logan Electrical logo" />
+          </Link>
         </Container>
         <nav>
           <Group
