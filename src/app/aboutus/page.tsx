@@ -40,7 +40,9 @@ export default function AboutUs() {
         className={[classes.about_torbay, mainSection].join(" ")}
         withBorder
       >
-        <Image src={waiake} alt="Waiake Beach" />
+        <Box>
+          <Image src={waiake} alt="Waiake Beach" />
+        </Box>
       </Paper>
       <Paper
         className={[classes.about_text_2, mainSection].join(" ")}
