@@ -108,7 +108,9 @@
     gap: 0;
 
     div:nth-child(1) {
-      display: none;
+      display: block;
+      visibility: hidden;
+      min-height: 3.8rem;
     }
 
     div:nth-child(2) {

@@ -73,7 +73,7 @@ export function Navbar() {
     }
   });
 
-  //Close on window resize
+  //Close on window resize to desktop view
   if (isDesktop && opened) {
     close();
   }
