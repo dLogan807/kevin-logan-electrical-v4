@@ -1,11 +1,7 @@
-import { Box, List, ListItem, Paper, Text, ThemeIcon } from "@mantine/core";
-import {
-  IconBulb,
-  IconCircleCheck,
-  IconSun,
-  IconTool,
-} from "@tabler/icons-react";
+import { Box, Paper, Text } from "@mantine/core";
+import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
+import { ServicesCard } from "../components/servicesCard";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -49,73 +45,40 @@ export default function RateAndServices() {
           I offer a wide range of residential services. If you&apos;d like to
           inquire about a particular job, don&apos;t hesitate to give me a call.
         </Text>
-        <Paper
-          className={[classes.rateservice_services_list, mainSection].join(" ")}
-          withBorder
-        >
-          <ThemeIcon className={classes.list_icon}>
-            <IconBulb />
-          </ThemeIcon>
-          <h5>Interior</h5>
-          <List
-            icon={
-              <ThemeIcon className={classes.checkmark}>
-                <IconCircleCheck />
-              </ThemeIcon>
-            }
-          >
-            <ListItem>Lighting</ListItem>
-            <ListItem>Power Points</ListItem>
-            <ListItem>Hot water faults</ListItem>
-            <ListItem>Hood / Fan Installations</ListItem>
-            <ListItem>Fault-finding</ListItem>
-          </List>
-        </Paper>
-        <Paper
-          className={[classes.rateservice_services_list, mainSection].join(" ")}
-          withBorder
-        >
-          <ThemeIcon className={classes.list_icon}>
-            <IconSun />
-          </ThemeIcon>
-          <h5>Exterior</h5>
-          <List
-            icon={
-              <ThemeIcon className={classes.checkmark}>
-                <IconCircleCheck />
-              </ThemeIcon>
-            }
-          >
-            <ListItem>Outdoor lighting / Sockets</ListItem>
-            <ListItem>Garden lighting</ListItem>
-            <ListItem>Security lights</ListItem>
-            <ListItem>Swimming pools / Spa pools</ListItem>
-            <ListItem>Sub mains to exterior buildings</ListItem>
-            <ListItem>EV charge stations</ListItem>
-          </List>
-        </Paper>
-        <Paper
-          className={[classes.rateservice_services_list, mainSection].join(" ")}
-          withBorder
-        >
-          <ThemeIcon className={classes.list_icon}>
-            <IconTool />
-          </ThemeIcon>
-          <h5>Renovations & Maintenance</h5>
-          <List
-            icon={
-              <ThemeIcon className={classes.checkmark}>
-                <IconCircleCheck />
-              </ThemeIcon>
-            }
-          >
-            <ListItem>Switchboard upgrades</ListItem>
-            <ListItem>Oven / Hob repairs</ListItem>
-            <ListItem>Complete rewires</ListItem>
-            <ListItem>Kitchens</ListItem>
-            <ListItem>Bathrooms</ListItem>
-          </List>
-        </Paper>
+        <ServicesCard
+          headerIcon={<IconBulb />}
+          headerText={"Interior"}
+          listItems={[
+            "Lighting",
+            "Power Points",
+            "Hot water faults",
+            "Hood / Fan Installations",
+            "Fault-finding<",
+          ]}
+        ></ServicesCard>
+        <ServicesCard
+          headerIcon={<IconSun />}
+          headerText={"Exterior"}
+          listItems={[
+            "Outdoor lighting / Sockets",
+            "Garden lighting",
+            "Security lights",
+            "Swimming pools / Spa pools",
+            "Sub mains to exterior buildings",
+            "EV charge stations",
+          ]}
+        ></ServicesCard>
+        <ServicesCard
+          headerIcon={<IconTool />}
+          headerText={"Renovations & Maintenance"}
+          listItems={[
+            "Switchboard upgrades",
+            "Oven / Hob repairs",
+            "Complete rewires",
+            "Kitchens",
+            "Bathrooms",
+          ]}
+        ></ServicesCard>
       </Paper>
     </Box>
   );
