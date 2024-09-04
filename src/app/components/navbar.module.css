@@ -126,6 +126,7 @@
         var(--mantine-color-dark-7)
       );
       transition: 0.3s;
+      overflow-y: scroll;
       z-index: 12;
 
       a {
