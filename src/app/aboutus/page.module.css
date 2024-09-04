@@ -1,7 +1,6 @@
 .about_grid {
   display: grid;
   position: relative;
-  top: 5%;
   left: 5%;
   width: 90%;
   grid-template-rows: 0.8fr 1fr;
@@ -21,8 +20,6 @@
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
-    height: auto;
-
     grid-template-rows: 0.6fr 0.5fr 1fr;
     grid-template-columns: 1fr;
     grid-template-areas: "about-1" "torbay" "about-2";

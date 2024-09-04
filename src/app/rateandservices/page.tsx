@@ -53,7 +53,7 @@ export default function RateAndServices() {
             "Power Points",
             "Hot water faults",
             "Hood / Fan Installations",
-            "Fault-finding<",
+            "Fault-finding",
           ]}
         ></ServicesCard>
         <ServicesCard

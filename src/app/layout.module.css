@@ -43,6 +43,10 @@
     var(--mantine-color-dark-6)
   );
   overflow-y: auto;
-  padding-bottom: 5rem;
+  padding: 2rem 0;
   z-index: 10;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    padding: 1rem 0;
+  }
 }

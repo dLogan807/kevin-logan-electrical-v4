@@ -1,16 +1,15 @@
 .rateservice_grid {
   display: grid;
   position: relative;
-  top: 5%;
   left: 5%;
   width: 90%;
   grid-template-rows: 0.4fr 1.5fr;
   grid-template-columns: 1fr;
   grid-template-areas: "rate rate" "services services";
-  gap: 4% 5%;
+  gap: 2rem;
 
   @media (max-width: $mantine-breakpoint-sm) {
-    gap: 1rem 0;
+    gap: 1rem;
   }
 }
 
