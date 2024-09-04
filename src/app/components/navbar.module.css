@@ -68,6 +68,7 @@
   &[data-active] {
     background-color: var(--mantine-color-blue-filled);
     color: var(--mantine-color-white);
+    border-radius: 0;
   }
 
   @mixin hover {

@@ -20,7 +20,7 @@ export default function ContactUs() {
   return (
     <Box className={classes.contactus_grid}>
       <Paper
-        className={[classes.contact_details, mainSection].join(" ")}
+        className={[classes.contact_form, mainSection].join(" ")}
         withBorder
       ></Paper>
       <Paper

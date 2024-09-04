@@ -11,6 +11,12 @@
   @media (max-width: $mantine-breakpoint-sm) {
     gap: 1rem;
   }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "details" "form";
+  }
 }
 
 .contact_details {
@@ -19,4 +25,16 @@
   h4 {
     margin-bottom: 1rem;
   }
+
+  li {
+    word-break: break-word;
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.contact_form {
+  grid-area: form;
 }

@@ -60,9 +60,6 @@
     align-items: center;
     border-radius: var(--mantine-radius-md);
     overflow: hidden;
-
-    @media (max-width: $mantine-breakpoint-xs) {
-    }
   }
 
   img {
