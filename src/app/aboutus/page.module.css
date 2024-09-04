@@ -28,7 +28,6 @@
 
 .about_text_1 {
   grid-area: about-1;
-  background-color: var(--mantine-color-body);
 
   div {
     display: flex;

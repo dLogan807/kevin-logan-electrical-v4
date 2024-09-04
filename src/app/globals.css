@@ -23,3 +23,10 @@ h5 {
   line-height: var(--title-lh);
   margin: 0;
 }
+
+.list_icon {
+  --ti-size: var(--ti-size-xl);
+  --ti-bg: transparent;
+  --ti-color: var(--mantine-color-pleasant-blue-light-color);
+  --ti-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
+}

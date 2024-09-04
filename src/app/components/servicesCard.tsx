@@ -19,7 +19,7 @@ export function ServicesCard({
       className={[classes.services_list, "main_section"].join(" ")}
       withBorder
     >
-      <ThemeIcon className={classes.list_icon}>{headerIcon}</ThemeIcon>
+      <ThemeIcon className={"list_icon"}>{headerIcon}</ThemeIcon>
       <h5>{headerText}</h5>
       <List
         icon={

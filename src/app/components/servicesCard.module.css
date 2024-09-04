@@ -11,13 +11,6 @@
   }
 }
 
-.list_icon {
-  --ti-size: var(--ti-size-xl);
-  --ti-bg: transparent;
-  --ti-color: var(--mantine-color-pleasant-blue-light-color);
-  --ti-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
-}
-
 .checkmark {
   --ti-size: calc(1.5rem * var(--mantine-scale));
   --ti-radius: var(--mantine-radius-xl);

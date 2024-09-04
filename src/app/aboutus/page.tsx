@@ -1,4 +1,4 @@
-import { Box, Button, Card, Paper, Stack, Text } from "@mantine/core";
+import { Box, Button, Paper, Stack, Text } from "@mantine/core";
 import Link from "next/link";
 import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
@@ -17,7 +17,7 @@ export default function AboutUs() {
 
   return (
     <Box className={classes.about_grid}>
-      <Card
+      <Paper
         className={[classes.about_text_1, mainSection].join(" ")}
         withBorder
       >
@@ -35,7 +35,7 @@ export default function AboutUs() {
             Registered Electrician
           </Button>
         </Stack>
-      </Card>
+      </Paper>
       <Paper
         className={[classes.about_torbay, mainSection].join(" ")}
         withBorder
