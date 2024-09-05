@@ -18,7 +18,7 @@ export default function ContactUs() {
   const mainSection: string = "main_section";
 
   return (
-    <Box className={classes.contactus_grid}>
+    <Box className={[classes.contactus_grid, "content_grid"].join(" ")}>
       <Paper
         className={[classes.contact_form, mainSection].join(" ")}
         withBorder

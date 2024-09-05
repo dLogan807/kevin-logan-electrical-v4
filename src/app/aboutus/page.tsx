@@ -16,7 +16,7 @@ export default function AboutUs() {
   const mainSection: string = "main_section";
 
   return (
-    <Box className={classes.about_grid}>
+    <Box className={[classes.about_grid, "content_grid"].join(" ")}>
       <Paper
         className={[classes.about_text_1, mainSection].join(" ")}
         withBorder

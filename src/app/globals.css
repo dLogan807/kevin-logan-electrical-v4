@@ -4,6 +4,18 @@
   padding: var(--mantine-spacing-xl);
 }
 
+.content_grid {
+  display: grid;
+  position: relative;
+  left: 5%;
+  width: 90%;
+  gap: 2rem;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    gap: 1rem;
+  }
+}
+
 h4 {
   --title-fw: var(--mantine-h4-font-weight);
   --title-lh: var(--mantine-h4-line-height);

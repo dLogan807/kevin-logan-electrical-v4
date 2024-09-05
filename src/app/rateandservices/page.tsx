@@ -14,7 +14,7 @@ export default function RateAndServices() {
   const mainSection: string = "main_section";
 
   return (
-    <Box className={classes.rateservice_grid}>
+    <Box className={[classes.rateservice_grid, "content_grid"].join(" ")}>
       <Paper
         withBorder
         className={[classes.rateservice_rate, mainSection].join(" ")}

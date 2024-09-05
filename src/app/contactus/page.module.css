@@ -1,16 +1,7 @@
 .contactus_grid {
-  display: grid;
-  position: relative;
-  left: 5%;
-  width: 90%;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
   grid-template-areas: "form details";
-  gap: 2rem;
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    gap: 1rem;
-  }
 
   @media (max-width: $mantine-breakpoint-sm) {
     grid-template-rows: 1fr 1fr;
