@@ -65,10 +65,13 @@
   font-size: var(--mantine-font-size-sm);
   font-weight: 500;
 
+  @media (max-width: $mantine-breakpoint-sm) {
+    border-radius: 0;
+  }
+
   &[data-active] {
     background-color: var(--mantine-color-blue-filled);
     color: var(--mantine-color-white);
-    border-radius: 0;
   }
 
   @mixin hover {
