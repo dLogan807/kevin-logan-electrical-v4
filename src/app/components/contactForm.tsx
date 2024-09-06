@@ -14,13 +14,13 @@ const phoneRegex = new RegExp(
 const schema = z.object({
   name: z.string().min(2, { message: "Name should have at least 2 letters" }),
   email: z.string().email({ message: "Invalid email" }),
-  phone: z.union([
+  phoneNo: z.union([
     z
       .string()
       .regex(phoneRegex, { message: "Please enter a valid phone number" }),
     z.literal(""),
   ]),
-  details: z.intersection(
+  jobDetails: z.intersection(
     z.string().min(1, { message: "Please enter a few details" }),
     z.string().max(2000, { message: "Maximum 2000 characters" })
   ),
@@ -32,8 +32,8 @@ export function ContactForm() {
     initialValues: {
       name: "",
       email: "",
-      phone: "",
-      details: "",
+      phoneNo: "",
+      jobDetails: "",
     },
     validate: zodResolver(schema),
   });
@@ -58,8 +58,8 @@ export function ContactForm() {
       <TextInput
         className={classes.form_field}
         label="Phone"
-        key={form.key("phone")}
-        {...form.getInputProps("phone")}
+        key={form.key("phoneNo")}
+        {...form.getInputProps("phoneNo")}
       />
       <Textarea
         className={classes.form_field}
@@ -68,8 +68,8 @@ export function ContactForm() {
         resize="vertical"
         minRows={4}
         autosize
-        key={form.key("details")}
-        {...form.getInputProps("details")}
+        key={form.key("jobDetails")}
+        {...form.getInputProps("jobDetails")}
       />
       <Group>
         <Button className={classes.submit_button} type="submit">

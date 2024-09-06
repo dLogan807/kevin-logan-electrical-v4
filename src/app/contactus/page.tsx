@@ -1,6 +1,7 @@
 import { Box, List, ListItem, Paper, Text, ThemeIcon } from "@mantine/core";
 import { Metadata } from "next";
 import {
+  IconClockHour2,
   IconDeviceMobile,
   IconMail,
   IconMapPin,
@@ -72,8 +73,18 @@ export default function ContactUs() {
           </ListItem>
         </List>
         <h4>Service Hours</h4>
-        <Text>8 AM - 5 PM</Text>
-        <Text>Monday - Friday</Text>
+        <List>
+          <ListItem
+            icon={
+              <ThemeIcon className={"list_icon"}>
+                <IconClockHour2 />
+              </ThemeIcon>
+            }
+          >
+            <Text>8 AM - 5 PM</Text>
+            <Text>Monday - Friday</Text>
+          </ListItem>
+        </List>
       </Paper>
     </Box>
   );
