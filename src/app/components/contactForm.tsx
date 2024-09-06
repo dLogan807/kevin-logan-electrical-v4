@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Checkbox, Group, TextInput } from "@mantine/core";
+import { Button, Group, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 export function ContactForm() {
@@ -9,11 +9,15 @@ export function ContactForm() {
     initialValues: {
       name: "",
       email: "",
-      termsOfService: false,
+      phone: "",
+      details: "",
     },
 
     validate: {
+      name: (value) => (/^\S+$/.test(value) ? null : "Please enter your name"),
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      details: (value) =>
+        value.length < 2000 ? null : "Maximum 2000 characters",
     },
   });
 
@@ -32,15 +36,20 @@ export function ContactForm() {
         key={form.key("email")}
         {...form.getInputProps("email")}
       />
-
-      <Checkbox
-        mt="md"
-        label="I agree to sell my privacy"
-        key={form.key("termsOfService")}
-        {...form.getInputProps("termsOfService", { type: "checkbox" })}
+      <TextInput
+        label="Phone"
+        key={form.key("phone")}
+        {...form.getInputProps("phone")}
       />
-
-      <Group justify="flex-end" mt="md">
+      <Textarea
+        label="Job details"
+        resize="vertical"
+        minRows={4}
+        autosize
+        key={form.key("details")}
+        {...form.getInputProps("details")}
+      />
+      <Group>
         <Button type="submit">Send</Button>
       </Group>
     </form>

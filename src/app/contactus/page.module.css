@@ -12,6 +12,7 @@
 
 .contact_details {
   grid-area: details;
+  height: min-content;
 
   h4 {
     margin-bottom: 1rem;

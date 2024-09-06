@@ -25,6 +25,7 @@ export default function ContactUs() {
         className={[classes.contact_form, mainSection].join(" ")}
         withBorder
       >
+        <h4>Contact Us</h4>
         <ContactForm />
       </Paper>
       <Paper
