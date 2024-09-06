@@ -23,7 +23,7 @@ export function ThemeSelector() {
   return (
     <Tooltip label={toolTiptext}>
       <ActionIcon
-        className={classes.icon}
+        className={classes.icon_container}
         onClick={() => toggleColorScheme()}
         aria-label="Toggle color theme"
       >
@@ -36,8 +36,8 @@ export function ThemeSelector() {
 //Return a sun or moon icon depending on scheme
 function ThemeIcon(isDark: any) {
   return isDark.isDark ? (
-    <IconSun stroke={1.5} />
+    <IconSun aria-label="Sun icon" className={classes.icon} />
   ) : (
-    <IconMoonStars stroke={1.5} />
+    <IconMoonStars aria-label="Moon and stars icon" className={classes.icon} />
   );
 }

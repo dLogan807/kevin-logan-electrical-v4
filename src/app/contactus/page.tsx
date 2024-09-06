@@ -46,7 +46,7 @@ export default function ContactUs() {
           <ListItem
             icon={
               <ThemeIcon className={"list_icon"}>
-                <IconMapPin />
+                <IconMapPin aria-label="Location marker icon" />
               </ThemeIcon>
             }
           >
@@ -55,7 +55,7 @@ export default function ContactUs() {
           <ListItem
             icon={
               <ThemeIcon className={"list_icon"}>
-                <IconPhone />
+                <IconPhone aria-label="Phone icon" />
               </ThemeIcon>
             }
           >
@@ -64,7 +64,7 @@ export default function ContactUs() {
           <ListItem
             icon={
               <ThemeIcon className={"list_icon"}>
-                <IconDeviceMobile />
+                <IconDeviceMobile aria-label="Mobile phone icon" />
               </ThemeIcon>
             }
           >
@@ -73,7 +73,7 @@ export default function ContactUs() {
           <ListItem
             icon={
               <ThemeIcon className={"list_icon"}>
-                <IconMail />
+                <IconMail aria-label="Letter icon" />
               </ThemeIcon>
             }
           >
