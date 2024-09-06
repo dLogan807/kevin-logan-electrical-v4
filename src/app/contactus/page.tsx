@@ -87,7 +87,7 @@ export default function ContactUs() {
           <ListItem
             icon={
               <ThemeIcon className={"list_icon"}>
-                <IconClockHour2 />
+                <IconClockHour2 aria-label="Analogue clock icon" />
               </ThemeIcon>
             }
           >
