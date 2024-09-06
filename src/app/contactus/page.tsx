@@ -26,7 +26,7 @@ export default function ContactUs() {
         className={[classes.contact_form, mainSection].join(" ")}
         withBorder
       >
-        <h4>Get in touch</h4>
+        <h4>Send an email</h4>
         <ContactForm />
       </Paper>
       <Paper
@@ -42,7 +42,7 @@ export default function ContactUs() {
               </ThemeIcon>
             }
           >
-            Based in Torbay, North Shore
+            Based in Torbay, servicing the North Shore
           </ListItem>
           <ListItem
             icon={
@@ -51,7 +51,7 @@ export default function ContactUs() {
               </ThemeIcon>
             }
           >
-            (09) 473 9712
+            09 473 9712
           </ListItem>
           <ListItem
             icon={
