@@ -1,4 +1,12 @@
-import { Box, List, ListItem, Paper, Text, ThemeIcon } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  List,
+  ListItem,
+  Paper,
+  Text,
+  ThemeIcon,
+} from "@mantine/core";
 import { Metadata } from "next";
 import {
   IconClockHour2,
@@ -51,7 +59,7 @@ export default function ContactUs() {
               </ThemeIcon>
             }
           >
-            09 473 9712
+            <Anchor href="tel:094739712">09 473 9712</Anchor>
           </ListItem>
           <ListItem
             icon={
@@ -60,7 +68,7 @@ export default function ContactUs() {
               </ThemeIcon>
             }
           >
-            0274 978 473
+            <Anchor href="tel:+64274978473">0274 978 473</Anchor>
           </ListItem>
           <ListItem
             icon={
@@ -69,7 +77,9 @@ export default function ContactUs() {
               </ThemeIcon>
             }
           >
-            kevinlog@kevinloganelectrical.co.nz
+            <Anchor href="mailto:kevinlog@kevinloganelectrical.co.nz">
+              kevinlog@kevinloganelectrical.co.nz
+            </Anchor>
           </ListItem>
         </List>
         <h4>Service Hours</h4>
