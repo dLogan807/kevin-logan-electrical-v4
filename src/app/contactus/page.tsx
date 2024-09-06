@@ -1,12 +1,14 @@
 import { Box, List, ListItem, Paper, Text, ThemeIcon } from "@mantine/core";
 import { Metadata } from "next";
-import classes from "./page.module.css";
 import {
   IconDeviceMobile,
   IconMail,
   IconMapPin,
   IconPhone,
 } from "@tabler/icons-react";
+import { ContactForm } from "../components/contactForm";
+
+import classes from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Contact Us | Kevin Logan Electrical - Your Trusted Electrician",
@@ -22,7 +24,9 @@ export default function ContactUs() {
       <Paper
         className={[classes.contact_form, mainSection].join(" ")}
         withBorder
-      ></Paper>
+      >
+        <ContactForm />
+      </Paper>
       <Paper
         className={[classes.contact_details, mainSection].join(" ")}
         withBorder
