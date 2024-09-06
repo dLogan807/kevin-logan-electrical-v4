@@ -3,8 +3,11 @@
   grid-template-columns: 1fr 1fr;
   grid-template-areas: "form details";
 
+  h4 {
+    margin-bottom: 1rem;
+  }
+
   @media (max-width: $mantine-breakpoint-sm) {
-    grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr;
     grid-template-areas: "details" "form";
   }
@@ -13,10 +16,6 @@
 .contact_details {
   grid-area: details;
   height: min-content;
-
-  h4 {
-    margin-bottom: 1rem;
-  }
 
   li {
     word-break: break-word;
