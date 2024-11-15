@@ -22,7 +22,7 @@ export default function RateAndServices() {
         <div>
           <h4>Standard Rate</h4>
           <Text>
-            Hourly rate — $90/hr incl. GST Please note an additional travel
+            Hourly rate — $90/hr incl. GST. Please note an additional travel
             charge dependent on mileage.
           </Text>
         </div>
