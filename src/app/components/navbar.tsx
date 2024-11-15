@@ -23,25 +23,34 @@ import {
   IconPhoneCall,
   IconPlugConnected,
 } from "@tabler/icons-react";
+import { Pages } from "./Pages";
 import classes from "./navbar.module.css";
 import { theme } from "./theme";
+
+//Return the index of the currently navigated route
+function GetRouteIndex(): number {
+  const pathname = usePathname();
+
+  switch (pathname) {
+    case "/":
+      return Pages.Home;
+    case "/aboutus":
+      return Pages.AboutUs;
+    case "/rateandservices":
+      return Pages.RateAndServices;
+    case "/contactus":
+      return Pages.ContactUs;
+    default:
+      return Pages.Error;
+  }
+}
 
 interface ILink {
   link: string;
   label: string;
   icon: Icon;
+  value: Pages;
 }
-
-const linkData: ILink[] = [
-  { link: "/", label: "Home", icon: IconHome },
-  { link: "/aboutus", label: "About Us", icon: IconInfoSquare },
-  {
-    link: "/rateandservices",
-    label: "Rate & Services",
-    icon: IconPlugConnected,
-  },
-  { link: "/contactus", label: "Contact Us", icon: IconPhoneCall },
-];
 
 //Load theme icon lazily
 var DynamicThemeSelector = dynamic(
@@ -59,10 +68,32 @@ var DynamicThemeSelector = dynamic(
   }
 );
 
+const linkData: ILink[] = [
+  { link: "/", label: "Home", icon: IconHome, value: Pages.Home },
+  {
+    link: "/aboutus",
+    label: "About Us",
+    icon: IconInfoSquare,
+    value: Pages.AboutUs,
+  },
+  {
+    link: "/rateandservices",
+    label: "Rate & Services",
+    icon: IconPlugConnected,
+    value: Pages.RateAndServices,
+  },
+  {
+    link: "/contactus",
+    label: "Contact Us",
+    icon: IconPhoneCall,
+    value: Pages.ContactUs,
+  },
+];
+
 //Navbar component
 export function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
-  const [active, setActive] = useState(linkData[GetRouteIndex()].link);
+  const [active, setActive] = useState(GetRouteIndex());
   const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
 
   //Close on escape keypress
@@ -78,14 +109,15 @@ export function Navbar() {
     close();
   }
 
+  //Generate link elements and set active link
   const links = linkData.map((link) => (
     <Link
       key={link.label}
       href={link.link}
       className={classes.link}
-      data-active={active === link.link || undefined}
+      data-active={active === link.value || undefined}
       onClick={() => {
-        setActive(link.link);
+        setActive(link.value);
         close();
       }}
     >
@@ -101,7 +133,7 @@ export function Navbar() {
           <Link
             href="/"
             onClick={() => {
-              setActive(linkData[0].link);
+              setActive(linkData[Pages.Home].value);
               close();
             }}
           >
@@ -131,20 +163,4 @@ export function Navbar() {
       </Container>
     </header>
   );
-}
-
-//Return the index of the currently navigated route
-function GetRouteIndex(): number {
-  const pathname = usePathname();
-
-  switch (pathname) {
-    case "/aboutus":
-      return 1;
-    case "/rateandservices":
-      return 2;
-    case "/contactus":
-      return 3;
-    default:
-      return 0;
-  }
 }
