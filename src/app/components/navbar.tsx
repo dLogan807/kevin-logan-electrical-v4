@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Group,
@@ -28,10 +28,10 @@ import classes from "./navbar.module.css";
 import { theme } from "./theme";
 
 //Return the index of the currently navigated route
-function GetRouteIndex(): number {
-  const pathname = usePathname();
-
-  switch (pathname) {
+function getRouteIndex(path: string | null): number {
+  switch (path) {
+    case null:
+      return Pages.Error;
     case "/":
       return Pages.Home;
     case "/aboutus":
@@ -92,8 +92,22 @@ const linkData: ILink[] = [
 
 //Navbar component
 export function Navbar() {
+  //Maintain path hydration
+  const pathname = usePathname();
+  const [path, setPath] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPath(pathname);
+  }, [pathname]);
+
+  //Update route on path change
+  const [active, setActive] = useState(getRouteIndex(path));
+
+  useEffect(() => {
+    setActive(getRouteIndex(path));
+  }, [path]);
+
   const [opened, { toggle, close }] = useDisclosure(false);
-  const [active, setActive] = useState(GetRouteIndex());
   const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
 
   //Close on escape keypress
@@ -117,7 +131,6 @@ export function Navbar() {
       className={classes.link}
       data-active={active === link.value || undefined}
       onClick={() => {
-        setActive(link.value);
         close();
       }}
     >
@@ -133,7 +146,6 @@ export function Navbar() {
           <Link
             href="/"
             onClick={() => {
-              setActive(linkData[Pages.Home].value);
               close();
             }}
           >
