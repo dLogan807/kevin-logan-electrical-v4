@@ -44,6 +44,7 @@ export function ContactForm() {
         className={classes.form_field}
         withAsterisk
         label="Name"
+        placeholder="Name"
         key={form.key("name")}
         {...form.getInputProps("name")}
       />
@@ -58,6 +59,7 @@ export function ContactForm() {
       <TextInput
         className={classes.form_field}
         label="Phone"
+        placeholder="Phone"
         key={form.key("phoneNo")}
         {...form.getInputProps("phoneNo")}
       />
@@ -65,6 +67,7 @@ export function ContactForm() {
         className={classes.form_field}
         withAsterisk
         label="Job details"
+        placeholder="A short description"
         resize="vertical"
         minRows={4}
         autosize
