@@ -3,7 +3,7 @@
 import { ActionIcon, Tooltip, useMantineColorScheme } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
-import classes from "./themeSelector.module.css";
+import classes from "./theme_selector.module.css";
 
 //Icon for switching between light or dark theme
 export function ThemeSelector() {

@@ -4,7 +4,7 @@ import React from "react";
 import { MantineProvider } from "@mantine/core";
 import { ColorScheme, ColorSchemeProvider } from "@mantine/styles";
 import { useLocalStorage } from "@mantine/hooks";
-import { theme } from "./theme";
+import { theme } from "@/components/theme";
 
 //Overarching Mantine providers
 export function Providers({

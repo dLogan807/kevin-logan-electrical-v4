@@ -15,7 +15,7 @@ import {
   IconMapPin,
   IconPhone,
 } from "@tabler/icons-react";
-import { ContactForm } from "../components/contactForm";
+import { ContactForm } from "@/components/contact_form";
 
 import classes from "./page.module.css";
 

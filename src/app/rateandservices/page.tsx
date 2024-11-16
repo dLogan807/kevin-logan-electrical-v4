@@ -1,7 +1,7 @@
 import { Box, Paper, Text } from "@mantine/core";
 import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
-import { ServicesCard } from "../components/servicesCard";
+import { ServicesCard } from "@/components/services_card";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {

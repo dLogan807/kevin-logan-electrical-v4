@@ -4,8 +4,16 @@ import { Button, Group, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { z } from "zod";
+import { sendContactEmail } from "@/utils/contact_email";
 
-import classes from "./contactForm.module.css";
+import classes from "./contact_form.module.css";
+
+export type ContactFormData = {
+  name: string;
+  email: string;
+  phone: string | null;
+  jobDetails: string;
+};
 
 const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
@@ -14,7 +22,7 @@ const phoneRegex = new RegExp(
 const schema = z.object({
   name: z.string().min(2, { message: "Name should have at least 2 letters" }),
   email: z.string().email({ message: "Invalid email" }),
-  phoneNo: z.union([
+  phone: z.union([
     z
       .string()
       .regex(phoneRegex, { message: "Please enter a valid phone number" }),
@@ -32,14 +40,18 @@ export function ContactForm() {
     initialValues: {
       name: "",
       email: "",
-      phoneNo: "",
+      phone: "",
       jobDetails: "",
     },
     validate: zodResolver(schema),
   });
 
+  function onSubmit(data: ContactFormData) {
+    sendContactEmail(data);
+  }
+
   return (
-    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+    <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
       <TextInput
         className={classes.form_field}
         withAsterisk
@@ -60,8 +72,8 @@ export function ContactForm() {
         className={classes.form_field}
         label="Phone"
         placeholder="Phone"
-        key={form.key("phoneNo")}
-        {...form.getInputProps("phoneNo")}
+        key={form.key("phone")}
+        {...form.getInputProps("phone")}
       />
       <Textarea
         className={classes.form_field}

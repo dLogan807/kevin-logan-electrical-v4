@@ -1,8 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Navbar } from "./components/navbar";
+import { Navbar } from "@/components/navbar";
 import { ColorSchemeScript, Box, Paper } from "@mantine/core";
-import { Providers } from "./components/providers";
+import { Providers } from "@/components/providers";
 import { headers } from "next/headers";
 
 import "@mantine/core/styles.css";

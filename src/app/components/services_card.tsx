@@ -1,7 +1,7 @@
 import { Paper, List, ListItem, ThemeIcon } from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
 
-import classes from "./servicesCard.module.css";
+import classes from "./services_card.module.css";
 import React from "react";
 
 //Card for services section of rate and services page
