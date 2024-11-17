@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import { ContactFormData } from "@/components/contact_form";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   const { name, email, phone, jobDetails }: ContactFormData =
     await request.json();
 
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     port: 587,
     secure: false,
     auth: {
-      user: process.env.HOST,
+      user: process.env.EMAIL,
       pass: process.env.PASSWORD,
     },
     requireTLS: true,
@@ -45,7 +45,6 @@ export async function POST(request: NextRequest) {
         if (!err) {
           resolve("Email sent");
         } else {
-          console.log(err.message);
           reject(err.message);
         }
       });

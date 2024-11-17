@@ -7,6 +7,7 @@ import { z } from "zod";
 import { sendContactEmail } from "@/utils/contact_email";
 
 import classes from "./contact_form.module.css";
+//import { useState } from "react";
 
 export type ContactFormData = {
   name: string;
@@ -46,8 +47,13 @@ export function ContactForm() {
     validate: zodResolver(schema),
   });
 
-  function onSubmit(data: ContactFormData) {
-    sendContactEmail(data);
+  //const [isLoading, setIsLoading] = useState<boolean>(false);
+  //const [error, setError] = useState<string | null>(null);
+
+  async function onSubmit(data: ContactFormData) {
+    await sendContactEmail(data).then((responseMessage) => {
+      console.log(responseMessage);
+    });
   }
 
   return (
