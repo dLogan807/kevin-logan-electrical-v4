@@ -12,6 +12,7 @@
     "@mantine/core": "^7.12.2",
     "@mantine/form": "^7.12.2",
     "@mantine/hooks": "^7.12.2",
+    "@mantine/notifications": "^7.14.1",
     "@mantine/styles": "^6.0.22",
     "@tabler/icons-react": "^2.40.0",
     "@tiptap/extension-link": "^2.1.12",
