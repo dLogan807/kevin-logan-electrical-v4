@@ -21,13 +21,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   //Create email
   var bodyText =
-    "You have received an email (" +
-    email +
-    ") from " +
-    name +
-    ".\n\n" +
-    jobDetails;
-  if (phone == null || phone == "") {
+    "You have received an email from" + name + ".\n\n" + jobDetails;
+  if (phone == null || !phone) {
     bodyText = bodyText + "\n Phone number: " + phone;
   }
 

@@ -20,7 +20,7 @@ export async function sendContactEmail(
       if (response.isOK) {
         return {
           success: true,
-          message: "Email sent. We'll get back to you shortly!",
+          message: "Email sent! We'll get back to you shortly.",
           details: response.body.message,
         };
       } else {
@@ -35,7 +35,7 @@ export async function sendContactEmail(
       return {
         success: false,
         message: "A server error occured. Please try again.",
-        details: err,
+        details: err.message,
       };
     });
 
