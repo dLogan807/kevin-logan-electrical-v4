@@ -23,6 +23,10 @@
     &:last-child {
       margin-bottom: 1rem;
     }
+
+    a {
+      color: var(--mantine-color-text);
+    }
   }
 }
 

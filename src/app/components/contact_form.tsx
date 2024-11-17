@@ -21,7 +21,7 @@ const phoneRegex = new RegExp(
 );
 
 const schema = z.object({
-  name: z.string().min(2, { message: "Name should have at least 2 letters" }),
+  name: z.string().min(1, { message: "Please enter your name" }),
   email: z.string().email({ message: "Invalid email" }),
   phone: z.union([
     z
@@ -31,7 +31,7 @@ const schema = z.object({
   ]),
   jobDetails: z.intersection(
     z.string().min(1, { message: "Please enter a few details" }),
-    z.string().max(2000, { message: "Maximum 2000 characters" })
+    z.string().max(2000, { message: "Sorry, maximum 2000 characters" })
   ),
 });
 
@@ -61,8 +61,7 @@ export function ContactForm() {
       <TextInput
         className={classes.form_field}
         withAsterisk
-        label="Name"
-        placeholder="Name"
+        label="Your name"
         key={form.key("name")}
         {...form.getInputProps("name")}
       />
@@ -70,14 +69,12 @@ export function ContactForm() {
         className={classes.form_field}
         withAsterisk
         label="Email"
-        placeholder="email@example.com"
         key={form.key("email")}
         {...form.getInputProps("email")}
       />
       <TextInput
         className={classes.form_field}
         label="Phone"
-        placeholder="Phone"
         key={form.key("phone")}
         {...form.getInputProps("phone")}
       />
@@ -85,7 +82,6 @@ export function ContactForm() {
         className={classes.form_field}
         withAsterisk
         label="Job details"
-        placeholder="A short description"
         resize="vertical"
         minRows={4}
         autosize
