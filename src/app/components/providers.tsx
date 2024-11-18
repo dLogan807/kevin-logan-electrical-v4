@@ -32,9 +32,7 @@ export function Providers({
       <MantineProvider
         theme={theme}
         defaultColorScheme="auto"
-        getStyleNonce={() => {
-          return nonce;
-        }}
+        getStyleNonce={() => nonce}
       >
         {children}
       </MantineProvider>

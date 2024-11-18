@@ -25,13 +25,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const rawNonce = headers().get("x-nonce");
-  const nonce: string = rawNonce == undefined ? "" : rawNonce;
+async function LayoutWithNonce({ children }: { children: React.ReactNode }) {
+  const nonce: string = await headers()
+    .then((headers) => headers.get("x-nonce"))
+    .then((rawNonce) => {
+      return rawNonce == undefined ? "" : rawNonce;
+    });
 
   return (
     <html lang="en">
@@ -54,4 +53,12 @@ export default function RootLayout({
       </body>
     </html>
   );
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <LayoutWithNonce>{children}</LayoutWithNonce>;
 }
