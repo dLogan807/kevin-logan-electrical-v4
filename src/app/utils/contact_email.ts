@@ -20,8 +20,8 @@ export async function sendContactEmail(
       if (response.isOK) {
         return {
           success: true,
-          message: "Email sent! We'll get back to you shortly.",
-          details: response.body.message,
+          message: response.body.message,
+          details: "We'll get back to you shortly.",
         };
       } else {
         return {
