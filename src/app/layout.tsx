@@ -25,7 +25,11 @@ export const metadata: Metadata = {
   },
 };
 
-async function LayoutWithNonce({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const nonce: string = await headers()
     .then((headers) => headers.get("x-nonce"))
     .then((rawNonce) => {
@@ -53,12 +57,4 @@ async function LayoutWithNonce({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   );
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <LayoutWithNonce>{children}</LayoutWithNonce>;
 }
