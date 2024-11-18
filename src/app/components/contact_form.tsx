@@ -7,6 +7,8 @@ import { z } from "zod";
 import { sendContactEmail } from "@/utils/contact_email";
 
 import classes from "./contact_form.module.css";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
 //import { useState } from "react";
 
 export type ContactFormData = {
@@ -51,8 +53,35 @@ export function ContactForm() {
   //const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(data: ContactFormData) {
+    const sendingNotifID = notifications.show({
+      title: "Sending your email...",
+      message: "Hold tight!",
+      autoClose: false,
+      loading: true,
+      withBorder: true,
+    });
+
     await sendContactEmail(data).then((responseMessage) => {
-      console.log(responseMessage);
+      const icon = responseMessage.success ? (
+        <IconCheck className={classes.icon} aria-label="Success icon" />
+      ) : (
+        <IconX className={classes.icon} aria-label="Failure icon" />
+      );
+      const colour: string = responseMessage.success ? "green" : "red";
+
+      notifications.update({
+        id: sendingNotifID,
+        title: responseMessage.message,
+        message: responseMessage.details,
+        loading: false,
+        autoClose: 7000,
+        icon: icon,
+        color: colour,
+      });
+
+      if (responseMessage.success) {
+        form.reset();
+      }
     });
   }
 
