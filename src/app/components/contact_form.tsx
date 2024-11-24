@@ -46,33 +46,11 @@ export function ContactForm() {
       });
 
     if (validationResponse.validated) {
-      const sendingNotifID = notifications.show({
-        title: "Sending your email",
-        message: "One moment...",
-        autoClose: false,
-        loading: true,
-        withBorder: true,
-      });
-      await sendContactEmail(data).then((responseMessage) => {
-        const icon = responseMessage.success ? (
-          <IconCheck className={classes.icon} aria-label="Success icon" />
-        ) : (
-          <IconX className={classes.icon} aria-label="Failure icon" />
-        );
-        const colour: string = responseMessage.success ? "green" : "red";
-        notifications.update({
-          id: sendingNotifID,
-          title: responseMessage.message,
-          message: responseMessage.details,
-          loading: false,
-          autoClose: 7000,
-          icon: icon,
-          color: colour,
-        });
-        if (responseMessage.success) {
-          form.reset();
-        }
-      });
+      const sendSuccess: boolean = await sendAndNotify(data);
+
+      if (sendSuccess) {
+        form.reset();
+      }
     } else {
       form.setErrors(validationResponse.errors);
     }
@@ -117,4 +95,40 @@ export function ContactForm() {
       </Group>
     </form>
   );
+}
+
+//Send email and show progress notifcation
+async function sendAndNotify(data: ContactFormData): Promise<boolean> {
+  const sendingNotifID = notifications.show({
+    title: "Sending your email",
+    message: "One moment...",
+    autoClose: false,
+    loading: true,
+    withBorder: true,
+  });
+
+  const sendSuccess: boolean = await sendContactEmail(data).then(
+    (responseMessage) => {
+      const icon = responseMessage.success ? (
+        <IconCheck className={classes.icon} aria-label="Success icon" />
+      ) : (
+        <IconX className={classes.icon} aria-label="Failure icon" />
+      );
+      const colour: string = responseMessage.success ? "green" : "red";
+
+      notifications.update({
+        id: sendingNotifID,
+        title: responseMessage.message,
+        message: responseMessage.details,
+        loading: false,
+        autoClose: 6000,
+        icon: icon,
+        color: colour,
+      });
+
+      return responseMessage.success;
+    }
+  );
+
+  return sendSuccess;
 }
