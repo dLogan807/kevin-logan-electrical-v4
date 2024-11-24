@@ -1,15 +1,17 @@
 "use client";
 
 import { Button, Group, Textarea, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { zodResolver } from "mantine-form-zod-resolver";
-import { z } from "zod";
-import { sendContactEmail } from "@/utils/contact_email";
+import { useForm, zodResolver } from "@mantine/form";
+import {
+  ContactFormResponse,
+  validateContactEmail,
+} from "@/actions/validate_contact_email";
+import { schema } from "@/utils/contact_form_validation";
+import { notifications } from "@mantine/notifications";
+import { sendContactEmail } from "@/actions/contact_email";
+import { IconCheck, IconX } from "@tabler/icons-react";
 
 import classes from "./contact_form.module.css";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
-//import { useState } from "react";
 
 export type ContactFormData = {
   name: string;
@@ -17,25 +19,6 @@ export type ContactFormData = {
   phone: string | null;
   jobDetails: string;
 };
-
-const phoneRegex = new RegExp(
-  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
-);
-
-const schema = z.object({
-  name: z.string().min(1, { message: "Please enter your name" }),
-  email: z.string().email({ message: "Invalid email" }),
-  phone: z.union([
-    z
-      .string()
-      .regex(phoneRegex, { message: "Please enter a valid phone number" }),
-    z.literal(""),
-  ]),
-  jobDetails: z.intersection(
-    z.string().min(1, { message: "Please enter a few details" }),
-    z.string().max(2000, { message: "Sorry, maximum 2000 characters" })
-  ),
-});
 
 export function ContactForm() {
   const form = useForm({
@@ -47,42 +30,52 @@ export function ContactForm() {
       jobDetails: "",
     },
     validate: zodResolver(schema),
+    validateInputOnBlur: true,
   });
 
-  //const [isLoading, setIsLoading] = useState<boolean>(false);
-  //const [error, setError] = useState<string | null>(null);
-
   async function onSubmit(data: ContactFormData) {
-    const sendingNotifID = notifications.show({
-      title: "Sending your email...",
-      message: "Hold tight!",
-      autoClose: false,
-      loading: true,
-      withBorder: true,
-    });
-
-    await sendContactEmail(data).then((responseMessage) => {
-      const icon = responseMessage.success ? (
-        <IconCheck className={classes.icon} aria-label="Success icon" />
-      ) : (
-        <IconX className={classes.icon} aria-label="Failure icon" />
-      );
-      const colour: string = responseMessage.success ? "green" : "red";
-
-      notifications.update({
-        id: sendingNotifID,
-        title: responseMessage.message,
-        message: responseMessage.details,
-        loading: false,
-        autoClose: 7000,
-        icon: icon,
-        color: colour,
+    var validationResponse: ContactFormResponse = await validateContactEmail(
+      JSON.stringify(data)
+    )
+      .then((jsonResponse) => JSON.parse(jsonResponse))
+      .then((response) => {
+        return {
+          validated: response.validated,
+          errors: response.errors,
+        };
       });
 
-      if (responseMessage.success) {
-        form.reset();
-      }
-    });
+    if (validationResponse.validated) {
+      const sendingNotifID = notifications.show({
+        title: "Sending your email",
+        message: "One moment...",
+        autoClose: false,
+        loading: true,
+        withBorder: true,
+      });
+      await sendContactEmail(data).then((responseMessage) => {
+        const icon = responseMessage.success ? (
+          <IconCheck className={classes.icon} aria-label="Success icon" />
+        ) : (
+          <IconX className={classes.icon} aria-label="Failure icon" />
+        );
+        const colour: string = responseMessage.success ? "green" : "red";
+        notifications.update({
+          id: sendingNotifID,
+          title: responseMessage.message,
+          message: responseMessage.details,
+          loading: false,
+          autoClose: 7000,
+          icon: icon,
+          color: colour,
+        });
+        if (responseMessage.success) {
+          form.reset();
+        }
+      });
+    } else {
+      form.setErrors(validationResponse.errors);
+    }
   }
 
   return (
