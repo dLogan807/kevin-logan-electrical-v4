@@ -40,7 +40,7 @@ export enum Pages {
 }
 
 //Return the index of the currently navigated route
-function getRouteIndex(path: string | null): number {
+function getRouteIndex(path: string | null): Pages {
   switch (path) {
     case null:
       return Pages.Error;

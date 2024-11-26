@@ -46,8 +46,8 @@
 
   @media (max-width: $mantine-breakpoint-sm) {
     grid-template-columns: 1fr;
-    grid-template-rows: 0.1fr 0.1fr 1fr 1fr 1fr;
-    grid-template-areas: "serv-heading" "serv-preamble" "serv-list_1" "serv-list_2" "serv-list_3";
+    grid-template-rows: 0.1fr 0.1fr 1fr;
+    grid-template-areas: "serv-heading" "serv-preamble" "serv-lists";
     gap: 1rem 0;
   }
 }
