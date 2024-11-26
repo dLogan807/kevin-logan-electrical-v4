@@ -4,6 +4,18 @@
   padding: var(--mantine-spacing-xl);
 }
 
+.content_grid {
+  display: grid;
+  position: relative;
+  left: 5%;
+  width: 90%;
+  gap: 2rem;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    gap: 1rem;
+  }
+}
+
 h4 {
   --title-fw: var(--mantine-h4-font-weight);
   --title-lh: var(--mantine-h4-line-height);
@@ -22,4 +34,11 @@ h5 {
   font-weight: var(--title-fw);
   line-height: var(--title-lh);
   margin: 0;
+}
+
+.list_icon {
+  --ti-size: var(--ti-size-xl);
+  --ti-bg: transparent;
+  --ti-color: var(--mantine-color-pleasant-blue-light-color);
+  --ti-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
 }

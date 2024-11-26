@@ -2,7 +2,6 @@
 
 module.exports = {
   reactStrictMode: true,
-  swcMinify: true,
   // Policies:
   async headers() {
     return [

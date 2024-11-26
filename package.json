@@ -10,18 +10,25 @@
   },
   "dependencies": {
     "@mantine/core": "^7.12.2",
+    "@mantine/form": "^7.12.2",
     "@mantine/hooks": "^7.12.2",
+    "@mantine/notifications": "^7.14.1",
     "@mantine/styles": "^6.0.22",
-    "@tabler/icons-react": "^2.40.0",
+    "@tabler/icons-react": "^2.47.0",
     "@tiptap/extension-link": "^2.1.12",
     "@tiptap/react": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
+    "@types/nodemailer": "^6.4.16",
     "embla-carousel-react": "^7.1.0",
-    "next": "^14.2.7",
+    "mantine-form-zod-resolver": "^1.1.0",
+    "next": "^15.0.3",
+    "nodemailer": "^6.9.16",
     "postcss-mixins": "^9.0.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "sharp": "^0.32.6"
+    "react-google-recaptcha-v3": "^1.10.1",
+    "sharp": "^0.32.6",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

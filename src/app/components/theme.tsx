@@ -32,6 +32,7 @@ const themeOverride = createTheme({
   colors: {
     "pleasant-blue": siteColors,
   },
+  autoContrast: true,
 });
 
 export const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);

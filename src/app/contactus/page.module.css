@@ -1,0 +1,35 @@
+.contactus_grid {
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "form details";
+
+  h4 {
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    grid-template-columns: 1fr;
+    grid-template-areas: "details" "form";
+  }
+}
+
+.contact_details {
+  grid-area: details;
+  height: min-content;
+
+  li {
+    word-break: break-word;
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
+
+    a {
+      color: var(--mantine-color-text);
+    }
+  }
+}
+
+.contact_form {
+  grid-area: form;
+}

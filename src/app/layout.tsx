@@ -1,11 +1,13 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Navbar } from "./components/navbar";
+import { Navbar } from "@/components/navbar";
 import { ColorSchemeScript, Box, Paper } from "@mantine/core";
-import { Providers } from "./components/providers";
+import { Notifications } from "@mantine/notifications";
+import { Providers } from "@/components/providers";
 import { headers } from "next/headers";
 
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 import classes from "./layout.module.css";
 import "./globals.css";
 
@@ -23,13 +25,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const rawNonce = headers().get("x-nonce");
-  const nonce: string = rawNonce == undefined ? "" : rawNonce;
+  const nonce: string = await headers()
+    .then((headers) => headers.get("x-nonce"))
+    .then((rawNonce) => {
+      return rawNonce == undefined ? "" : rawNonce;
+    });
 
   return (
     <html lang="en">
@@ -38,6 +43,7 @@ export default function RootLayout({
       </head>
       <body className={classes.body}>
         <Providers nonce={nonce}>
+          <Notifications />
           <Box className={classes.grid}>
             <Box></Box>
             <Paper className={classes.nav_container}>

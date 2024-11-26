@@ -10,7 +10,7 @@ import {
   Overlay,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery, useWindowEvent } from "@mantine/hooks";
-import logo from "../assets/logo.webp";
+import logo from "@/assets/logo.webp";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -23,9 +23,21 @@ import {
   IconPhoneCall,
   IconPlugConnected,
 } from "@tabler/icons-react";
-import { Pages } from "./Pages";
 import classes from "./navbar.module.css";
-import { theme } from "./theme";
+import { theme } from "@/components/theme";
+
+export enum Pages {
+  // eslint-disable-next-line no-unused-vars
+  Error = -1,
+  // eslint-disable-next-line no-unused-vars
+  Home = 0,
+  // eslint-disable-next-line no-unused-vars
+  AboutUs = 1,
+  // eslint-disable-next-line no-unused-vars
+  RateAndServices = 2,
+  // eslint-disable-next-line no-unused-vars
+  ContactUs = 3,
+}
 
 //Return the index of the currently navigated route
 function getRouteIndex(path: string | null): number {
@@ -54,7 +66,7 @@ interface ILink {
 
 //Load theme icon lazily
 var DynamicThemeSelector = dynamic(
-  () => import("./themeSelector").then((mod) => mod.ThemeSelector),
+  () => import("./theme_selector").then((mod) => mod.ThemeSelector),
   {
     ssr: false,
     loading: () => (
