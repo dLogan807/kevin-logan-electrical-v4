@@ -12,12 +12,14 @@ import { sendContactEmail } from "@/actions/contact_email";
 import { IconCheck, IconX } from "@tabler/icons-react";
 
 import classes from "./contact_form.module.css";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 export type ContactFormData = {
   name: string;
   email: string;
   phone: string | null;
   jobDetails: string;
+  recaptchaToken?: string;
 };
 
 export function ContactForm() {
@@ -33,7 +35,35 @@ export function ContactForm() {
     validateInputOnBlur: true,
   });
 
-  async function onSubmit(data: ContactFormData) {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  //Obtain recaptcha
+  const handleSubmitForm = function (data: ContactFormData) {
+    if (!executeRecaptcha) {
+      const failureIcon = (
+        <IconX className={classes.icon} aria-label="Failure icon" />
+      );
+
+      notifications.show({
+        title: "Could not send the email.",
+        message: "Recaptcha not yet available.",
+        autoClose: 6000,
+        loading: false,
+        withBorder: true,
+        color: "red",
+        icon: failureIcon,
+      });
+      return;
+    }
+    executeRecaptcha("enquiryFormSubmit").then((gReCaptchaToken) => {
+      data.recaptchaToken = gReCaptchaToken;
+
+      submitContactForm(data);
+    });
+  };
+
+  async function submitContactForm(data: ContactFormData) {
+    //Server-side validate the form
     var validationResponse: ContactFormResponse = await validateContactEmail(
       JSON.stringify(data)
     )
@@ -42,10 +72,25 @@ export function ContactForm() {
         return {
           validated: response.validated,
           errors: response.errors,
+          recaptchaSuccessful: response.recaptchaSuccessful,
         };
       });
 
-    if (validationResponse.validated) {
+    if (!validationResponse.recaptchaSuccessful) {
+      const failureIcon = (
+        <IconX className={classes.icon} aria-label="Failure icon" />
+      );
+
+      notifications.show({
+        title: "Could not send your email.",
+        message: "Recaptcha verification failed.",
+        autoClose: 6000,
+        loading: false,
+        withBorder: true,
+        color: "red",
+        icon: failureIcon,
+      });
+    } else if (validationResponse.validated) {
       const sendSuccess: boolean = await sendAndNotify(data);
 
       if (sendSuccess) {
@@ -57,7 +102,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
+    <form onSubmit={form.onSubmit((values) => handleSubmitForm(values))}>
       <TextInput
         className={classes.form_field}
         withAsterisk
