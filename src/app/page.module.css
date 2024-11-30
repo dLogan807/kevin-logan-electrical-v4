@@ -1,21 +1,136 @@
 .home_grid {
-  grid-template-rows: 0.8fr 1fr;
-  grid-template-columns: 1fr 1.5fr;
-  grid-template-areas: "about-1 torbay" "about-2 torbay";
-
-  @media (max-width: $mantine-breakpoint-xl) {
-    grid-template-columns: 1fr 1fr;
-  }
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: "tagline tagline summary" "review map map";
 
   @media (max-width: $mantine-breakpoint-sm) {
-    grid-template-rows: 0.8fr 1fr;
-    grid-template-columns: 2fr 1fr;
-    grid-template-areas: "about-1 torbay" "about-2 about-2";
+    grid-template-rows: 1fr 0.6fr 0.7fr 0.2fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "tagline" "summary" "map" "review";
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
-    grid-template-rows: 0.6fr 0.5fr 1fr;
-    grid-template-columns: 1fr;
-    grid-template-areas: "about-1" "torbay" "about-2";
+    grid-template-rows: 1fr 0.6fr 0.7fr 0.2fr;
+  }
+}
+
+.tagline {
+  grid-area: tagline;
+  text-align: center;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    padding: 0;
+  }
+
+  div {
+    --bi-radius: var(--mantine-radius-md);
+    height: 100%;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+    color: var(--mantine-color-pleasant-blue-filled);
+    text-shadow: 0px 0px 40px #ffffff;
+    padding: 2rem 0 1rem 0;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      font-size: 2.5rem;
+      padding: 0 0 1rem 0;
+    }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+      font-size: 2rem;
+    }
+  }
+
+  h2 {
+    color: #312f2f;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      font-size: 1.5rem;
+    }
+  }
+
+  p {
+    --title-fw: var(--mantine-h4-font-weight);
+    --title-lh: var(--mantine-h4-line-height);
+    --title-fz: var(--mantine-h4-font-size);
+    font-size: var(--title-fz);
+    font-weight: var(--title-fw);
+    line-height: var(--title-lh);
+    color: #312f2f;
+    margin: 3rem;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      margin: 2rem 0 1rem 0;
+    }
+  }
+}
+
+.contact_button {
+  display: inline-block;
+  position: relative;
+
+  button {
+    --button-height: var(--button-height-xl);
+    --button-padding-x: var(--button-padding-x-xl);
+    --button-fz: var(--mantine-font-size-xl);
+    --button-radius: var(--mantine-radius-sm);
+    --button-bg: var(--mantine-color-blue-filled);
+    --button-hover: var(--mantine-color-blue-filled-hover);
+    --button-color: var(--mantine-color-white);
+    --button-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
+    box-shadow: 1px 1px 10px #000000;
+  }
+}
+
+.summary {
+  grid-area: summary;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  li {
+    margin-bottom: 1rem;
+  }
+}
+
+.review {
+  grid-area: review;
+  height: min-content;
+  text-align: center;
+
+  h3 {
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    height: 100%;
+  }
+}
+
+.map {
+  grid-area: map;
+  height: 100%;
+
+  div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: left;
+    align-items: center;
+    border-radius: var(--mantine-radius-md);
+    overflow: hidden;
+  }
+
+  iframe {
+    border: none;
+    height: 100%;
+    width: 100%;
   }
 }

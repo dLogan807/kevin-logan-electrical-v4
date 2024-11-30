@@ -23,7 +23,7 @@ export function ServicesCard({
       <h5>{headerText}</h5>
       <List
         icon={
-          <ThemeIcon className={classes.checkmark}>
+          <ThemeIcon className={"checkmark"}>
             <IconCircleCheck />
           </ThemeIcon>
         }

@@ -1,12 +1,25 @@
-import { Box, Button, Paper, Stack, Text } from "@mantine/core";
+import {
+  BackgroundImage,
+  Box,
+  Button,
+  List,
+  ListItem,
+  Paper,
+  Stack,
+  Text,
+  ThemeIcon,
+} from "@mantine/core";
 import Link from "next/link";
 import { Metadata } from "next";
-import classes from "./page.module.css";
 import React from "react";
 import { headers } from "next/headers";
 
+import classes from "./page.module.css";
+import tagline_image from "@/assets/banner.webp";
+import { IconCircleCheck } from "@tabler/icons-react";
+
 export const metadata: Metadata = {
-  title: "Home | Kevin Logan Electrical - Your Trusted Electrician",
+  title: "Kevin Logan Electrical - Your Trusted Electrician",
   description:
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
 };
@@ -21,10 +34,58 @@ export default async function Home() {
 
   return (
     <Box className={[classes.home_grid, "content_grid"].join(" ")}>
-      <iframe
-        nonce={nonce}
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3199.0824953009924!2d174.75661361526056!3d-36.696555478713236!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6d0d3b0bb3a49f7d%3A0x91ebdb4ffbccde12!2sKevin%20Logan%20Electrical!5e0!3m2!1sen!2snz!4v1641444320071!5m2!1sen!2snz"
-      ></iframe>
+      <Paper className={[classes.tagline, mainSection].join(" ")} withBorder>
+        <BackgroundImage src={tagline_image.src}>
+          <Stack>
+            <h1>Your Trusted Local Electrician</h1>
+            <h2>30 years of experience you can rely on</h2>
+            <Text>
+              At Kevin Logan Electrical, we believe in providing a competent,
+              professional, and courteous electrical service. Striving to give
+              you results of the highest quality is at our forefront.
+            </Text>
+            <Link href="/contactus" className={classes.contact_button}>
+              <Button>Get in touch</Button>
+            </Link>
+          </Stack>
+        </BackgroundImage>
+      </Paper>
+      <Paper className={[classes.summary, mainSection].join(" ")} withBorder>
+        <h2>Our Service</h2>
+        <List
+          icon={
+            <ThemeIcon className={"checkmark"}>
+              <IconCircleCheck />
+            </ThemeIcon>
+          }
+        >
+          <ListItem>Based in Torbay, North Shore</ListItem>
+          <ListItem>Professional, Friendly & Approachable</ListItem>
+          <ListItem>Wide Range of Residential Services</ListItem>
+          <ListItem>Affordable $90/hr incl. GST</ListItem>
+          <ListItem>Independent</ListItem>
+          <ListItem>Committed to Sustainability</ListItem>
+          <ListItem>Satisfaction Guaranteed</ListItem>
+        </List>
+      </Paper>
+      <Paper className={[classes.review, mainSection].join(" ")} withBorder>
+        <h3>Leave a Review</h3>
+        <Link
+          href="https://g.page/r/CWUBQ9ecHed4EBI/review"
+          className={classes.review_button}
+        >
+          <Button>Review</Button>
+        </Link>
+      </Paper>
+      <Paper className={[classes.map, mainSection].join(" ")} withBorder>
+        <Box>
+          <iframe
+            allowFullScreen={false}
+            nonce={nonce}
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3199.0824953009924!2d174.75661361526056!3d-36.696555478713236!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6d0d3b0bb3a49f7d%3A0x91ebdb4ffbccde12!2sKevin%20Logan%20Electrical!5e0!3m2!1sen!2snz!4v1641444320071!5m2!1sen!2snz"
+          ></iframe>
+        </Box>
+      </Paper>
     </Box>
   );
 }

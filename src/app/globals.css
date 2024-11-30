@@ -16,6 +16,36 @@
   }
 }
 
+h1 {
+  --title-fw: var(--mantine-h1-font-weight);
+  --title-lh: var(--mantine-h1-line-height);
+  --title-fz: var(--mantine-h1-font-size);
+  font-size: var(--title-fz);
+  font-weight: var(--title-fw);
+  line-height: var(--title-lh);
+  margin: 0;
+}
+
+h2 {
+  --title-fw: var(--mantine-h2-font-weight);
+  --title-lh: var(--mantine-h2-line-height);
+  --title-fz: var(--mantine-h2-font-size);
+  font-size: var(--title-fz);
+  font-weight: var(--title-fw);
+  line-height: var(--title-lh);
+  margin: 0;
+}
+
+h3 {
+  --title-fw: var(--mantine-h3-font-weight);
+  --title-lh: var(--mantine-h3-line-height);
+  --title-fz: var(--mantine-h3-font-size);
+  font-size: var(--title-fz);
+  font-weight: var(--title-fw);
+  line-height: var(--title-lh);
+  margin: 0;
+}
+
 h4 {
   --title-fw: var(--mantine-h4-font-weight);
   --title-lh: var(--mantine-h4-line-height);
@@ -39,6 +69,14 @@ h5 {
 .list_icon {
   --ti-size: var(--ti-size-xl);
   --ti-bg: transparent;
+  --ti-color: var(--mantine-color-pleasant-blue-light-color);
+  --ti-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
+}
+
+.checkmark {
+  --ti-size: calc(1.5rem * var(--mantine-scale));
+  --ti-radius: var(--mantine-radius-xl);
+  --ti-bg: var(--mantine-color-pleasant-blue-light);
   --ti-color: var(--mantine-color-pleasant-blue-light-color);
   --ti-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
 }
