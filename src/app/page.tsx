@@ -15,7 +15,7 @@ import React from "react";
 import { headers } from "next/headers";
 
 import classes from "./page.module.css";
-import tagline_image from "@/assets/banner.webp";
+import tagline_image from "@/assets/tagline_background.webp";
 import { IconCircleCheck } from "@tabler/icons-react";
 
 export const metadata: Metadata = {

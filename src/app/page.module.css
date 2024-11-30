@@ -31,7 +31,7 @@
   h1 {
     font-size: 3rem;
     color: var(--mantine-color-pleasant-blue-filled);
-    text-shadow: 0px 0px 40px #ffffff;
+    text-shadow: 0px 0px 10px #ffffff;
     padding: 2rem 0 1rem 0;
 
     @media (max-width: $mantine-breakpoint-sm) {
@@ -50,6 +50,8 @@
     @media (max-width: $mantine-breakpoint-sm) {
       font-size: 1.5rem;
     }
+
+    text-shadow: 0px 0px 10px #ffffff;
   }
 
   p {
@@ -61,6 +63,12 @@
     line-height: var(--title-lh);
     color: #312f2f;
     margin: 3rem;
+    /* text-shadow:
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px -1px 0 #fff; */
+    text-shadow: 0px 0px 10px #ffffff;
 
     @media (max-width: $mantine-breakpoint-sm) {
       margin: 2rem 0 1rem 0;
@@ -132,5 +140,9 @@
     border: none;
     height: 100%;
     width: 100%;
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    padding: 0;
   }
 }
