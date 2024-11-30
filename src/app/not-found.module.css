@@ -1,9 +1,10 @@
+.notfound_grid {
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  min-height: 100%;
+}
+
 .container {
-  position: absolute;
-  height: 90%;
-  width: 90%;
-  left: 5%;
-  top: 5%;
   text-align: center;
 
   h1 {
@@ -14,13 +15,29 @@
     @media (max-width: $mantine-breakpoint-sm) {
       font-size: 7rem;
     }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+      font-size: 5rem;
+    }
   }
 
   h2 {
     margin: 0 0 3rem 0;
   }
+}
 
-  p {
-    margin-bottom: 3rem;
+.explanation {
+  margin-bottom: 3rem;
+}
+
+.home_button {
+  button {
+    max-width: 100%;
+    height: min-content;
+
+    span {
+      white-space: normal;
+      padding: 0.3rem;
+    }
   }
 }
