@@ -56,8 +56,8 @@ export default function AboutUs() {
           professional service from repairs and maintenance to installations.
           <br />
           <br />
-          At Kevin Logan Electrical, my goal is to provide you with courteous,
-          expedient, professional service of the highest calibre.
+          At Kevin Logan Electrical, my goal is to provide you with a courteous,
+          prompt, professional service of the highest calibre.
         </Text>
       </Paper>
     </Box>

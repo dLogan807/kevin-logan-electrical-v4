@@ -22,7 +22,7 @@ import classes from "./page.module.css";
 export const metadata: Metadata = {
   title: "Contact Us | Kevin Logan Electrical - Your Trusted Electrician",
   description:
-    "Contact Kevin Logan Electrical. Open Monday to Friday, don't hesitate to give me call for expedient service of the highest calibre.",
+    "Contact Kevin Logan Electrical. Open Monday to Friday, don't hesitate to give me call for a reliable service of the highest calibre.",
 };
 
 export default function ContactUs() {
