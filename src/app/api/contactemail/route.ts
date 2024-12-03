@@ -21,13 +21,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   //Create email
   var bodyText =
-    "You have received an email from" + name + ".\n\n" + jobDetails;
+    "You have received an email from " +
+    name +
+    ".\n\n" +
+    jobDetails +
+    "\n\n Email: " +
+    email;
   if (phone) {
     bodyText = bodyText + "\n Phone number: " + phone;
   }
 
   const mailOptions: Mail.Options = {
-    from: email,
+    from: process.env.EMAIL,
     to: process.env.EMAIL,
     subject: "Website enquiry from " + name,
     text: bodyText,
