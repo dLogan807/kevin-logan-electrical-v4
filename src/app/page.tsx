@@ -54,7 +54,7 @@ export default async function Home() {
             alt="House interior with lamp"
             src={tagline_image}
             fill
-            sizes={`(min-width: ${theme.breakpoints.xl}) 40vw, (min-width: ${theme.breakpoints.md}) 1vw, (max-width: ${theme.breakpoints.sm}) 70vw, 1vw`}
+            sizes={`(min-width: ${theme.breakpoints.xl}) 40vw, (min-width: ${theme.breakpoints.md}) 50vw, (max-width: ${theme.breakpoints.sm}) 70vw, 50vw`}
             priority
           />
         </Box>
