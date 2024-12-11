@@ -1,5 +1,4 @@
 import {
-  BackgroundImage,
   Box,
   Button,
   List,
@@ -10,6 +9,7 @@ import {
   ThemeIcon,
 } from "@mantine/core";
 import Link from "next/link";
+import Image from "next/image";
 import { Metadata } from "next";
 import React from "react";
 import { headers } from "next/headers";
@@ -35,21 +35,30 @@ export default async function Home() {
   return (
     <Box className={[classes.home_grid, "content_grid"].join(" ")}>
       <Paper className={[classes.tagline, mainSection].join(" ")} withBorder>
-        <BackgroundImage src={tagline_image.src}>
-          <Stack>
-            <h1>Your Trusted Local Electrician</h1>
-            <h2>30 years of experience you can rely on</h2>
-            <Text>
-              At Kevin Logan Electrical, we believe in providing a competent,
-              professional, and courteous electrical service. Striving to give
-              you results of the highest quality is at our forefront.
-            </Text>
-            <Link href="/contactus" className={classes.contact_button}>
-              <Button>Get in touch</Button>
-            </Link>
-          </Stack>
-        </BackgroundImage>
+        <Stack>
+          <h1>Your Trusted Local Electrician</h1>
+          <h2>30 years of experience you can rely on</h2>
+          <Text>
+            At Kevin Logan Electrical, we believe in providing a competent,
+            professional, and courteous electrical service. Striving to give you
+            results of the highest quality is at our forefront.
+          </Text>
+          <Link href="/contactus" className={classes.contact_button}>
+            <Button>Get in touch</Button>
+          </Link>
+        </Stack>
       </Paper>
+      <Box className={classes.tagline_image_container}>
+        <Box>
+          <Image
+            alt="House interior with lamp"
+            src={tagline_image}
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
+        </Box>
+      </Box>
       <Paper className={[classes.summary, mainSection].join(" ")} withBorder>
         <h2>Our Service</h2>
         <List
@@ -71,7 +80,7 @@ export default async function Home() {
       <Paper className={[classes.review, mainSection].join(" ")} withBorder>
         <h3>Leave a Review</h3>
         <Link
-          href="https://g.page/r/CWUBQ9ecHed4EBI/review"
+          href="https://www.google.com/search?q=kevin+logan+electrical"
           className={classes.review_button}
         >
           <Button>Review</Button>
@@ -80,6 +89,7 @@ export default async function Home() {
       <Paper className={[classes.map, mainSection].join(" ")} withBorder>
         <Box>
           <iframe
+            title="Kevin Logan Electrical Map"
             allowFullScreen={false}
             nonce={nonce}
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3199.0824953009924!2d174.75661361526056!3d-36.696555478713236!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6d0d3b0bb3a49f7d%3A0x91ebdb4ffbccde12!2sKevin%20Logan%20Electrical!5e0!3m2!1sen!2snz!4v1641444320071!5m2!1sen!2snz"

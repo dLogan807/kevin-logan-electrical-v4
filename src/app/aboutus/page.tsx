@@ -41,7 +41,7 @@ export default function AboutUs() {
         withBorder
       >
         <Box>
-          <Image src={waiake} alt="Waiake Beach" />
+          <Image src={waiake} alt="Waiake Beach" priority />
         </Box>
       </Paper>
       <Paper
