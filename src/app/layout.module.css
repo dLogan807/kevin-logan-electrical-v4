@@ -49,4 +49,8 @@
   @media (max-width: $mantine-breakpoint-sm) {
     padding: 1rem 0;
   }
+
+  img {
+    object-fit: cover;
+  }
 }

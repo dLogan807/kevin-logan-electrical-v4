@@ -12,10 +12,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { headers } from "next/headers";
+import { IconCircleCheck } from "@tabler/icons-react";
 
 import classes from "./page.module.css";
 import tagline_image from "@/assets/tagline_background.webp";
-import { IconCircleCheck } from "@tabler/icons-react";
+import { theme } from "@/components/theme";
 
 export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
@@ -52,8 +53,8 @@ export default async function Home() {
           <Image
             alt="House interior with lamp"
             src={tagline_image}
-            layout="fill"
-            objectFit="cover"
+            fill
+            sizes={`(min-width: ${theme.breakpoints.xl}) 40vw, (min-width: ${theme.breakpoints.md}) 1vw, (max-width: ${theme.breakpoints.sm}) 70vw, 1vw`}
             priority
           />
         </Box>

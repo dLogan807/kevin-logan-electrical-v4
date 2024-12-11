@@ -161,7 +161,7 @@ export function Navbar() {
               close();
             }}
           >
-            <Image src={logo} alt="Kevin Logan Electrical logo" />
+            <Image src={logo} alt="Kevin Logan Electrical logo" priority />
           </Link>
         </Container>
         <nav>
