@@ -4,7 +4,9 @@ import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
 import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
+
 import classes from "./page.module.css";
+import { theme } from "@/components/theme";
 
 export const metadata: Metadata = {
   title: "About Us | Kevin Logan Electrical - Your Trusted Electrician",
@@ -41,7 +43,12 @@ export default function AboutUs() {
         withBorder
       >
         <Box>
-          <Image src={waiake} alt="Waiake Beach" priority />
+          <Image
+            src={waiake}
+            alt="Waiake Beach"
+            sizes={`(max-width: ${theme.breakpoints.sm}) 90vw, max-width: ${theme.breakpoints.xl}) 50vw`}
+            priority
+          />
         </Box>
       </Paper>
       <Paper
