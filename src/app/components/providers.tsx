@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { MantineProvider } from "@mantine/core";
 import { ColorScheme, ColorSchemeProvider } from "@mantine/styles";
 import { useLocalStorage } from "@mantine/hooks";
@@ -11,7 +10,7 @@ export function Providers({
   children,
   nonce,
 }: {
-  children: React.ReactNode;
+  children: any;
   nonce: string;
 }) {
   //Set theme in local store

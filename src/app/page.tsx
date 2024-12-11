@@ -11,7 +11,6 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import React from "react";
 import { headers } from "next/headers";
 
 import classes from "./page.module.css";
