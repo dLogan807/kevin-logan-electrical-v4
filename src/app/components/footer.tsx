@@ -13,8 +13,8 @@ import classes from "./footer.module.css";
 export function Footer() {
   return (
     <Box className={classes.footer}>
-      <Stack className={classes.contact} gap="lg">
-        <h3>Call Kevin</h3>
+      <Box className={classes.contact}>
+        <h3>Call Us</h3>
         <Anchor href="tel:+64274978473" aria-label="Mobile phone number">
           <Group>
             <ThemeIcon className={"checkmark"}>
@@ -23,7 +23,7 @@ export function Footer() {
             0274 978 473
           </Group>
         </Anchor>
-      </Stack>
+      </Box>
       <Link href="/">
         <Image
           className={classes.logo}

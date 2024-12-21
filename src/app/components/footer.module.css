@@ -19,7 +19,7 @@
     margin-top: 1rem;
   }
 
-  @media (max-width: $mantine-breakpoint-xs) {
+  @media (max-width: $mantine-breakpoint-sm) {
     align-items: baseline;
     flex-direction: column;
 
@@ -34,7 +34,22 @@
   align-items: center;
 }
 
+.contact {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--mantine-spacing-lg);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    row-gap: var(--mantine-spacing-sm);
+    padding-bottom: var(--mantine-spacing-xl);
+  }
+}
+
 .logo {
   height: 1rem;
   width: auto;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    display: none;
+  }
 }
