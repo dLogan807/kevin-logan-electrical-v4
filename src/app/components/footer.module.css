@@ -1,0 +1,14 @@
+.footer {
+  position: absolute;
+  display: flex;
+  margin-top: 2rem;
+  width: 100%;
+  height: 10rem;
+  border-top: 1px solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  background-color: var(--mantine-color-body);
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--mantine-spacing-xl);
+  padding-bottom: var(--mantine-spacing-xl);
+}

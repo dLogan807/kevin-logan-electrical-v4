@@ -143,6 +143,7 @@ export function Navbar() {
       className={classes.link}
       data-active={active === link.value || undefined}
       onClick={() => {
+        setActive(link.value);
         close();
       }}
     >
@@ -158,6 +159,7 @@ export function Navbar() {
           <Link
             href="/"
             onClick={() => {
+              setActive(linkData[Pages.Home].value);
               close();
             }}
           >

@@ -10,6 +10,7 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import classes from "./layout.module.css";
 import "./globals.css";
+import { Footer } from "./components/footer";
 
 export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
@@ -51,7 +52,10 @@ export default async function RootLayout({
             </Paper>
             <Box></Box>
             <Box></Box>
-            <Box className={classes.content_container}>{children}</Box>
+            <Box className={classes.content_container}>
+              {children}
+              <Footer />
+            </Box>
           </Box>
         </Providers>
       </body>
