@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run dep:gen && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dep:gen": "license-report --only=prod --output=json > licenses.json"
   },
   "dependencies": {
     "@mantine/core": "^7.12.2",
