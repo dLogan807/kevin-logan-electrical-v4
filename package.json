@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run dep:gen && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "gen": "npm run dep:gen",
     "dep:gen": "license-report --only=prod --output=json > licenses.json"
   },
   "dependencies": {
