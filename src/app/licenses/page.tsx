@@ -1,6 +1,8 @@
 import React from "react";
 import { IconExternalLink } from "@tabler/icons-react";
+import { Anchor, Box, Group, Paper, Stack, ThemeIcon } from "@mantine/core";
 import licensesJSON from "../../../licenses.json";
+import classes from "./page.module.css";
 
 type LicenseFormat = {
   department: string;
@@ -20,40 +22,41 @@ export default function Licenses() {
   const licenses = licensesJSON as LicenseFormat[];
 
   return (
-    <>
-      <div className="flex flex-col items-center mb-10 space-y-2 mt-28">
-        <h1 className="text-5xl">Licenses</h1>
-        <h2 className="text-xl">
-          All licenses used for Kevin Logan Electrical
-        </h2>
-      </div>
-      <div className="grid max-w-3xl grid-cols-12 gap-10 mx-auto">
-        {licenses.map((l) => (
-          <a
-            key={l.link}
-            className="flex-col space-y-1 overflow-hidden col-span-full group"
-            href={l.link.replace("git+", "").replace("ssh://", "")}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Open Github repo for ${l.name}`}
-          >
-            <div className="inline-flex items-end">
-              <div className="space-x-2 duration-300 ease-in group-hover:translate-x-6 group-hover:opacity-0">
-                <span className="text-2xl">{l.name}</span>
-                <span className="opacity-50">{l.installedVersion}</span>
-              </div>
+    <Box className={[classes.about_grid, "content_grid"].join(" ")}>
+      <Paper
+        className={[classes.about_text_1, "main_section"].join(" ")}
+        withBorder
+      >
+        <Stack className={classes.heading}>
+          <h1>Open Source Licenses</h1>
+          <h2>All licenses used in this website</h2>
+        </Stack>
+        <Stack gap="xl">
+          {licenses.map((l) => (
+            <Anchor
+              key={l.name}
+              href={l.link.replace("git+", "").replace("ssh://", "")}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open Github repo for ${l.name}`}
+            >
+              <Stack gap="xs">
+                <Group>
+                  <span>{l.name + " " + l.installedVersion}</span>
 
-              <div className="absolute mb-1 text-blue-600 duration-300 ease-in -translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
-                <IconExternalLink />
-              </div>
-            </div>
+                  <ThemeIcon className={"checkmark"}>
+                    <IconExternalLink aria-label="Open external Github" />
+                  </ThemeIcon>
+                </Group>
 
-            <div className="text-gray-400">
-              {[l.licenseType, l.author].filter(Boolean).join(", ")}
-            </div>
-          </a>
-        ))}
-      </div>
-    </>
+                <Box>
+                  {[l.licenseType, l.author].filter(Boolean).join(", ")}
+                </Box>
+              </Stack>
+            </Anchor>
+          ))}
+        </Stack>
+      </Paper>
+    </Box>
   );
 }

@@ -1,0 +1,5 @@
+.heading {
+  h2 {
+    padding-bottom: var(--mantine-spacing-md);
+  }
+}
