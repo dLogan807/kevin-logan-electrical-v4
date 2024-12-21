@@ -83,8 +83,7 @@ export function ContactForm() {
         withAsterisk
         label="Job details"
         resize="vertical"
-        minRows={4}
-        autosize
+        rows={4}
         key={form.key("jobDetails")}
         {...form.getInputProps("jobDetails")}
       />

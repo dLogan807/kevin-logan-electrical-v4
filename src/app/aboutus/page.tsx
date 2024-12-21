@@ -30,8 +30,9 @@ export default function AboutUs() {
             me as your local electrician.
           </Text>
           <Button
-            leftSection={<IconCertificate />}
+            leftSection={<IconCertificate aria-label="Certificate" />}
             component={Link}
+            aria-label="Electrical Workers Registration Board website"
             href="https://kete.mbie.govt.nz/EW/EWPRSearch/practitioner/?id=efe7cde3-b142-df11-917a-005056ae567f"
           >
             Registered Electrician
@@ -46,7 +47,7 @@ export default function AboutUs() {
           <Image
             src={waiake}
             alt="Waiake Beach"
-            sizes={`(max-width: ${theme.breakpoints.sm}) 90vw, max-width: ${theme.breakpoints.xl}) 50vw`}
+            sizes={`(max-width: ${theme.breakpoints.xs}) 90vw, (max-width: ${theme.breakpoints.sm}) 50vw, (max-width: ${theme.breakpoints.md}) 100vw, (max-width: ${theme.breakpoints.xl}) 60vw`}
             priority
           />
         </Box>

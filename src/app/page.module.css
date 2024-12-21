@@ -93,6 +93,10 @@
     border-radius: var(--mantine-radius-md);
     overflow: hidden;
   }
+
+  img {
+    object-fit: cover;
+  }
 }
 
 .contact_button {

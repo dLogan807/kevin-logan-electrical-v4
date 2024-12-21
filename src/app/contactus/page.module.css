@@ -32,4 +32,5 @@
 
 .contact_form {
   grid-area: form;
+  height: fit-content;
 }
