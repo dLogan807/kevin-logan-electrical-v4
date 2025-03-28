@@ -23,16 +23,17 @@ export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-inline' ${
+    script-src https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-inline' ${
       process.env.NODE_ENV === "production" ? "" : `'unsafe-eval'`
     };
+    connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data:;
     font-src 'self';
     object-src 'none';
     base-uri 'self';
     form-action 'self';
-    frame-src https://www.google.com;
+    frame-src https://www.google.com https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/;
     frame-ancestors 'none';
     block-all-mixed-content;
     upgrade-insecure-requests;

@@ -36,6 +36,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     to: process.env.EMAIL,
     subject: "Website enquiry from " + name,
     text: bodyText,
+    replyTo: email,
   };
 
   //Define promise

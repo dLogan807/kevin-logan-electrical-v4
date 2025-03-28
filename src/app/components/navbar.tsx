@@ -158,6 +158,7 @@ export function Navbar() {
         <Container className={classes.logo}>
           <Link
             href="/"
+            aria-label="Kevin Logan Electrical Home"
             onClick={() => {
               setActive(linkData[Pages.Home].value);
               close();
