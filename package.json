@@ -24,6 +24,7 @@
     "embla-carousel-react": "^7.1.0",
     "mantine-form-zod-resolver": "^1.1.0",
     "next": "^15.2.4",
+    "next-recaptcha-v3": "^1.5.2",
     "nodemailer": "^6.10.0",
     "postcss-mixins": "^9.0.4",
     "react": "^18.3.1",
