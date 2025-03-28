@@ -10,6 +10,7 @@ import { schema } from "@/utils/contact_form_validation";
 import { notifications } from "@mantine/notifications";
 import { sendContactEmail } from "@/actions/contact_email";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import { useReCaptcha } from "next-recaptcha-v3";
 
 import classes from "./contact_form.module.css";
 
@@ -23,36 +24,50 @@ export type ContactFormData = {
 export function ContactForm() {
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: {
-      name: "",
-      email: "",
-      phone: "",
-      jobDetails: "",
-    },
+    initialValues: { name: "", email: "", phone: "", jobDetails: "" },
     validate: zodResolver(schema),
     validateInputOnBlur: true,
   });
 
-  async function onSubmit(data: ContactFormData) {
+  const { executeRecaptcha } = useReCaptcha();
+
+  async function onSubmit(fields: ContactFormData) {
+    //Generate token
+    const action = "contact_form_submit";
+    const token = await executeRecaptcha(action);
+
+    //Send to server action for validation
     var validationResponse: ContactFormResponse = await validateContactEmail(
-      JSON.stringify(data)
+      JSON.stringify({ fields, token, action })
     )
       .then((jsonResponse) => JSON.parse(jsonResponse))
       .then((response) => {
         return {
           validated: response.validated,
           errors: response.errors,
+          recaptchaVerified: response.recaptchaVerified,
         };
       });
 
-    if (validationResponse.validated) {
-      const sendSuccess: boolean = await sendAndNotify(data);
+    //Reset form or show errors
+    if (validationResponse.validated && validationResponse.recaptchaVerified) {
+      const sendSuccess: boolean = await sendAndNotify(fields);
 
       if (sendSuccess) {
         form.reset();
       }
     } else {
       form.setErrors(validationResponse.errors);
+
+      if (!validationResponse.recaptchaVerified) {
+        notifications.show({
+          title: "reCAPTCHA Failed",
+          message: "Please try again",
+          withBorder: true,
+          icon: <IconX className={classes.icon} aria-label="Failure icon" />,
+          color: "red",
+        });
+      }
     }
   }
 

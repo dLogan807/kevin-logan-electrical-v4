@@ -80,3 +80,7 @@ h5 {
   --ti-color: var(--mantine-color-pleasant-blue-light-color);
   --ti-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
 }
+
+.grecaptcha-badge {
+  z-index: 10;
+}
