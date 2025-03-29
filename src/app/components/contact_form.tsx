@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Group, Textarea, TextInput } from "@mantine/core";
+import { Button, Group, Textarea, TextInput, Text } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import {
   ContactFormResponse,
@@ -13,6 +13,7 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import { useReCaptcha } from "next-recaptcha-v3";
 
 import classes from "./contact_form.module.css";
+import Link from "next/link";
 
 export type ContactFormData = {
   name: string;
@@ -102,6 +103,10 @@ export function ContactForm() {
         key={form.key("jobDetails")}
         {...form.getInputProps("jobDetails")}
       />
+      {/* prettier-ignore */}
+      <Text className={classes.recaptcha_disclaimer}>
+        This site is protected by reCAPTCHA and the Google <Link href="https://policies.google.com/privacy">Privacy Policy</Link> and <Link href="https://policies.google.com/terms">Terms of Service</Link> apply.
+      </Text>
       <Group>
         <Button className={classes.submit_button} type="submit">
           Send

@@ -9,7 +9,7 @@ export type ContactFormResponse = {
   recaptchaVerified: boolean;
 };
 
-type RepcaptchaResponse = {
+type RecaptchaResponse = {
   success: boolean;
   score: number;
   action: string;
@@ -22,22 +22,31 @@ type RepcaptchaResponse = {
 const verifyRecaptcha = async (token: string, action: string) => {
   const secretKey = process.env.NEXT_RECAPTCHA_SECRET_KEY;
 
-  const response = await fetch(
+  const response: RecaptchaResponse = await fetch(
     "https://www.google.com/recaptcha/api/siteverify?secret=" +
       secretKey +
       "&response=" +
       token
-  );
-  const responseJSON: RepcaptchaResponse = await response.json();
-
-  if (!responseJSON) {
-    return true;
-  }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .catch(() => {
+      return {
+        success: true,
+        score: 0.9,
+        action: action,
+        challenge_ts: "",
+        hostname: "",
+        errorCodes: [],
+      };
+    });
 
   return (
-    responseJSON.success &&
-    responseJSON.score > 0.5 &&
-    responseJSON.action === action
+    response &&
+    response.success &&
+    response.score > 0.5 &&
+    response.action === action
   );
 };
 

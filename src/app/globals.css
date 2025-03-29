@@ -82,5 +82,5 @@ h5 {
 }
 
 .grecaptcha-badge {
-  z-index: 10;
+  visibility: hidden;
 }
