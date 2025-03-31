@@ -5,15 +5,14 @@ import { useForm, zodResolver } from "@mantine/form";
 import {
   ContactFormResponse,
   validateContactEmail,
-} from "@/actions/validate_contact_email";
+} from "@/actions/contact_email/validate";
 import { schema } from "@/utils/contact_form_validation";
 import { notifications } from "@mantine/notifications";
-import { sendContactEmail } from "@/actions/contact_email";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useReCaptcha } from "next-recaptcha-v3";
-
-import classes from "./contact_form.module.css";
 import Link from "next/link";
+import { useState } from "react";
+import classes from "./contact_form.module.css";
 
 export type ContactFormData = {
   name: string;
@@ -22,54 +21,72 @@ export type ContactFormData = {
   jobDetails: string;
 };
 
+//Show notifcation
+function notifyUser(sendSuccess: boolean, title: string, message: string) {
+  const icon = sendSuccess ? (
+    <IconCheck className={classes.icon} aria-label="Success icon" />
+  ) : (
+    <IconX className={classes.icon} aria-label="Failure icon" />
+  );
+  const colour: string = sendSuccess ? "green" : "red";
+
+  notifications.show({
+    title: title,
+    message: message,
+    icon: icon,
+    color: colour,
+    withBorder: true,
+  });
+}
+
 export function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { name: "", email: "", phone: "", jobDetails: "" },
     validate: zodResolver(schema),
     validateInputOnBlur: true,
   });
-
-  const { executeRecaptcha } = useReCaptcha();
+  const { executeRecaptcha, loaded, error } = useReCaptcha();
 
   async function onSubmit(fields: ContactFormData) {
+    if (isSubmitting) return;
+
+    //Disable submit button while submiting
+    setIsSubmitting(true);
+
     //Generate token
     const action = "contact_form_submit";
-    const token = await executeRecaptcha(action);
+    const token: string =
+      loaded && !error ? await executeRecaptcha(action) : "";
 
-    //Send to server action for validation
-    var validationResponse: ContactFormResponse = await validateContactEmail(
+    //Send to server action for validation and sending
+    const response: ContactFormResponse = await validateContactEmail(
       JSON.stringify({ fields, token, action })
-    )
-      .then((jsonResponse) => JSON.parse(jsonResponse))
-      .then((response) => {
-        return {
-          validated: response.validated,
-          errors: response.errors,
-          recaptchaVerified: response.recaptchaVerified,
-        };
-      });
+    ).then((response) => JSON.parse(response));
 
     //Reset form or show errors
-    if (validationResponse.validated && validationResponse.recaptchaVerified) {
-      const sendSuccess: boolean = await sendAndNotify(fields);
+    if (response.validated && response.recaptchaVerified) {
+      notifyUser(
+        response.sendSuccess,
+        response.notifyTitle,
+        response.notifyMessage
+      );
 
-      if (sendSuccess) {
+      if (response.sendSuccess) {
         form.reset();
       }
     } else {
-      form.setErrors(validationResponse.errors);
+      //Show validation errors
+      form.setErrors(response.formErrors);
 
-      if (!validationResponse.recaptchaVerified) {
-        notifications.show({
-          title: "reCAPTCHA Failed",
-          message: "Please try again",
-          withBorder: true,
-          icon: <IconX className={classes.icon} aria-label="Failure icon" />,
-          color: "red",
-        });
+      if (!response.recaptchaVerified) {
+        notifyUser(false, "reCAPTCHA Failed", "Please try again");
       }
     }
+
+    //Enable submit button
+    setIsSubmitting(false);
   }
 
   return (
@@ -108,46 +125,14 @@ export function ContactForm() {
         This site is protected by reCAPTCHA and the Google <Link href="https://policies.google.com/privacy">Privacy Policy</Link> and <Link href="https://policies.google.com/terms">Terms of Service</Link> apply.
       </Text>
       <Group>
-        <Button className={classes.submit_button} type="submit">
+        <Button
+          className={classes.submit_button}
+          type="submit"
+          loading={isSubmitting}
+        >
           Send
         </Button>
       </Group>
     </form>
   );
-}
-
-//Send email and show progress notifcation
-async function sendAndNotify(data: ContactFormData): Promise<boolean> {
-  const sendingNotifID = notifications.show({
-    title: "Sending your email",
-    message: "One moment...",
-    autoClose: false,
-    loading: true,
-    withBorder: true,
-  });
-
-  const sendSuccess: boolean = await sendContactEmail(data).then(
-    (responseMessage) => {
-      const icon = responseMessage.success ? (
-        <IconCheck className={classes.icon} aria-label="Success icon" />
-      ) : (
-        <IconX className={classes.icon} aria-label="Failure icon" />
-      );
-      const colour: string = responseMessage.success ? "green" : "red";
-
-      notifications.update({
-        id: sendingNotifID,
-        title: responseMessage.message,
-        message: responseMessage.details,
-        loading: false,
-        autoClose: 6000,
-        icon: icon,
-        color: colour,
-      });
-
-      return responseMessage.success;
-    }
-  );
-
-  return sendSuccess;
 }

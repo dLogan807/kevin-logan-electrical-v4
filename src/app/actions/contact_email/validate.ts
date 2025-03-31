@@ -2,11 +2,15 @@
 
 import { ContactFormData } from "@/components/contact_form";
 import { schema } from "@/utils/contact_form_validation";
+import { EmailSendResponse, sendContactEmail } from "./send";
 
 export type ContactFormResponse = {
   validated: boolean;
-  errors: { [k: string]: string };
   recaptchaVerified: boolean;
+  formErrors: { [k: string]: string };
+  sendSuccess: boolean;
+  notifyTitle: string;
+  notifyMessage: string;
 };
 
 type RecaptchaResponse = {
@@ -20,7 +24,7 @@ type RecaptchaResponse = {
 
 //Verify recaptcha
 const verifyRecaptcha = async (token: string, action: string) => {
-  const secretKey = process.env.NEXT_RECAPTCHA_SECRET_KEY;
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
 
   const response: RecaptchaResponse = await fetch(
     "https://www.google.com/recaptcha/api/siteverify?secret=" +
@@ -68,18 +72,30 @@ export async function validateContactEmail(
     jobDetails: fields.jobDetails,
   });
 
-  const recaptchaResponse = await verifyRecaptcha(token, action);
-
   //Map zod errors to form errors
   const errors = Object.fromEntries(
     result.error?.issues?.map((issue) => [issue.path[0], issue.message]) || []
   );
 
-  const response: ContactFormResponse = {
+  //Check recaptcha
+  const recaptchaResponse: boolean =
+    token === "" ? true : await verifyRecaptcha(token, action);
+
+  var response: ContactFormResponse = {
     validated: result.success,
-    errors: errors,
+    formErrors: errors,
     recaptchaVerified: recaptchaResponse,
+    sendSuccess: false,
+    notifyTitle: "Could not send the email. Please try again.",
+    notifyMessage: "A server error occured.",
   };
+
+  //If validated, send email and add to response
+  if (result.success && recaptchaResponse) {
+    const emailResponse: EmailSendResponse = await sendContactEmail(fields);
+
+    response = { ...response, ...emailResponse };
+  }
 
   return JSON.stringify(response);
 }
