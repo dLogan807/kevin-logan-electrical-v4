@@ -37,7 +37,11 @@ export default async function ContactUs() {
     });
 
   return (
-    <ReCaptchaProvider className={classes.recaptcha} nonce={nonce}>
+    <ReCaptchaProvider
+      className={classes.recaptcha}
+      nonce={nonce}
+      strategy="lazyOnload"
+    >
       <Box className={[classes.contactus_grid, "content_grid"].join(" ")}>
         <Paper
           className={[classes.contact_form, mainSection].join(" ")}
