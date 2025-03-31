@@ -1,0 +1,30 @@
+.rateservice_grid {
+  grid-template-rows: 0.4fr 1.5fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "rate rate" "services services";
+}
+
+.rateservice_rate {
+  grid-area: rate;
+  display: flex;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    display: block;
+    height: 20rem;
+  }
+}
+
+.rateservice_services {
+  grid-area: services;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.1fr 0.1fr 4fr;
+  grid-template-areas: "serv-heading serv-heading serv-heading" "serv-preamble serv-preamble serv-preamble" "serv-list_1 serv-list_2 serv-list_3";
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.1fr 0.1fr 1fr;
+    grid-template-areas: "serv-heading" "serv-preamble" "serv-lists";
+    height: 50rem;
+  }
+}

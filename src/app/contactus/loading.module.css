@@ -1,0 +1,21 @@
+.contactus_grid {
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "form details";
+  height: 100%;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: "details" "form";
+    height: 50rem;
+  }
+}
+
+.contact_details {
+  grid-area: details;
+}
+
+.contact_form {
+  grid-area: form;
+}
