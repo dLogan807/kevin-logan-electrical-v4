@@ -3,7 +3,6 @@ import classes from "./loading.module.css";
 
 export default function Loading() {
   const mainSection: string = "main_section";
-
   return (
     <Box className={[classes.home_grid, "content_grid"].join(" ")}>
       <Skeleton className={[classes.tagline, mainSection].join(" ")}></Skeleton>

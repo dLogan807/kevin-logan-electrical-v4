@@ -167,6 +167,7 @@ export function Navbar() {
             <Image
               src={logo}
               alt="Kevin Logan Electrical logo"
+              aria-label="Kevin Logan Electrical Home"
               sizes={`(max-width: ${theme.breakpoints.sm}) 70vw, (max-width: ${theme.breakpoints.lg}) 50vw, (max-width: ${theme.breakpoints.xl}) 40vw`}
               priority
             />
