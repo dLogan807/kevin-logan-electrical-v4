@@ -60,22 +60,22 @@ export async function sendContactEmail(
       if (!error) {
         resolve({
           sendSuccess: true,
-          notifyTitle: "Email sent!",
-          notifyMessage: "We'll get back to you shortly.",
+          notifyTitle: "Email sent",
+          notifyMessage: "We'll get back to you soon",
         });
       } else {
         resolve({
           sendSuccess: false,
-          notifyTitle: "Could not send the email. Please try again.",
-          notifyMessage: "The mail server did not respond.",
+          notifyTitle: "Could not send the email. Please try again",
+          notifyMessage: "The mail server did not respond",
         });
       }
     });
   }).catch(() => {
     return {
       sendSuccess: false,
-      notifyTitle: "Could not send the email. Please try again.",
-      notifyMessage: "A server error occured.",
+      notifyTitle: "Could not send the email. Please try again",
+      notifyMessage: "A server error occured",
     };
   });
 }
