@@ -13,10 +13,9 @@ import Image from "next/image";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import { IconCircleCheck } from "@tabler/icons-react";
-
-import classes from "./page.module.css";
 import tagline_image from "@/assets/tagline_background.webp";
 import { theme } from "@/components/theme";
+import classes from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",

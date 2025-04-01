@@ -17,9 +17,8 @@ import {
 } from "@tabler/icons-react";
 import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { ContactForm } from "@/components/contact_form";
-
-import classes from "./page.module.css";
 import { headers } from "next/headers";
+import classes from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Contact Us | Kevin Logan Electrical - Your Trusted Electrician",
