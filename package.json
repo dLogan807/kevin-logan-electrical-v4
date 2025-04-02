@@ -11,6 +11,7 @@
     "dep:gen": "license-report --only=prod --output=json > licenses.json"
   },
   "dependencies": {
+    "@mantine/carousel": "^7.17.3",
     "@mantine/core": "^7.12.2",
     "@mantine/form": "^7.17.3",
     "@mantine/hooks": "^7.12.2",
