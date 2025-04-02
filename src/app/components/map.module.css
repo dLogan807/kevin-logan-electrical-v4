@@ -1,0 +1,16 @@
+.map {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: relative;
+  justify-content: left;
+  align-items: center;
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+
+  iframe {
+    border: none;
+    height: 100%;
+    width: 100%;
+  }
+}
