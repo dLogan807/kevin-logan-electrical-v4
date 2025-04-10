@@ -12,14 +12,13 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import { headers } from "next/headers";
 import { IconCircleCheck } from "@tabler/icons-react";
 import tagline_image from "@/assets/tagline_background.webp";
 import { theme } from "@/components/theme";
 import classes from "./page.module.css";
 import dynamic from "next/dynamic";
 
-var Map = dynamic(() => import("./components/map"), {
+var GoogleMap = dynamic(() => import("./components/google_map"), {
   loading: () => <Skeleton className={classes.map_loading}></Skeleton>,
 });
 
@@ -29,13 +28,8 @@ export const metadata: Metadata = {
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
 };
 
-export default async function Home() {
+export default function Home() {
   const mainSection: string = "main_section";
-  const nonce: string = await headers()
-    .then((headers) => headers.get("x-nonce"))
-    .then((rawNonce) => {
-      return rawNonce == undefined ? "" : rawNonce;
-    });
 
   return (
     <Box className={[classes.home_grid, "content_grid"].join(" ")}>
@@ -92,7 +86,7 @@ export default async function Home() {
         </Link>
       </Paper>
       <Paper className={[classes.map, mainSection].join(" ")} withBorder>
-        <Map nonce={nonce} />
+        <GoogleMap query="Kevin Logan Electrical, Torbay, Auckland" />
       </Paper>
     </Box>
   );
