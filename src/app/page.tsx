@@ -15,8 +15,9 @@ import { Metadata } from "next";
 import { IconCircleCheck } from "@tabler/icons-react";
 import tagline_image from "@/assets/tagline_background.webp";
 import { theme } from "@/components/theme";
-import classes from "./page.module.css";
 import dynamic from "next/dynamic";
+import GoogleReviewCarousel from "./components/google_reviews/google_review_carousel";
+import classes from "./page.module.css";
 
 var GoogleMap = dynamic(() => import("./components/google_map"), {
   loading: () => <Skeleton className={classes.map_loading}></Skeleton>,
@@ -76,14 +77,11 @@ export default function Home() {
           <ListItem>Satisfaction Guaranteed</ListItem>
         </List>
       </Paper>
-      <Paper className={[classes.review, mainSection].join(" ")} withBorder>
-        <h3>Leave a Review</h3>
-        <Link
-          href="https://www.google.com/search?q=kevin+logan+electrical"
-          className={classes.review_button}
-        >
-          <Button>Review</Button>
-        </Link>
+      <Paper
+        className={[classes.review_carousel_container, mainSection].join(" ")}
+        withBorder
+      >
+        <GoogleReviewCarousel />
       </Paper>
       <Paper className={[classes.map, mainSection].join(" ")} withBorder>
         <GoogleMap query="Kevin Logan Electrical, Torbay, Auckland" />

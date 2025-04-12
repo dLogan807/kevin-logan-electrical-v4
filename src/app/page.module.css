@@ -1,16 +1,16 @@
 .home_grid {
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 0.6fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas: "tagline tagline summary" "review map map";
+  grid-template-areas: "tagline tagline summary" "review-container review-container review-container" "map map map";
 
   @media (max-width: $mantine-breakpoint-sm) {
-    grid-template-rows: 1fr 0.6fr 0.7fr 0.2fr;
+    grid-template-rows: 1fr 0.6fr 1fr 1.3fr;
     grid-template-columns: 1fr;
-    grid-template-areas: "tagline" "summary" "map" "review";
+    grid-template-areas: "tagline" "summary" "review-container" "map";
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
-    grid-template-rows: 1fr 0.6fr 0.7fr 0.2fr;
+    grid-template-rows: 1fr 0.6fr 1fr 0.7fr;
   }
 }
 
@@ -129,19 +129,11 @@
   }
 }
 
-.review {
-  grid-area: review;
-  height: min-content;
-  text-align: center;
-
-  h3 {
-    margin-bottom: 2rem;
-    text-align: left;
-  }
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    height: 100%;
-  }
+.review_carousel_container {
+  grid-area: review-container;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .map {
