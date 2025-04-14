@@ -83,14 +83,15 @@ function filterReviews(
     return reviews;
   }
 
-  nameFilter.map((name) => name.toLowerCase());
+  nameFilter = nameFilter.map((name) => name.toLowerCase());
 
-  for (const review of reviews) {
+  for (let i = reviews.length - 1; i >= 0; i--) {
     if (
-      nameFilter.includes(review.authorAttribution.displayName.toLowerCase())
+      nameFilter.includes(
+        reviews[i].authorAttribution.displayName.toLowerCase()
+      )
     ) {
-      console.log("Removing review: " + review.authorAttribution.displayName);
-      reviews.splice(reviews.indexOf(review), 1);
+      reviews.splice(i, 1);
     }
   }
 
@@ -134,10 +135,12 @@ export default async function getGoogleReviews(
     })
     .then((parsedReviews) => {
       //Remove select reviews
-      const nameFilter =
+      const nameFilter: string[] =
         process.env.REVIEW_NAME_FILTER === undefined
           ? []
-          : process.env.REVIEW_NAME_FILTER.split(",");
+          : process.env.REVIEW_NAME_FILTER.split(",").map((name) =>
+              name.trim()
+            );
 
       parsedReviews.reviews = filterReviews(parsedReviews.reviews, nameFilter);
 
