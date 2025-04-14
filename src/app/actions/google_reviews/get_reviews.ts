@@ -31,7 +31,7 @@ function getTrimmedComment(comment: string, maxLength: number = 150): string {
 
 //Return the date in the format DD/MM/YYYY
 function getFormattedDate(utcDateString: string): string {
-  var formattedDate = "";
+  var formattedDate = "Unknown date";
 
   if (!utcDateString || utcDateString === "") {
     return formattedDate;
@@ -135,14 +135,21 @@ export default async function getGoogleReviews(
     })
     .then((parsedReviews) => {
       //Remove select reviews
+
       const nameFilter: string[] =
-        process.env.REVIEW_NAME_FILTER === undefined
+        !process.env.REVIEW_NAME_FILTER ||
+        process.env.REVIEW_NAME_FILTER.length === 0
           ? []
           : process.env.REVIEW_NAME_FILTER.split(",").map((name) =>
               name.trim()
             );
 
-      parsedReviews.reviews = filterReviews(parsedReviews.reviews, nameFilter);
+      if (nameFilter.length > 0) {
+        parsedReviews.reviews = filterReviews(
+          parsedReviews.reviews,
+          nameFilter
+        );
+      }
 
       return parsedReviews;
     })
