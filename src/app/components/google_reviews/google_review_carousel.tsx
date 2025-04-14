@@ -21,6 +21,31 @@ type GoogleReviews = {
   nextPageToken: string;
 };
 
+function ReviewButton() {
+  return (
+    <Link
+      href="https://www.google.com/search?q=kevin+logan+electrical"
+      className={classes.review_button}
+    >
+      <Button variant="light">
+        <Group>
+          <Text>Review</Text>
+          <IconArrowRight aria-label="Right arrow" />
+        </Group>
+      </Button>
+    </Link>
+  );
+}
+
+function NoReviewsPrompt() {
+  return (
+    <Group className={classes.no_reviews_prompt}>
+      <Text>Had work done? Consider leaving a review!</Text>
+      {ReviewButton()}
+    </Group>
+  );
+}
+
 export default function GoogleReviewCarousel() {
   const googleReviews: GoogleReviews = {
     reviews: [
@@ -54,32 +79,13 @@ export default function GoogleReviewCarousel() {
     nextPageToken: "",
   };
 
-  const reviewButton = (
-    <Link
-      href="https://www.google.com/search?q=kevin+logan+electrical"
-      className={classes.review_button}
-    >
-      <Button variant="light">
-        <Group>
-          <Text>Review</Text>
-          <IconArrowRight aria-label="Right arrow" />
-        </Group>
-      </Button>
-    </Link>
-  );
-
   if (
     !googleReviews ||
     !googleReviews.reviews ||
     googleReviews.reviews.length === 0 ||
     googleReviews.totalReviewCount === 0
   ) {
-    return (
-      <Group className={classes.no_reviews_prompt}>
-        <Text>Had work done? Consider leaving a review on Google!</Text>
-        {reviewButton}
-      </Group>
-    );
+    return <NoReviewsPrompt />;
   }
 
   return (
@@ -110,7 +116,7 @@ export default function GoogleReviewCarousel() {
           />
           <Text>{googleReviews.totalReviewCount} reviews</Text>
         </Group>
-        {reviewButton}
+        {ReviewButton()}
       </Box>
       <Carousel
         loop={true}

@@ -8,10 +8,13 @@
 
 .no_reviews_prompt {
   display: flex;
-  height: 5rem;
+  height: 100%;
   justify-content: space-between;
   align-items: center;
-  border-radius: var(--mantine-radius-md);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    justify-content: flex-end;
+  }
 
   p {
     --text-fz: var(--mantine-font-size-lg);
@@ -49,7 +52,7 @@
   gap: 1rem;
   width: 30%;
   background-color: light-dark(
-    var(--mantine-color-gray-1),
+    var(--mantine-color-gray-2),
     var(--mantine-color-dark-6)
   );
   border-radius: var(--mantine-radius-md);

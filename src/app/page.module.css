@@ -1,16 +1,16 @@
 .home_grid {
-  grid-template-rows: 1fr 0.6fr 1fr;
+  grid-template-rows: 1fr min-content 1.1fr;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas: "tagline tagline summary" "review-container review-container review-container" "map map map";
 
   @media (max-width: $mantine-breakpoint-sm) {
-    grid-template-rows: 1fr 0.6fr 1fr 1.3fr;
+    grid-template-rows: 1fr 0.6fr min-content 1.3fr;
     grid-template-columns: 1fr;
     grid-template-areas: "tagline" "summary" "review-container" "map";
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
-    grid-template-rows: 1fr 0.6fr 1fr 0.7fr;
+    grid-template-rows: 1fr 0.6fr min-content 1fr;
   }
 }
 
@@ -131,7 +131,7 @@
 
 .review_carousel_container {
   grid-area: review-container;
-  height: 100%;
+  height: min-content;
   width: 100%;
   overflow: hidden;
 }
