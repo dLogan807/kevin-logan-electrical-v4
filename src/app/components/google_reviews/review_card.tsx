@@ -1,18 +1,7 @@
 import { Blockquote, Group, Rating, Text } from "@mantine/core";
 import { IconMessage2, IconStarFilled } from "@tabler/icons-react";
+import { GoogleReview } from "@/actions/google_reviews/get_reviews";
 import classes from "./review_card.module.css";
-
-export type GoogleReview = {
-  reviewId: string;
-  reviewer: {
-    profilePhotoUrl: string;
-    displayName: string;
-    isAnonymous: boolean;
-  };
-  starRating: number;
-  comment: string;
-  updateTime: string; //RFC3339 UTC
-};
 
 export default function ReviewCard(review: GoogleReview) {
   return (
@@ -20,15 +9,15 @@ export default function ReviewCard(review: GoogleReview) {
       color="blue"
       cite={
         <Group className={classes.review_card_cite}>
-          <Text>{"- " + review.reviewer.displayName}</Text>
-          <Text>{getFormattedDate(review.updateTime)}</Text>
+          <Text>{"- " + review.authorAttribution.displayName}</Text>
+          <Text>{review.publishTime}</Text>
         </Group>
       }
       icon={<IconMessage2 aria-label="Comment icon" />}
       className={classes.review_card_blockquote}
     >
       <Rating
-        value={review.starRating}
+        value={review.rating}
         emptySymbol={
           <IconStarFilled
             aria-label="Empty star"
@@ -44,40 +33,7 @@ export default function ReviewCard(review: GoogleReview) {
         className={classes.star_rating}
         readOnly
       />
-      {getTrimmedComment(review.comment)}
+      {review.text}
     </Blockquote>
   );
-}
-
-//Cap the comment's length
-function getTrimmedComment(comment: string, maxLength: number = 150): string {
-  comment.trim();
-
-  if (comment.length > maxLength) {
-    return comment.substring(0, maxLength) + "...";
-  }
-
-  return comment;
-}
-
-//Return the date in the format DD/MM/YYYY
-function getFormattedDate(utcDateString: string): string {
-  var formattedDate = "";
-
-  if (!utcDateString || utcDateString === "") {
-    return formattedDate;
-  }
-
-  try {
-    formattedDate = new Intl.DateTimeFormat("en-NZ", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(new Date(utcDateString));
-  } catch {
-    formattedDate = "Unknown date";
-    console.log("Warning: Unable to convert review date to local time.");
-  }
-
-  return formattedDate;
 }

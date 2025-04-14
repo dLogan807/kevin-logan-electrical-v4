@@ -15,7 +15,7 @@ import { IconCircleCheck } from "@tabler/icons-react";
 import tagline_image from "@/assets/tagline_background.webp";
 import { theme } from "@/components/theme";
 import GoogleMap from "./components/google_map/google_map";
-import GoogleReviewCarousel from "./components/google_reviews/google_review_carousel";
+import GoogleReviewContainer from "./components/google_reviews/google_review_container";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -76,10 +76,14 @@ export default function Home() {
         className={[classes.review_carousel_container, mainSection].join(" ")}
         withBorder
       >
-        <GoogleReviewCarousel />
+        <GoogleReviewContainer
+          query={"" + process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}
+        />
       </Paper>
       <Paper className={[classes.map, mainSection].join(" ")} withBorder>
-        <GoogleMap query="Kevin Logan Electrical, Torbay, Auckland" />
+        <GoogleMap
+          query={"" + process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}
+        />
       </Paper>
     </Box>
   );

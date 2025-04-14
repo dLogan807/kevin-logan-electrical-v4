@@ -22,9 +22,11 @@ type RecaptchaResponse = {
   errorCodes: string[];
 };
 
-//Verify recaptcha
-const verifyRecaptcha = async (token: string, action: string) => {
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+async function verifyRecaptcha(
+  token: string,
+  action: string
+): Promise<boolean> {
+  const secretKey = "" + process.env.RECAPTCHA_SECRET_KEY;
 
   const response: RecaptchaResponse = await fetch(
     "https://www.google.com/recaptcha/api/siteverify?secret=" +
@@ -52,7 +54,7 @@ const verifyRecaptcha = async (token: string, action: string) => {
     response.score > 0.5 &&
     response.action === action
   );
-};
+}
 
 //Validate and return whether successful and any errors
 export async function validateContactEmail(

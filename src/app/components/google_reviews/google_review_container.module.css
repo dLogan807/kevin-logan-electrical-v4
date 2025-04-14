@@ -36,14 +36,6 @@
   }
 }
 
-.carousel {
-  width: 70%;
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    width: 100%;
-  }
-}
-
 .review_summary {
   position: relative;
   display: flex;
