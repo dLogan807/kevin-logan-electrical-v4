@@ -7,9 +7,9 @@ import classes from "./google_map.module.css";
 //Card for services section of rate and services page
 export default function GoogleMap({ query }: { query: string }) {
   const mapApiKey: string =
-    process.env.GOOGLE_MAPS_API_KEY == undefined
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY == undefined
       ? ""
-      : process.env.GOOGLE_MAPS_API_KEY;
+      : process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   return (
     <Box className={classes.map}>

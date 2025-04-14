@@ -138,7 +138,7 @@
 
 .map {
   grid-area: map;
-  height: 100%;
+  padding: 2rem;
 
   @media (max-width: $mantine-breakpoint-sm) {
     padding: 0;

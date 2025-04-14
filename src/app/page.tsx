@@ -4,7 +4,6 @@ import {
   List,
   ListItem,
   Paper,
-  Skeleton,
   Stack,
   Text,
   ThemeIcon,
@@ -15,13 +14,9 @@ import { Metadata } from "next";
 import { IconCircleCheck } from "@tabler/icons-react";
 import tagline_image from "@/assets/tagline_background.webp";
 import { theme } from "@/components/theme";
-import dynamic from "next/dynamic";
+import GoogleMap from "./components/google_map/google_map";
 import GoogleReviewCarousel from "./components/google_reviews/google_review_carousel";
 import classes from "./page.module.css";
-
-var GoogleMap = dynamic(() => import("./components/google_map"), {
-  loading: () => <Skeleton className={classes.map_loading}></Skeleton>,
-});
 
 export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
