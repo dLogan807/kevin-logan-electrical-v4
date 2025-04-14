@@ -36,3 +36,7 @@
   width: 1rem;
   height: 1rem;
 }
+
+.author_name {
+  color: var(--mantine-color-text);
+}

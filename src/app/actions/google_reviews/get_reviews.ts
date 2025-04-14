@@ -19,7 +19,7 @@ export type GoogleReview = {
 };
 
 //Cap the comment's length
-function getTrimmedComment(comment: string, maxLength: number = 150): string {
+function getTrimmedComment(comment: string, maxLength: number = 180): string {
   comment.trim();
 
   if (comment.length > maxLength) {
