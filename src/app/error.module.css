@@ -1,0 +1,43 @@
+.error_grid {
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  min-height: 100%;
+}
+
+.container {
+  text-align: center;
+
+  h1 {
+    color: var(--mantine-primary-color-filled);
+    font-size: 10rem;
+    margin: 0;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      font-size: 7rem;
+    }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+      font-size: 5rem;
+    }
+  }
+
+  h2 {
+    margin: 0 0 3rem 0;
+  }
+}
+
+.explanation {
+  margin-bottom: 3rem;
+}
+
+.home_button {
+  button {
+    max-width: 100%;
+    height: min-content;
+
+    span {
+      white-space: normal;
+      padding: 0.3rem;
+    }
+  }
+}

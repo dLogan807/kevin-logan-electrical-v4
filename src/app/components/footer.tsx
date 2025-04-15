@@ -24,7 +24,7 @@ export function Footer() {
           </Group>
         </Anchor>
       </Box>
-      <Link href="/">
+      <Link href="/" aria-label="Kevin Logan Electrical Home">
         <Image
           className={classes.logo}
           src={logo}
@@ -39,7 +39,7 @@ export function Footer() {
           <Link
             className={classes.centered_icon_link}
             href={"https://nextjs.org/"}
-            aria-label="Next.js website"
+            aria-label="Next.js"
           >
             <ThemeIcon className={"checkmark"}>
               <IconBrandNextjs aria-label="Next.js icon" />
@@ -48,7 +48,7 @@ export function Footer() {
           <Link
             className={classes.centered_icon_link}
             href={"https://mantine.dev/"}
-            aria-label="Mantine website"
+            aria-label="Mantine"
           >
             <ThemeIcon className={"checkmark"}>
               <IconBrandMantine aria-label="Mantine icon" />

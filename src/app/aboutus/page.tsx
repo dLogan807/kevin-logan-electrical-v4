@@ -4,9 +4,8 @@ import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
 import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
-
-import classes from "./page.module.css";
 import { theme } from "@/components/theme";
+import classes from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "About Us | Kevin Logan Electrical - Your Trusted Electrician",

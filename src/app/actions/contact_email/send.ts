@@ -24,12 +24,12 @@ export async function sendContactEmail(
 
   //Specify transport options
   const transport = nodemailer.createTransport({
-    host: process.env.HOST,
+    host: process.env.EMAIL_HOST,
     port: 587,
     secure: false,
     auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD,
+      user: process.env.EMAIL_ADDRESS,
+      pass: process.env.EMAIL_PASSWORD,
     },
     requireTLS: true,
   });
@@ -47,8 +47,8 @@ export async function sendContactEmail(
   }
 
   const mailOptions: Mail.Options = {
-    from: process.env.EMAIL,
-    to: process.env.EMAIL,
+    from: process.env.EMAIL_ADDRESS,
+    to: process.env.EMAIL_ADDRESS,
     subject: "Website enquiry from " + fields.name,
     text: bodyText,
     replyTo: fields.email,
@@ -60,22 +60,22 @@ export async function sendContactEmail(
       if (!error) {
         resolve({
           sendSuccess: true,
-          notifyTitle: "Email sent!",
-          notifyMessage: "We'll get back to you shortly.",
+          notifyTitle: "Email sent",
+          notifyMessage: "We'll get back to you soon",
         });
       } else {
         resolve({
           sendSuccess: false,
-          notifyTitle: "Could not send the email. Please try again.",
-          notifyMessage: "The mail server did not respond.",
+          notifyTitle: "Could not send the email. Please try again",
+          notifyMessage: "The mail server did not respond",
         });
       }
     });
   }).catch(() => {
     return {
       sendSuccess: false,
-      notifyTitle: "Could not send the email. Please try again.",
-      notifyMessage: "A server error occured.",
+      notifyTitle: "Could not send the email. Please try again",
+      notifyMessage: "A server error occured",
     };
   });
 }

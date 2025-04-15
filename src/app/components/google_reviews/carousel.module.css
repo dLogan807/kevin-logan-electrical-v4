@@ -1,0 +1,51 @@
+.controls {
+  transition: opacity 150ms ease;
+  opacity: 0;
+
+  button {
+    background-color: light-dark(#eff7fe, #253440);
+    transition: background-color 150ms ease;
+
+    &:hover {
+      background-color: light-dark(#e5f1fb, #263a49);
+    }
+
+    svg {
+      transition: transform 150ms ease;
+      color: var(--mantine-color-pleasant-blue-light-color);
+    }
+
+    &:first-child:active {
+      svg {
+        transform: translateX(-3px);
+      }
+    }
+
+    &:last-child:active {
+      svg {
+        transform: translateX(3px);
+      }
+    }
+  }
+}
+
+.viewport {
+  padding-bottom: 2rem;
+  height: 100%;
+}
+
+.root {
+  &:hover {
+    .controls {
+      opacity: 1;
+    }
+  }
+}
+
+.carousel {
+  width: 70%;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 100%;
+  }
+}

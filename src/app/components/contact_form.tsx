@@ -58,12 +58,27 @@ export function ContactForm() {
     //Generate token
     const action = "contact_form_submit";
     const token: string =
-      loaded && !error ? await executeRecaptcha(action) : "";
+      loaded && !error
+        ? await executeRecaptcha(action).catch(() => {
+            return "";
+          })
+        : "";
 
     //Send to server action for validation and sending
     const response: ContactFormResponse = await validateContactEmail(
       JSON.stringify({ fields, token, action })
-    ).then((response) => JSON.parse(response));
+    )
+      .then((response) => JSON.parse(response))
+      .catch(() => {
+        return {
+          validated: true,
+          recaptchaVerified: true,
+          formErrors: {},
+          sendSuccess: false,
+          notifyTitle: "Connection timed out",
+          notifyMessage: "Check your internet connection",
+        };
+      });
 
     //Reset form or show errors
     if (response.validated && response.recaptchaVerified) {
@@ -81,7 +96,7 @@ export function ContactForm() {
       form.setErrors(response.formErrors);
 
       if (!response.recaptchaVerified) {
-        notifyUser(false, "reCAPTCHA Failed", "Please try again");
+        notifyUser(false, "reCAPTCHA failed", "Please try again");
       }
     }
 
