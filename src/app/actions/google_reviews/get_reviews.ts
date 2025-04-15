@@ -1,5 +1,7 @@
 "use server";
 
+//IMPORTANT: Ensure rate limiting is in place in the Google Places Console
+
 export type GoogleReviews = {
   reviews: GoogleReview[];
   averageRating: number;
@@ -108,6 +110,7 @@ export default async function getGoogleReviews(
 
   const headers: Headers = new Headers();
   headers.set("Accept", "application/json");
+  headers.set("Referer", "https://kevinloganelectrical.co.nz/");
   headers.set("Content-Type", "application/json");
   headers.set("X-Goog-Api-Key", "" + process.env.GOOGLE_MAPS_API_KEY);
   headers.set(
