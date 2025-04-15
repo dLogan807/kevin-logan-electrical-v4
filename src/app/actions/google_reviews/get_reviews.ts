@@ -1,5 +1,7 @@
 "use server";
 
+//IMPORTANT: Ensure rate limiting is in place in the Google Places Console
+
 export type GoogleReviews = {
   reviews: GoogleReview[];
   averageRating: number;
