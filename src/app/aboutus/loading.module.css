@@ -1,5 +1,5 @@
 .about_grid {
-  grid-template-rows: 0.8fr 1fr;
+  grid-template-rows: auto 1fr;
   grid-template-columns: 1fr 1.5fr;
   grid-template-areas: "about-1 torbay" "about-2 torbay";
 
@@ -14,7 +14,7 @@
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
-    grid-template-rows: 0.6fr 0.5fr 1fr;
+    grid-template-rows: 0.6fr auto 1fr;
     grid-template-columns: 1fr;
     grid-template-areas: "about-1" "torbay" "about-2";
   }
@@ -22,16 +22,36 @@
 
 .about_text_1 {
   grid-area: about-1;
+
+  height: 12rem;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    height: 20rem;
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    height: 15rem;
+  }
 }
 
 .about_text_2 {
   grid-area: about-2;
+  height: 20rem;
 
   @media (max-width: $mantine-breakpoint-xs) {
-    height: 25rem;
+    height: 23rem;
   }
 }
 
 .about_torbay {
   grid-area: torbay;
+  height: 50rem;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    height: 20rem;
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    height: 10rem;
+  }
 }

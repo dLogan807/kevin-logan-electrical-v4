@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "Find out more about Kevin Logan Electrical. Serving the North Shore community since 1992 and proud to be your local electrician of choice.",
 };
 
-export default async function AboutUs() {
+export default function AboutUs() {
   const mainSection: string = "main_section";
 
   return (

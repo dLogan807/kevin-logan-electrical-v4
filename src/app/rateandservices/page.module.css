@@ -38,10 +38,6 @@
   p {
     margin-bottom: 1rem;
   }
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    gap: 1rem 0;
-  }
 }
 
 .services_cards {
