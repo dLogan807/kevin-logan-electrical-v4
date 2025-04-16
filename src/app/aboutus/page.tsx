@@ -5,7 +5,6 @@ import { IconCertificate } from "@tabler/icons-react";
 import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
 import { theme } from "@/components/theme";
-import { connectToMongoDB } from "../actions/mongodb/connect";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -16,8 +15,6 @@ export const metadata: Metadata = {
 
 export default async function AboutUs() {
   const mainSection: string = "main_section";
-
-  await connectToMongoDB();
 
   return (
     <Box className={[classes.about_grid, "content_grid"].join(" ")}>

@@ -1,4 +1,4 @@
-import { Box, Paper, Text } from "@mantine/core";
+import { Box, Group, Paper, Stack, Text } from "@mantine/core";
 import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
 import { ServicesCard } from "@/components/services_card";
@@ -40,45 +40,50 @@ export default function RateAndServices() {
         className={[classes.rateservice_services, mainSection].join(" ")}
         withBorder
       >
-        <h4>Services</h4>
-        <Text>
-          I offer a wide range of residential services. If you&apos;d like to
-          inquire about a particular job, don&apos;t hesitate to give me a call.
-        </Text>
-        <ServicesCard
-          headerIcon={<IconBulb />}
-          headerText={"Interior"}
-          listItems={[
-            "Lighting",
-            "Power Points",
-            "Hot water faults",
-            "Hood / Fan Installations",
-            "Fault-finding",
-          ]}
-        ></ServicesCard>
-        <ServicesCard
-          headerIcon={<IconSun />}
-          headerText={"Exterior"}
-          listItems={[
-            "Outdoor lighting / Sockets",
-            "Garden lighting",
-            "Security lights",
-            "Swimming pools / Spa pools",
-            "Sub mains to exterior buildings",
-            "EV charge stations",
-          ]}
-        ></ServicesCard>
-        <ServicesCard
-          headerIcon={<IconTool />}
-          headerText={"Renovations & Maintenance"}
-          listItems={[
-            "Switchboard upgrades",
-            "Oven / Hob repairs",
-            "Complete rewires",
-            "Kitchens",
-            "Bathrooms",
-          ]}
-        ></ServicesCard>
+        <Stack>
+          <h4>Services</h4>
+          <Text>
+            I offer a wide range of residential services. If you&apos;d like to
+            inquire about a particular job, don&apos;t hesitate to give me a
+            call.
+          </Text>
+          <Group className={classes.services_cards}>
+            <ServicesCard
+              headerIcon={<IconBulb />}
+              headerText={"Interior"}
+              listItems={[
+                "Lighting",
+                "Power Points",
+                "Hot water faults",
+                "Hood / Fan Installations",
+                "Fault-finding",
+              ]}
+            ></ServicesCard>
+            <ServicesCard
+              headerIcon={<IconSun />}
+              headerText={"Exterior"}
+              listItems={[
+                "Outdoor lighting / Sockets",
+                "Garden lighting",
+                "Security lights",
+                "Swimming pools / Spa pools",
+                "Sub mains to exterior buildings",
+                "EV charge stations",
+              ]}
+            ></ServicesCard>
+            <ServicesCard
+              headerIcon={<IconTool />}
+              headerText={"Renovations & Maintenance"}
+              listItems={[
+                "Switchboard upgrades",
+                "Oven / Hob repairs",
+                "Complete rewires",
+                "Kitchens",
+                "Bathrooms",
+              ]}
+            ></ServicesCard>
+          </Group>
+        </Stack>
       </Paper>
     </Box>
   );

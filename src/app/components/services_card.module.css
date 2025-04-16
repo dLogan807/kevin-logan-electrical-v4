@@ -1,6 +1,10 @@
 .services_list {
+  margin: 1rem;
+  height: 100%;
+  width: 100%;
+
   h5 {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 
   ul {
@@ -8,5 +12,14 @@
     --list-fz: var(--mantine-font-size-sm);
     --list-lh: var(--mantine-line-height-sm);
     --list-spacing: var(--mantine-spacing-xs);
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 70%;
+    margin: 0 0 1rem 0;
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    width: 100%;
   }
 }
