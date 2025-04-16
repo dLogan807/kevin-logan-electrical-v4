@@ -1,6 +1,6 @@
 "use server";
 
-import { ContactFormData } from "@/components/contact_form";
+import { ContactFormData } from "@/components/contact_form/contact_form";
 import { schema } from "@/utils/contact_form_validation";
 import { EmailSendResponse, sendContactEmail } from "./send";
 

@@ -66,7 +66,8 @@ interface ILink {
 
 //Load theme icon lazily
 var DynamicThemeSelector = dynamic(
-  () => import("./theme_selector").then((mod) => mod.ThemeSelector),
+  () =>
+    import("../theme_selector/theme_selector").then((mod) => mod.ThemeSelector),
   {
     ssr: false,
     loading: () => (

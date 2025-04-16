@@ -1,4 +1,4 @@
-import { ContactFormData } from "@/components/contact_form";
+import { ContactFormData } from "@/components/contact_form/contact_form";
 import { z, ZodType } from "zod";
 
 export const phoneRegex = new RegExp(

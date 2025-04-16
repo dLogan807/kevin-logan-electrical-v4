@@ -16,7 +16,7 @@ import {
   IconPhone,
 } from "@tabler/icons-react";
 import { ReCaptchaProvider } from "next-recaptcha-v3";
-import { ContactForm } from "@/components/contact_form";
+import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
 import classes from "./page.module.css";
 
