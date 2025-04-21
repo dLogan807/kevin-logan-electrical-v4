@@ -18,7 +18,7 @@ import {
 import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
-import getPageContent from "@/utils/page_content/page_content_retrieval";
+import getPageContent from "@/actions/mongodb/page_content_retrieval";
 import { Pages } from "@/components/layout/pages";
 import classes from "./page.module.css";
 

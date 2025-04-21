@@ -6,7 +6,7 @@ import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
 import { theme } from "@/components/theme";
 import { Pages } from "@/components/layout/pages";
-import getPageContent from "@/utils/page_content/page_content_retrieval";
+import getPageContent from "@/actions/mongodb/page_content_retrieval";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
