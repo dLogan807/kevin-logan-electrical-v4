@@ -12,7 +12,7 @@ export default function NotFound() {
     <Box className={[classes.error_grid, "content_grid"].join(" ")}>
       <Paper className={[classes.container, mainSection].join(" ")} withBorder>
         <h1>Error</h1>
-        <h2>An unexpected error occurred.</h2>
+        <h2>Something unexpected happened.</h2>
         <Text className={classes.explanation}>
           Sorry! Please check your internet connection and try again.
         </Text>

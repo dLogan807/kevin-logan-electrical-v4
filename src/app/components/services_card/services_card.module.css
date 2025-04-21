@@ -14,8 +14,12 @@
     --list-spacing: var(--mantine-spacing-xs);
   }
 
+  @media (max-width: $mantine-breakpoint-md) {
+    margin: 0;
+  }
+
   @media (max-width: $mantine-breakpoint-sm) {
-    width: 70%;
+    width: 80%;
     margin: 0 0 1rem 0;
   }
 
