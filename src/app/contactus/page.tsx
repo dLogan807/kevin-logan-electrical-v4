@@ -18,12 +18,44 @@ import {
 import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
+import getPageContent from "@/utils/page_content/page_content_retrieval";
+import { Pages } from "@/components/layout/pages";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Contact Us | Kevin Logan Electrical - Your Trusted Electrician",
   description:
     "Contact Kevin Logan Electrical. Open Monday to Friday, don't hesitate to give me call for a reliable service of the highest calibre.",
+};
+
+export type ContactUsText = {
+  contact_details: {
+    title: string;
+    location: string;
+    phone: string;
+    mobile: string;
+    email: string;
+  };
+  service_hours: {
+    title: string;
+    hours: string;
+    days: string;
+  };
+};
+
+export const fallbackContent: ContactUsText = {
+  contact_details: {
+    title: "Contact Details",
+    location: "Based in Torbay, servicing the North Shore",
+    phone: "09 473 9712",
+    mobile: "0274 978 473",
+    email: "kevinlog@kevinloganelectrical.co.nz",
+  },
+  service_hours: {
+    title: "Service Hours",
+    hours: "8 AM - 5 PM",
+    days: "Monday - Friday",
+  },
 };
 
 export default async function ContactUs() {
@@ -34,6 +66,10 @@ export default async function ContactUs() {
     .then((rawNonce) => {
       return rawNonce == undefined ? "" : rawNonce;
     });
+
+  var content: ContactUsText | null = await getPageContent(Pages.ContactUs);
+
+  if (!content) content = fallbackContent;
 
   return (
     <ReCaptchaProvider
@@ -53,7 +89,7 @@ export default async function ContactUs() {
           className={[classes.contact_details, mainSection].join(" ")}
           withBorder
         >
-          <h4>Contact Details</h4>
+          <h4>{content.contact_details.title}</h4>
           <List>
             <ListItem
               icon={
@@ -62,7 +98,7 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              Based in Torbay, servicing the North Shore
+              {content.contact_details.location}
             </ListItem>
             <ListItem
               icon={
@@ -71,7 +107,11 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              <Anchor href="tel:094739712">09 473 9712</Anchor>
+              <Anchor
+                href={`tel:${content.contact_details.phone.split(" ").join("")}`}
+              >
+                {content.contact_details.phone}
+              </Anchor>
             </ListItem>
             <ListItem
               icon={
@@ -80,7 +120,11 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              <Anchor href="tel:+64274978473">0274 978 473</Anchor>
+              <Anchor
+                href={`tel:+64${content.contact_details.mobile.split(" ").join("")}`}
+              >
+                {content.contact_details.mobile}
+              </Anchor>
             </ListItem>
             <ListItem
               icon={
@@ -89,12 +133,12 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              <Anchor href="mailto:kevinlog@kevinloganelectrical.co.nz">
-                kevinlog@kevinloganelectrical.co.nz
+              <Anchor href={`mailto:${content.contact_details.email}`}>
+                {content.contact_details.email}
               </Anchor>
             </ListItem>
           </List>
-          <h4>Service Hours</h4>
+          <h4>{content.service_hours.title}</h4>
           <List>
             <ListItem
               icon={
@@ -103,8 +147,8 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              <Text>8 AM - 5 PM</Text>
-              <Text>Monday - Friday</Text>
+              <Text>{content.service_hours.hours}</Text>
+              <Text>{content.service_hours.days}</Text>
             </ListItem>
           </List>
         </Paper>
