@@ -102,7 +102,8 @@ function filterReviews(
 
 //Get reviews from Google Places API
 export default async function getGoogleReviews(
-  searchQuery: string
+  searchQuery: string,
+  nameFilter: string[]
 ): Promise<GoogleReviews | null> {
   if (searchQuery === "") {
     return null;
@@ -137,17 +138,9 @@ export default async function getGoogleReviews(
       };
     })
     .then((parsedReviews) => {
-      //Remove select reviews
-
-      const nameFilter: string[] =
-        !process.env.REVIEW_NAME_FILTER ||
-        process.env.REVIEW_NAME_FILTER.length === 0
-          ? []
-          : process.env.REVIEW_NAME_FILTER.split(",").map((name) =>
-              name.trim()
-            );
-
       if (nameFilter.length > 0) {
+        nameFilter = nameFilter.map((name) => name.toLowerCase().trim());
+
         parsedReviews.reviews = filterReviews(
           parsedReviews.reviews,
           nameFilter

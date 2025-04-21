@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     "Contact Kevin Logan Electrical. Open Monday to Friday, don't hesitate to give me call for a reliable service of the highest calibre.",
 };
 
-export type ContactUsText = {
+export type ContactUsContent = {
   contact_details: {
     title: string;
     location: string;
@@ -43,7 +43,7 @@ export type ContactUsText = {
   };
 };
 
-export const fallbackContent: ContactUsText = {
+export const fallbackContent: ContactUsContent = {
   contact_details: {
     title: "Contact Details",
     location: "Based in Torbay, servicing the North Shore",
@@ -67,7 +67,7 @@ export default async function ContactUs() {
       return rawNonce == undefined ? "" : rawNonce;
     });
 
-  var content: ContactUsText | null = await getPageContent(Pages.ContactUs);
+  var content: ContactUsContent | null = await getPageContent(Pages.ContactUs);
 
   if (!content) content = fallbackContent;
 

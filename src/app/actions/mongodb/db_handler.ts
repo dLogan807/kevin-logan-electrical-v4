@@ -2,18 +2,18 @@
 
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { Pages } from "@/components/layout/pages";
-import { fallbackContent as homeFallbackContent, HomeText } from "@/page";
+import { fallbackContent as homeFallbackContent, HomeContent } from "@/page";
 import {
   fallbackContent as aboutUsFallbackContent,
-  AboutUsText,
+  AboutUsContent,
 } from "@/aboutus/page";
 import {
   fallbackContent as rateAndServicesFallbackContent,
-  RateAndServicesText,
+  RateAndServicesContent,
 } from "@/rateandservices/page";
 import {
   fallbackContent as contactUsFallbackContent,
-  ContactUsText,
+  ContactUsContent,
 } from "@/contactus/page";
 import {
   HomeMongoSchema,
@@ -27,12 +27,20 @@ export async function setupMongoDatabase(): Promise<boolean> {
   return await MongoDatabase.Instance.createCollections();
 }
 
-export async function getPageDocument(collectionName: Pages): Promise<boolean> {
+export async function getPageDocument(
+  collectionName: Pages
+): Promise<PageDocument | null> {
   return await MongoDatabase.Instance.getPageDocument(collectionName);
 }
 
 export async function closeConnection(): Promise<any | null> {
   return await MongoDatabase.Instance.closeConnection();
+}
+
+interface PageDocument {
+  page_content: any;
+  date_created: Date;
+  auto_created: boolean;
 }
 
 //Singleton class for MongoDB database operations
@@ -110,7 +118,11 @@ class MongoDatabase {
 
   private async insertFallbackContent(
     collectionName: Pages,
-    pageContent: HomeText | AboutUsText | RateAndServicesText | ContactUsText
+    pageContent:
+      | HomeContent
+      | AboutUsContent
+      | RateAndServicesContent
+      | ContactUsContent
   ): Promise<boolean> {
     if (this.databaseExists) return false;
 
@@ -118,7 +130,11 @@ class MongoDatabase {
       await this.client
         .db(this.databaseName)
         .collection(collectionName)
-        .insertOne(pageContent);
+        .insertOne({
+          page_content: pageContent,
+          date_created: new Date(),
+          auto_created: true,
+        });
     } catch {
       return false;
     }
@@ -126,7 +142,7 @@ class MongoDatabase {
     return true;
   }
 
-  //Create collection and insert default content
+  //Create collection and insert fallback content
   private async createCollection(collectionName: Pages): Promise<boolean> {
     if (this.databaseExists) return false;
 
@@ -137,7 +153,19 @@ class MongoDatabase {
     try {
       await this.client.db(this.databaseName).createCollection(collectionName, {
         validator: {
-          $jsonSchema: schema,
+          $jsonSchema: {
+            bsonType: "object",
+            required: ["page_content", "date_created", "auto_created"],
+            properties: {
+              page_content: schema,
+              date_created: {
+                bsonType: "date",
+              },
+              auto_created: {
+                bsonType: "bool",
+              },
+            },
+          },
         },
       });
 
@@ -180,5 +208,25 @@ class MongoDatabase {
     } catch {
       return null;
     }
+  }
+
+  async addPageDocument(
+    collectionName: Pages,
+    pageContent: any
+  ): Promise<boolean> {
+    try {
+      await this.client
+        .db(this.databaseName)
+        .collection(collectionName)
+        .insertOne({
+          page_content: pageContent,
+          date_created: new Date(),
+          auto_created: false,
+        });
+    } catch {
+      return false;
+    }
+
+    return true;
   }
 }

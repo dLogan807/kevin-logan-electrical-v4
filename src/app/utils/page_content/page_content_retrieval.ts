@@ -25,5 +25,7 @@ export default async function getPageContent(page: Pages): Promise<any | null> {
       break;
   }
 
+  if (content && content.page_content) content = content.page_content;
+
   return content;
 }

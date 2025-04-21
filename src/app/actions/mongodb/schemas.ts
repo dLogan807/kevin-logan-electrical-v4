@@ -42,6 +42,14 @@ export const HomeMongoSchema = {
         },
       },
     },
+    review_name_filter: {
+      bsonType: "array",
+      description:
+        "'review_name_filter' must be an array of strings - Optional",
+      items: {
+        bsonType: "string",
+      },
+    },
   },
 };
 

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     "Find out more about Kevin Logan Electrical. Serving the North Shore community since 1992 and proud to be your local electrician of choice.",
 };
 
-export type AboutUsText = {
+export type AboutUsContent = {
   top_section: {
     text: string;
     button_text: string;
@@ -25,7 +25,7 @@ export type AboutUsText = {
   };
 };
 
-export const fallbackContent: AboutUsText = {
+export const fallbackContent: AboutUsContent = {
   top_section: {
     text: "I founded Kevin Logan Electrical in 1992 and have since been proudly serving the North Shore community. Based in Torbay, you can count on me as your local electrician.",
     button_text: "Registered Electrician",
@@ -38,7 +38,7 @@ export const fallbackContent: AboutUsText = {
 export default async function AboutUs() {
   const mainSection: string = "main_section";
 
-  var content: AboutUsText | null = await getPageContent(Pages.AboutUs);
+  var content: AboutUsContent | null = await getPageContent(Pages.AboutUs);
 
   if (!content) content = fallbackContent;
 

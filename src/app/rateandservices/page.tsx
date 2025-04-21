@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "I offer a wide range of residential services at Kevin Logan Electrical for an affordable rate of $90/hr incl GST.",
 };
 
-export type RateAndServicesText = {
+export type RateAndServicesContent = {
   rate: {
     title: string;
     text: string;
@@ -32,7 +32,7 @@ export type RateAndServicesText = {
   };
 };
 
-export const fallbackContent: RateAndServicesText = {
+export const fallbackContent: RateAndServicesContent = {
   rate: {
     title: "Standard Rate",
     text: "Hourly rate — $90/hr incl. GST. Please note an additional travel charge dependent on mileage.",
@@ -75,7 +75,7 @@ export const fallbackContent: RateAndServicesText = {
 export default async function RateAndServices() {
   const mainSection: string = "main_section";
 
-  var content: RateAndServicesText | null = await getPageContent(
+  var content: RateAndServicesContent | null = await getPageContent(
     Pages.RateAndServices
   );
 

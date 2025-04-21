@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
 };
 
-export type HomeText = {
+export type HomeContent = {
   tagline: {
     title: string;
     subtitle: string;
@@ -37,9 +37,10 @@ export type HomeText = {
     title: string;
     items: string[];
   };
+  review_name_filter: string[];
 };
 
-export const fallbackContent: HomeText = {
+export const fallbackContent: HomeContent = {
   tagline: {
     title: "Your Trusted Local Electrician",
     subtitle: "30 years of experience you can rely on",
@@ -59,12 +60,13 @@ export const fallbackContent: HomeText = {
       "Satisfaction Guaranteed",
     ],
   },
+  review_name_filter: [],
 };
 
 export default async function Home() {
   const mainSection: string = "main_section";
 
-  var content: HomeText | null = await getPageContent(Pages.Home);
+  var content: HomeContent | null = await getPageContent(Pages.Home);
 
   if (!content) content = fallbackContent;
 
@@ -111,6 +113,7 @@ export default async function Home() {
       >
         <GoogleReviewContainer
           query={"" + process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}
+          nameFilter={content.review_name_filter}
         />
       </Paper>
       <Paper className={[classes.map, mainSection].join(" ")} withBorder>
