@@ -23,30 +23,6 @@ import {
 } from "./schemas";
 import { cache } from "react";
 
-// Ensure these are server-side only variables
-const MONGO_DB_USERNAME = process.env.MONGO_DB_USERNAME;
-const MONGO_DB_PASSWORD = process.env.MONGO_DB_PASSWORD;
-const MONGO_DB_CLUSTER = process.env.MONGO_DB_CLUSTER;
-
-if (!MONGO_DB_USERNAME || !MONGO_DB_PASSWORD || !MONGO_DB_CLUSTER) {
-  throw new Error("Missing required MongoDB environment variables");
-}
-
-// Create the MongoDB URI using server-side variables
-const mongoUri = `mongodb+srv://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@${MONGO_DB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority&appName=kevin-logan-electrical`;
-
-// Create the MongoDB client
-const client = new MongoClient(mongoUri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-
-const databaseName = "website_content";
-let databaseExists: boolean = false;
-
 export interface PageDocument {
   page_content: any;
   date_created: Date;
@@ -68,7 +44,18 @@ export async function closeConnection(): Promise<boolean> {
 class MongoDatabase {
   private static _instance: MongoDatabase;
 
-  private MongoDatabase() {}
+  private readonly uri: string = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority&appName=kevin-logan-electrical`;
+  private readonly client: MongoClient = new MongoClient(this.uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  });
+  private readonly databaseName = "website_content";
+  private databaseExists: boolean = false;
+
+  private async MongoDatabase() {}
 
   //Singleton pattern
   static get Instance() {
@@ -77,7 +64,7 @@ class MongoDatabase {
 
   async closeConnection(): Promise<boolean> {
     try {
-      await client.close();
+      await this.client.close();
       return true;
     } catch {
       return false;
@@ -86,8 +73,8 @@ class MongoDatabase {
 
   private async collectionExists(collectionName: Pages): Promise<boolean> {
     try {
-      return await client
-        .db(databaseName)
+      return await this.client
+        .db(this.databaseName)
         .listCollections({ name: collectionName })
         .hasNext();
     } catch {
@@ -133,14 +120,17 @@ class MongoDatabase {
       | RateAndServicesContent
       | ContactUsContent
   ): Promise<boolean> {
-    if (databaseExists) return false;
+    if (this.databaseExists) return false;
 
     try {
-      await client.db(databaseName).collection(collectionName).insertOne({
-        page_content: pageContent,
-        date_created: new Date(),
-        auto_created: true,
-      });
+      await this.client
+        .db(this.databaseName)
+        .collection(collectionName)
+        .insertOne({
+          page_content: pageContent,
+          date_created: new Date(),
+          auto_created: true,
+        });
     } catch {
       return false;
     }
@@ -150,14 +140,14 @@ class MongoDatabase {
 
   //Create collection and insert fallback content
   private async createCollection(collectionName: Pages): Promise<boolean> {
-    if (databaseExists) return false;
+    if (this.databaseExists) return false;
 
     const schema = this.getPageSchema(collectionName);
     const fallbackContent = this.getPageFallbackContent(collectionName);
     if (!schema || !fallbackContent) return false;
 
     try {
-      await client.db(databaseName).createCollection(collectionName, {
+      await this.client.db(this.databaseName).createCollection(collectionName, {
         validator: {
           $jsonSchema: {
             bsonType: "object",
@@ -185,7 +175,7 @@ class MongoDatabase {
 
   //Create all collections for defined pages
   async createPageCollections(): Promise<boolean> {
-    if (databaseExists) return true;
+    if (this.databaseExists) return true;
     var allCreated: boolean = true;
 
     for (const collectionName of Object.values(Pages)) {
@@ -195,18 +185,18 @@ class MongoDatabase {
       }
     }
 
-    databaseExists = true;
+    this.databaseExists = true;
     return allCreated;
   }
 
   //Retrieve the most recent document from the page's collection
   async getPageDocument(collectionName: Pages): Promise<any | null> {
     //Attempt to create collections in case they don't exist
-    if (!databaseExists) await this.createPageCollections();
+    if (!this.databaseExists) await this.createPageCollections();
 
     try {
-      return await client
-        .db(databaseName)
+      return await this.client
+        .db(this.databaseName)
         .collection(collectionName)
         .findOne(
           {},
@@ -219,17 +209,20 @@ class MongoDatabase {
     }
   }
 
-  //Private & unused currently as admin page not yet created
+  //Private currently as admin page not yet created
   private async addPageDocumentByUser(
     collectionName: Pages,
     pageContent: any
   ): Promise<boolean> {
     try {
-      await client.db(databaseName).collection(collectionName).insertOne({
-        page_content: pageContent,
-        date_created: new Date(),
-        auto_created: false,
-      });
+      await this.client
+        .db(this.databaseName)
+        .collection(collectionName)
+        .insertOne({
+          page_content: pageContent,
+          date_created: new Date(),
+          auto_created: false,
+        });
     } catch {
       return false;
     }
