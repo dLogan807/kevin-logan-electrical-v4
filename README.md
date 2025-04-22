@@ -1,6 +1,6 @@
 ## About
 
-A small business website developed for `Kevin Logan Electrical`.
+A full-stack small business website developed for `Kevin Logan Electrical`.
 
 #### Deployment Status
 
@@ -23,8 +23,8 @@ The website interfaces with:
 - **Google Reviews** are showcased live in a custom component via Google Places API.
 - **Responsive Design** is a core focus of the website, where it is designed to adapt to a wide range of devices.
 - **Performance** was a key consideration. To achieve this, best practices were followed, and pages were carefully optimised. See the [PageSpeed Insights report](https://pagespeed.web.dev/analysis/https-www-kevinloganelectrical-co-nz/vp2fcnc48t?form_factor=mobile).
+- Website text can be **edited on-demand** through MongoDB. Content is cached for one day and then [regenerated](https://nextjs.org/docs/app/building-your-application/data-fetching/incremental-static-regeneration).
 
 ### Work in Progress
 
 - **Session Validation** adapted from [Lucia](https://lucia-auth.com/sessions/cookies/nextjs)'s guides (Zero-Clause BSD license).
-- Website text can be **edited on-demand** through an admin page (requires authentication). Text is stored/fetched from MongoDB.
