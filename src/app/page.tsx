@@ -16,8 +16,9 @@ import tagline_image from "@/assets/tagline_background.webp";
 import { theme } from "@/components/theme";
 import GoogleMap from "./components/google_map/google_map";
 import GoogleReviewContainer from "./components/google_reviews/google_review_container";
-import getPageContent from "@/actions/mongodb/page_content_retrieval";
 import { Pages } from "./components/layout/pages";
+import { unstable_cache } from "next/cache";
+import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -63,12 +64,29 @@ export const fallbackContent: HomeContent = {
   review_name_filter: [],
 };
 
+//Cache page content for 1 day
+const getPageContent = unstable_cache(
+  async (): Promise<HomeContent> => {
+    const contentDocument: PageDocument | null = await getPageDocument(
+      Pages.Home
+    );
+
+    //Return fallback content if database content is retrieved as null
+    const content: HomeContent =
+      contentDocument && contentDocument.page_content
+        ? (contentDocument.page_content as HomeContent)
+        : fallbackContent;
+
+    return content;
+  },
+  [Pages.Home],
+  { revalidate: 86400, tags: [Pages.Home] }
+);
+
 export default async function Home() {
   const mainSection: string = "main_section";
 
-  var content: HomeContent | null = await getPageContent(Pages.Home);
-
-  if (!content) content = fallbackContent;
+  const content: HomeContent = await getPageContent();
 
   return (
     <Box className={[classes.home_grid, "content_grid"].join(" ")}>

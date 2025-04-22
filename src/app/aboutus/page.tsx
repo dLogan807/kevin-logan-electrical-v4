@@ -6,7 +6,8 @@ import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
 import { theme } from "@/components/theme";
 import { Pages } from "@/components/layout/pages";
-import getPageContent from "@/actions/mongodb/page_content_retrieval";
+import { unstable_cache } from "next/cache";
+import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -35,12 +36,29 @@ export const fallbackContent: AboutUsContent = {
   },
 };
 
+//Cache page content for 1 day
+const getPageContent = unstable_cache(
+  async (): Promise<AboutUsContent> => {
+    const contentDocument: PageDocument | null = await getPageDocument(
+      Pages.AboutUs
+    );
+
+    //Return fallback content if database content is retrieved as null
+    const content: AboutUsContent =
+      contentDocument && contentDocument.page_content
+        ? (contentDocument.page_content as AboutUsContent)
+        : fallbackContent;
+
+    return content;
+  },
+  [Pages.AboutUs],
+  { revalidate: 86400, tags: [Pages.AboutUs] }
+);
+
 export default async function AboutUs() {
   const mainSection: string = "main_section";
 
-  var content: AboutUsContent | null = await getPageContent(Pages.AboutUs);
-
-  if (!content) content = fallbackContent;
+  const content: AboutUsContent = await getPageContent();
 
   return (
     <Box className={[classes.about_grid, "content_grid"].join(" ")}>

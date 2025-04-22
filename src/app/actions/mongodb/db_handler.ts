@@ -21,26 +21,23 @@ import {
   RateAndServicesMongoSchema,
   ContactUsMongoSchema,
 } from "./schemas";
+import { cache } from "react";
 
-//Exported functions for server actions
-export async function setupMongoDatabase(): Promise<boolean> {
-  return await MongoDatabase.Instance.createCollections();
-}
-
-export async function getPageDocument(
-  collectionName: Pages
-): Promise<PageDocument | null> {
-  return await MongoDatabase.Instance.getPageDocument(collectionName);
-}
-
-export async function closeConnection(): Promise<any | null> {
-  return await MongoDatabase.Instance.closeConnection();
-}
-
-interface PageDocument {
+export interface PageDocument {
   page_content: any;
   date_created: Date;
   auto_created: boolean;
+}
+
+//Page content retrieval (cached - cache may not work here)
+export const getPageDocument = cache(
+  async (collectionName: Pages): Promise<PageDocument | null> => {
+    return await MongoDatabase.Instance.getPageDocument(collectionName);
+  }
+);
+
+export async function closeConnection(): Promise<boolean> {
+  return await MongoDatabase.Instance.closeConnection();
 }
 
 //Singleton class for MongoDB database operations
@@ -58,7 +55,7 @@ class MongoDatabase {
   private readonly databaseName = "website_content";
   private databaseExists: boolean = false;
 
-  private MongoDatabase() {}
+  private async MongoDatabase() {}
 
   //Singleton pattern
   static get Instance() {
@@ -66,7 +63,6 @@ class MongoDatabase {
   }
 
   async closeConnection(): Promise<boolean> {
-    console.log("Closing connection to MongoDB");
     try {
       await this.client.close();
       return true;
@@ -86,7 +82,7 @@ class MongoDatabase {
     }
   }
 
-  private getSchema(collectionName: Pages): any {
+  private getPageSchema(collectionName: Pages): any {
     switch (collectionName) {
       case Pages.Home:
         return HomeMongoSchema;
@@ -146,7 +142,7 @@ class MongoDatabase {
   private async createCollection(collectionName: Pages): Promise<boolean> {
     if (this.databaseExists) return false;
 
-    const schema = this.getSchema(collectionName);
+    const schema = this.getPageSchema(collectionName);
     const fallbackContent = this.getPageFallbackContent(collectionName);
     if (!schema || !fallbackContent) return false;
 
@@ -178,7 +174,7 @@ class MongoDatabase {
   }
 
   //Create all collections for defined pages
-  async createCollections(): Promise<boolean> {
+  async createPageCollections(): Promise<boolean> {
     if (this.databaseExists) return true;
     var allCreated: boolean = true;
 
@@ -195,6 +191,9 @@ class MongoDatabase {
 
   //Retrieve the most recent document from the page's collection
   async getPageDocument(collectionName: Pages): Promise<any | null> {
+    //Attempt to create collections in case they don't exist
+    if (!this.databaseExists) await this.createPageCollections();
+
     try {
       return await this.client
         .db(this.databaseName)
@@ -210,7 +209,8 @@ class MongoDatabase {
     }
   }
 
-  async addPageDocument(
+  //Private currently as admin page not yet created
+  private async addPageDocumentByUser(
     collectionName: Pages,
     pageContent: any
   ): Promise<boolean> {

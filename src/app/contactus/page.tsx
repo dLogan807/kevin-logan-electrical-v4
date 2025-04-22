@@ -18,8 +18,9 @@ import {
 import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
-import getPageContent from "@/actions/mongodb/page_content_retrieval";
 import { Pages } from "@/components/layout/pages";
+import { unstable_cache } from "next/cache";
+import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -58,6 +59,25 @@ export const fallbackContent: ContactUsContent = {
   },
 };
 
+//Cache page content for 1 day
+const getPageContent = unstable_cache(
+  async (): Promise<ContactUsContent> => {
+    const contentDocument: PageDocument | null = await getPageDocument(
+      Pages.ContactUs
+    );
+
+    //Return fallback content if database content is retrieved as null
+    const content: ContactUsContent =
+      contentDocument && contentDocument.page_content
+        ? (contentDocument.page_content as ContactUsContent)
+        : fallbackContent;
+
+    return content;
+  },
+  [Pages.ContactUs],
+  { revalidate: 86400, tags: [Pages.ContactUs] }
+);
+
 export default async function ContactUs() {
   const mainSection: string = "main_section";
 
@@ -67,9 +87,7 @@ export default async function ContactUs() {
       return rawNonce == undefined ? "" : rawNonce;
     });
 
-  var content: ContactUsContent | null = await getPageContent(Pages.ContactUs);
-
-  if (!content) content = fallbackContent;
+  const content: ContactUsContent = await getPageContent();
 
   return (
     <ReCaptchaProvider

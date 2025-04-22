@@ -1,7 +1,9 @@
+//Schemas for MongoDB collections (validation performed server side via MongoDB Atlas)
+
 export const HomeMongoSchema = {
   bsonType: "object",
   title: "Home Object Validation",
-  required: ["tagline", "summary"],
+  required: ["tagline", "summary", "review_name_filter"],
   properties: {
     tagline: {
       bsonType: "object",
@@ -45,7 +47,7 @@ export const HomeMongoSchema = {
     review_name_filter: {
       bsonType: "array",
       description:
-        "'review_name_filter' must be an array of strings - Optional",
+        "'review_name_filter' must be an array of strings - Required",
       items: {
         bsonType: "string",
       },

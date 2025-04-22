@@ -2,8 +2,9 @@ import { Box, Group, Paper, Stack, Text } from "@mantine/core";
 import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
 import { ServicesCard } from "@/components/services_card/services_card";
-import getPageContent from "@/actions/mongodb/page_content_retrieval";
 import { Pages } from "@/components/layout/pages";
+import { unstable_cache } from "next/cache";
+import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -72,14 +73,29 @@ export const fallbackContent: RateAndServicesContent = {
   },
 };
 
+//Cache page content for 1 day
+const getPageContent = unstable_cache(
+  async (): Promise<RateAndServicesContent> => {
+    const contentDocument: PageDocument | null = await getPageDocument(
+      Pages.RateAndServices
+    );
+
+    //Return fallback content if database content is retrieved as null
+    const content: RateAndServicesContent =
+      contentDocument && contentDocument.page_content
+        ? (contentDocument.page_content as RateAndServicesContent)
+        : fallbackContent;
+
+    return content;
+  },
+  [Pages.RateAndServices],
+  { revalidate: 86400, tags: [Pages.RateAndServices] }
+);
+
 export default async function RateAndServices() {
   const mainSection: string = "main_section";
 
-  var content: RateAndServicesContent | null = await getPageContent(
-    Pages.RateAndServices
-  );
-
-  if (!content) content = fallbackContent;
+  const content: RateAndServicesContent = await getPageContent();
 
   return (
     <Box className={[classes.rateservice_grid, "content_grid"].join(" ")}>
