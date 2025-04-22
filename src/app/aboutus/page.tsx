@@ -36,7 +36,7 @@ export const fallbackContent: AboutUsContent = {
   },
 };
 
-//Cache page content for 1 day
+//Cache page content for 5 days
 const getPageContent = unstable_cache(
   async (): Promise<AboutUsContent> => {
     const contentDocument: PageDocument | null = await getPageDocument(
@@ -52,7 +52,7 @@ const getPageContent = unstable_cache(
     return content;
   },
   [Pages.AboutUs],
-  { revalidate: 86400, tags: [Pages.AboutUs] }
+  { revalidate: 432000, tags: [Pages.AboutUs] }
 );
 
 export default async function AboutUs() {

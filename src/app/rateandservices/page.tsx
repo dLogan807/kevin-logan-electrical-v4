@@ -73,7 +73,7 @@ export const fallbackContent: RateAndServicesContent = {
   },
 };
 
-//Cache page content for 1 day
+//Cache page content for 5 days
 const getPageContent = unstable_cache(
   async (): Promise<RateAndServicesContent> => {
     const contentDocument: PageDocument | null = await getPageDocument(
@@ -89,7 +89,7 @@ const getPageContent = unstable_cache(
     return content;
   },
   [Pages.RateAndServices],
-  { revalidate: 86400, tags: [Pages.RateAndServices] }
+  { revalidate: 432000, tags: [Pages.RateAndServices] }
 );
 
 export default async function RateAndServices() {

@@ -23,7 +23,7 @@ The website interfaces with:
 - **Google Reviews** are showcased live in a custom component via Google Places API.
 - **Responsive Design** is a core focus of the website, where it is designed to adapt to a wide range of devices.
 - **Performance** was a key consideration. To achieve this, best practices were followed, and pages were carefully optimised. See the [PageSpeed Insights report](https://pagespeed.web.dev/analysis/https-www-kevinloganelectrical-co-nz/vp2fcnc48t?form_factor=mobile).
-- Website text can be **edited on-demand** through MongoDB. Content is cached for one day and then [regenerated](https://nextjs.org/docs/app/building-your-application/data-fetching/incremental-static-regeneration).
+- Website text can be **edited on-demand** through MongoDB. Content is cached for 5 days and then [regenerated](https://nextjs.org/docs/app/building-your-application/data-fetching/incremental-static-regeneration).
 
 ### Work in Progress
 

@@ -64,7 +64,7 @@ export const fallbackContent: HomeContent = {
   review_name_filter: [],
 };
 
-//Cache page content for 1 day
+//Cache page content for 5 days
 const getPageContent = unstable_cache(
   async (): Promise<HomeContent> => {
     const contentDocument: PageDocument | null = await getPageDocument(
@@ -80,7 +80,7 @@ const getPageContent = unstable_cache(
     return content;
   },
   [Pages.Home],
-  { revalidate: 86400, tags: [Pages.Home] }
+  { revalidate: 432000, tags: [Pages.Home] }
 );
 
 export default async function Home() {
