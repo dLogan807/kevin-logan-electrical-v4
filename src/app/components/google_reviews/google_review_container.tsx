@@ -38,11 +38,13 @@ function NoReviewsPrompt() {
 
 export default async function GoogleReviewContainer({
   query,
+  nameFilter,
 }: {
   query: string;
+  nameFilter: string[];
 }) {
   const googleReviews: GoogleReviews | null =
-    query === "" ? null : await getGoogleReviews(query);
+    query === "" ? null : await getGoogleReviews(query, nameFilter);
 
   if (
     !googleReviews ||

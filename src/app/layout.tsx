@@ -1,10 +1,10 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "./components/footer";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "./components/layout/footer";
 import { ColorSchemeScript, Box, Paper } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
-import { Providers } from "@/components/providers";
+import { Providers } from "@/components/layout/providers";
 import { headers } from "next/headers";
 
 import "@mantine/core/styles.css";
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
   description:
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
+  metadataBase: new URL("https://www.kevinloganelectrical.co.nz"),
   openGraph: {
     title: "Kevin Logan Electrical - Your Trusted Electrician",
     description:

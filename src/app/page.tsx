@@ -16,6 +16,9 @@ import tagline_image from "@/assets/tagline_background.webp";
 import { theme } from "@/components/theme";
 import GoogleMap from "./components/google_map/google_map";
 import GoogleReviewContainer from "./components/google_reviews/google_review_container";
+import { Pages } from "./components/layout/pages";
+import { unstable_cache } from "next/cache";
+import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -24,22 +27,76 @@ export const metadata: Metadata = {
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
 };
 
-export default function Home() {
+export type HomeContent = {
+  tagline: {
+    title: string;
+    subtitle: string;
+    description: string;
+    button_text: string;
+  };
+  summary: {
+    title: string;
+    items: string[];
+  };
+  review_name_filter: string[];
+};
+
+export const fallbackContent: HomeContent = {
+  tagline: {
+    title: "Your Trusted Local Electrician",
+    subtitle: "30 years of experience you can rely on",
+    description:
+      "At Kevin Logan Electrical, we believe in providing a competent, professional, and courteous electrical service. Striving to give you results of the highest quality is at our forefront.",
+    button_text: "Get in touch",
+  },
+  summary: {
+    title: "Our Service",
+    items: [
+      "Based in Torbay, North Shore",
+      "Professional, Friendly & Approachable",
+      "Wide Range of Residential Services",
+      "Affordable $90/hr incl. GST",
+      "Independent",
+      "Committed to Sustainability",
+      "Satisfaction Guaranteed",
+    ],
+  },
+  review_name_filter: [],
+};
+
+//Cache page content for 5 days
+const getPageContent = unstable_cache(
+  async (): Promise<HomeContent> => {
+    const contentDocument: PageDocument | null = await getPageDocument(
+      Pages.Home
+    );
+
+    //Return fallback content if database content is retrieved as null
+    const content: HomeContent =
+      contentDocument && contentDocument.page_content
+        ? (contentDocument.page_content as HomeContent)
+        : fallbackContent;
+
+    return content;
+  },
+  [Pages.Home],
+  { revalidate: 432000, tags: [Pages.Home] }
+);
+
+export default async function Home() {
   const mainSection: string = "main_section";
+
+  const content: HomeContent = await getPageContent();
 
   return (
     <Box className={[classes.home_grid, "content_grid"].join(" ")}>
       <Paper className={[classes.tagline, mainSection].join(" ")} withBorder>
         <Stack>
-          <h1>Your Trusted Local Electrician</h1>
-          <h2>30 years of experience you can rely on</h2>
-          <Text>
-            At Kevin Logan Electrical, we believe in providing a competent,
-            professional, and courteous electrical service. Striving to give you
-            results of the highest quality is at our forefront.
-          </Text>
+          <h1>{content.tagline.title}</h1>
+          <h2>{content.tagline.subtitle}</h2>
+          <Text>{content.tagline.description}</Text>
           <Link href="/contactus" className={classes.contact_button}>
-            <Button>Get in touch</Button>
+            <Button>{content.tagline.button_text}</Button>
           </Link>
         </Stack>
       </Paper>
@@ -55,7 +112,7 @@ export default function Home() {
         </Box>
       </Box>
       <Paper className={[classes.summary, mainSection].join(" ")} withBorder>
-        <h2>Our Service</h2>
+        <h2>{content.summary.title}</h2>
         <List
           icon={
             <ThemeIcon className={"checkmark"}>
@@ -63,13 +120,9 @@ export default function Home() {
             </ThemeIcon>
           }
         >
-          <ListItem>Based in Torbay, North Shore</ListItem>
-          <ListItem>Professional, Friendly & Approachable</ListItem>
-          <ListItem>Wide Range of Residential Services</ListItem>
-          <ListItem>Affordable $90/hr incl. GST</ListItem>
-          <ListItem>Independent</ListItem>
-          <ListItem>Committed to Sustainability</ListItem>
-          <ListItem>Satisfaction Guaranteed</ListItem>
+          {content.summary.items.map((item) => (
+            <ListItem key={item}>{item}</ListItem>
+          ))}
         </List>
       </Paper>
       <Paper
@@ -78,6 +131,7 @@ export default function Home() {
       >
         <GoogleReviewContainer
           query={"" + process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}
+          nameFilter={content.review_name_filter}
         />
       </Paper>
       <Paper className={[classes.map, mainSection].join(" ")} withBorder>

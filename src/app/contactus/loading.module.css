@@ -2,20 +2,19 @@
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
   grid-template-areas: "form details";
-  height: 100%;
 
   @media (max-width: $mantine-breakpoint-sm) {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
     grid-template-areas: "details" "form";
-    height: 50rem;
   }
 }
 
 .contact_details {
   grid-area: details;
+  height: 25rem;
 }
 
 .contact_form {
   grid-area: form;
+  height: 35rem;
 }

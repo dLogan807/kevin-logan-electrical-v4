@@ -16,8 +16,11 @@ import {
   IconPhone,
 } from "@tabler/icons-react";
 import { ReCaptchaProvider } from "next-recaptcha-v3";
-import { ContactForm } from "@/components/contact_form";
+import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
+import { Pages } from "@/components/layout/pages";
+import { unstable_cache } from "next/cache";
+import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -25,6 +28,55 @@ export const metadata: Metadata = {
   description:
     "Contact Kevin Logan Electrical. Open Monday to Friday, don't hesitate to give me call for a reliable service of the highest calibre.",
 };
+
+export type ContactUsContent = {
+  contact_details: {
+    title: string;
+    location: string;
+    phone: string;
+    mobile: string;
+    email: string;
+  };
+  service_hours: {
+    title: string;
+    hours: string;
+    days: string;
+  };
+};
+
+export const fallbackContent: ContactUsContent = {
+  contact_details: {
+    title: "Contact Details",
+    location: "Based in Torbay, servicing the North Shore",
+    phone: "09 473 9712",
+    mobile: "0274 978 473",
+    email: "kevinlog@kevinloganelectrical.co.nz",
+  },
+  service_hours: {
+    title: "Service Hours",
+    hours: "8 AM - 5 PM",
+    days: "Monday - Friday",
+  },
+};
+
+//Cache page content for 5 days
+const getPageContent = unstable_cache(
+  async (): Promise<ContactUsContent> => {
+    const contentDocument: PageDocument | null = await getPageDocument(
+      Pages.ContactUs
+    );
+
+    //Return fallback content if database content is retrieved as null
+    const content: ContactUsContent =
+      contentDocument && contentDocument.page_content
+        ? (contentDocument.page_content as ContactUsContent)
+        : fallbackContent;
+
+    return content;
+  },
+  [Pages.ContactUs],
+  { revalidate: 432000, tags: [Pages.ContactUs] }
+);
 
 export default async function ContactUs() {
   const mainSection: string = "main_section";
@@ -34,6 +86,8 @@ export default async function ContactUs() {
     .then((rawNonce) => {
       return rawNonce == undefined ? "" : rawNonce;
     });
+
+  const content: ContactUsContent = await getPageContent();
 
   return (
     <ReCaptchaProvider
@@ -53,7 +107,7 @@ export default async function ContactUs() {
           className={[classes.contact_details, mainSection].join(" ")}
           withBorder
         >
-          <h4>Contact Details</h4>
+          <h4>{content.contact_details.title}</h4>
           <List>
             <ListItem
               icon={
@@ -62,7 +116,7 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              Based in Torbay, servicing the North Shore
+              {content.contact_details.location}
             </ListItem>
             <ListItem
               icon={
@@ -71,7 +125,11 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              <Anchor href="tel:094739712">09 473 9712</Anchor>
+              <Anchor
+                href={`tel:${content.contact_details.phone.split(" ").join("")}`}
+              >
+                {content.contact_details.phone}
+              </Anchor>
             </ListItem>
             <ListItem
               icon={
@@ -80,7 +138,11 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              <Anchor href="tel:+64274978473">0274 978 473</Anchor>
+              <Anchor
+                href={`tel:+64${content.contact_details.mobile.split(" ").join("")}`}
+              >
+                {content.contact_details.mobile}
+              </Anchor>
             </ListItem>
             <ListItem
               icon={
@@ -89,12 +151,12 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              <Anchor href="mailto:kevinlog@kevinloganelectrical.co.nz">
-                kevinlog@kevinloganelectrical.co.nz
+              <Anchor href={`mailto:${content.contact_details.email}`}>
+                {content.contact_details.email}
               </Anchor>
             </ListItem>
           </List>
-          <h4>Service Hours</h4>
+          <h4>{content.service_hours.title}</h4>
           <List>
             <ListItem
               icon={
@@ -103,8 +165,8 @@ export default async function ContactUs() {
                 </ThemeIcon>
               }
             >
-              <Text>8 AM - 5 PM</Text>
-              <Text>Monday - Friday</Text>
+              <Text>{content.service_hours.hours}</Text>
+              <Text>{content.service_hours.days}</Text>
             </ListItem>
           </List>
         </Paper>

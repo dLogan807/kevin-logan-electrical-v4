@@ -1,6 +1,6 @@
 "use server";
 
-import { ContactFormData } from "@/components/contact_form";
+import { ContactFormData } from "@/components/contact_form/contact_form";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 

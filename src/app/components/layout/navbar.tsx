@@ -23,27 +23,13 @@ import {
   IconPhoneCall,
   IconPlugConnected,
 } from "@tabler/icons-react";
+import { Pages } from "@/components/layout/pages";
 import classes from "./navbar.module.css";
 import { theme } from "@/components/theme";
 
-export enum Pages {
-  // eslint-disable-next-line no-unused-vars
-  Error = -1,
-  // eslint-disable-next-line no-unused-vars
-  Home = 0,
-  // eslint-disable-next-line no-unused-vars
-  AboutUs = 1,
-  // eslint-disable-next-line no-unused-vars
-  RateAndServices = 2,
-  // eslint-disable-next-line no-unused-vars
-  ContactUs = 3,
-}
-
 //Return the index of the currently navigated route
-function getRouteIndex(path: string | null): Pages {
+function getRoute(path: string | null): Pages | null {
   switch (path) {
-    case null:
-      return Pages.Error;
     case "/":
       return Pages.Home;
     case "/aboutus":
@@ -53,7 +39,7 @@ function getRouteIndex(path: string | null): Pages {
     case "/contactus":
       return Pages.ContactUs;
     default:
-      return Pages.Error;
+      return null;
   }
 }
 
@@ -66,7 +52,8 @@ interface ILink {
 
 //Load theme icon lazily
 var DynamicThemeSelector = dynamic(
-  () => import("./theme_selector").then((mod) => mod.ThemeSelector),
+  () =>
+    import("../theme_selector/theme_selector").then((mod) => mod.ThemeSelector),
   {
     ssr: false,
     loading: () => (
@@ -113,10 +100,10 @@ export function Navbar() {
   }, [pathname]);
 
   //Update route on path change
-  const [active, setActive] = useState(getRouteIndex(path));
+  const [active, setActive] = useState<Pages | null>(getRoute(path));
 
   useEffect(() => {
-    setActive(getRouteIndex(path));
+    setActive(getRoute(path));
   }, [path]);
 
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -156,14 +143,7 @@ export function Navbar() {
     <header className={classes.header}>
       <Container className={classes.inner}>
         <Container className={classes.logo}>
-          <Link
-            href="/"
-            aria-label="Kevin Logan Electrical Home"
-            onClick={() => {
-              setActive(linkData[Pages.Home].value);
-              close();
-            }}
-          >
+          <Link href="/" aria-label="Kevin Logan Electrical Home">
             <Image
               src={logo}
               alt="Kevin Logan Electrical logo"

@@ -29,7 +29,7 @@ export default function Licenses() {
       >
         <Stack className={classes.heading}>
           <h1>Open Source Licenses</h1>
-          <h2>All licenses used in this website</h2>
+          <h2>All licenses for software used in this website</h2>
         </Stack>
         <Stack gap="xl">
           {licenses.map((l) => (

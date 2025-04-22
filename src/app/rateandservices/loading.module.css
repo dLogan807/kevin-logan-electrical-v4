@@ -1,5 +1,5 @@
 .rateservice_grid {
-  grid-template-rows: 0.4fr 1.5fr;
+  grid-template-rows: 0.4fr auto;
   grid-template-columns: 1fr;
   grid-template-areas: "rate rate" "services services";
 }
@@ -7,6 +7,7 @@
 .rateservice_rate {
   grid-area: rate;
   display: flex;
+  height: 12rem;
 
   @media (max-width: $mantine-breakpoint-sm) {
     display: block;
@@ -16,15 +17,13 @@
 
 .rateservice_services {
   grid-area: services;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 0.1fr 0.1fr 4fr;
-  grid-template-areas: "serv-heading serv-heading serv-heading" "serv-preamble serv-preamble serv-preamble" "serv-list_1 serv-list_2 serv-list_3";
+  height: 35rem;
 
   @media (max-width: $mantine-breakpoint-sm) {
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.1fr 0.1fr 1fr;
-    grid-template-areas: "serv-heading" "serv-preamble" "serv-lists";
-    height: 50rem;
+    height: 70rem;
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    height: 80rem;
   }
 }

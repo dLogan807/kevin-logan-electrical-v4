@@ -5,6 +5,9 @@ import { IconCertificate } from "@tabler/icons-react";
 import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
 import { theme } from "@/components/theme";
+import { Pages } from "@/components/layout/pages";
+import { unstable_cache } from "next/cache";
+import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -13,8 +16,49 @@ export const metadata: Metadata = {
     "Find out more about Kevin Logan Electrical. Serving the North Shore community since 1992 and proud to be your local electrician of choice.",
 };
 
-export default function AboutUs() {
+export type AboutUsContent = {
+  top_section: {
+    text: string;
+    button_text: string;
+  };
+  bottom_section: {
+    text: string;
+  };
+};
+
+export const fallbackContent: AboutUsContent = {
+  top_section: {
+    text: "I founded Kevin Logan Electrical in 1992 and have since been proudly serving the North Shore community. Based in Torbay, you can count on me as your local electrician.",
+    button_text: "Registered Electrician",
+  },
+  bottom_section: {
+    text: "I specialise in residential work, offering a competent and reliable electrical service you can count on. In addition, with my friendly and professional manner, I can answer any questions you may have about my business or services. I pride myself on quality workmanship and professional service from repairs and maintenance to installations. \n\n At Kevin Logan Electrical, my goal is to provide you with a courteous, prompt, professional service of the highest calibre.",
+  },
+};
+
+//Cache page content for 5 days
+const getPageContent = unstable_cache(
+  async (): Promise<AboutUsContent> => {
+    const contentDocument: PageDocument | null = await getPageDocument(
+      Pages.AboutUs
+    );
+
+    //Return fallback content if database content is retrieved as null
+    const content: AboutUsContent =
+      contentDocument && contentDocument.page_content
+        ? (contentDocument.page_content as AboutUsContent)
+        : fallbackContent;
+
+    return content;
+  },
+  [Pages.AboutUs],
+  { revalidate: 432000, tags: [Pages.AboutUs] }
+);
+
+export default async function AboutUs() {
   const mainSection: string = "main_section";
+
+  const content: AboutUsContent = await getPageContent();
 
   return (
     <Box className={[classes.about_grid, "content_grid"].join(" ")}>
@@ -23,18 +67,14 @@ export default function AboutUs() {
         withBorder
       >
         <Stack>
-          <Text>
-            I founded Kevin Logan Electrical in 1992 and have since been proudly
-            serving the North Shore community. Based in Torbay, you can count on
-            me as your local electrician.
-          </Text>
+          <Text>{content.top_section.text}</Text>
           <Button
             leftSection={<IconCertificate aria-label="Certificate" />}
             component={Link}
             aria-label="Electrical Workers Registration Board website"
             href="https://kete.mbie.govt.nz/EW/EWPRSearch/practitioner/?id=efe7cde3-b142-df11-917a-005056ae567f"
           >
-            Registered Electrician
+            {content.top_section.button_text}
           </Button>
         </Stack>
       </Paper>
@@ -55,17 +95,7 @@ export default function AboutUs() {
         className={[classes.about_text_2, mainSection].join(" ")}
         withBorder
       >
-        <Text>
-          I specialise in residential work, offering a competent and reliable
-          electrical service you can count on. In addition, with my friendly and
-          professional manner, I can answer any questions you may have about my
-          business or services. I pride myself on quality workmanship and
-          professional service from repairs and maintenance to installations.
-          <br />
-          <br />
-          At Kevin Logan Electrical, my goal is to provide you with a courteous,
-          prompt, professional service of the highest calibre.
-        </Text>
+        <Text>{content.bottom_section.text}</Text>
       </Paper>
     </Box>
   );
