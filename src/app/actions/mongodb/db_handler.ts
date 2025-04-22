@@ -40,7 +40,7 @@ export async function closeConnection(): Promise<boolean> {
   return await MongoDatabase.Instance.closeConnection();
 }
 
-export const getMongoUri = () => {
+async function getMongoUri(): Promise<string> {
   if (
     !process.env.MONGO_DB_USERNAME ||
     !process.env.MONGO_DB_PASSWORD ||
@@ -50,20 +50,27 @@ export const getMongoUri = () => {
   }
 
   return `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority&appName=kevin-logan-electrical`;
-};
+}
+
+//Get the MongoDB client. Server function to avoid exposing env values
+async function getMongoClient(): Promise<MongoClient> {
+  return getMongoUri().then(
+    (uri) =>
+      new MongoClient(uri, {
+        serverApi: {
+          version: ServerApiVersion.v1,
+          strict: true,
+          deprecationErrors: true,
+        },
+      })
+  );
+}
 
 //Singleton class for MongoDB database operations
 class MongoDatabase {
   private static _instance: MongoDatabase;
 
-  private readonly uri: string = getMongoUri();
-  private readonly client: MongoClient = new MongoClient(this.uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    },
-  });
+  private readonly client: Promise<MongoClient> = getMongoClient();
   private readonly databaseName = "website_content";
   private databaseExists: boolean = false;
 
@@ -76,7 +83,7 @@ class MongoDatabase {
 
   async closeConnection(): Promise<boolean> {
     try {
-      await this.client.close();
+      await (await this.client).close();
       return true;
     } catch {
       return false;
@@ -85,7 +92,7 @@ class MongoDatabase {
 
   private async collectionExists(collectionName: Pages): Promise<boolean> {
     try {
-      return await this.client
+      return await (await this.client)
         .db(this.databaseName)
         .listCollections({ name: collectionName })
         .hasNext();
@@ -135,7 +142,7 @@ class MongoDatabase {
     if (this.databaseExists) return false;
 
     try {
-      await this.client
+      await (await this.client)
         .db(this.databaseName)
         .collection(collectionName)
         .insertOne({
@@ -159,23 +166,25 @@ class MongoDatabase {
     if (!schema || !fallbackContent) return false;
 
     try {
-      await this.client.db(this.databaseName).createCollection(collectionName, {
-        validator: {
-          $jsonSchema: {
-            bsonType: "object",
-            required: ["page_content", "date_created", "auto_created"],
-            properties: {
-              page_content: schema,
-              date_created: {
-                bsonType: "date",
-              },
-              auto_created: {
-                bsonType: "bool",
+      await (await this.client)
+        .db(this.databaseName)
+        .createCollection(collectionName, {
+          validator: {
+            $jsonSchema: {
+              bsonType: "object",
+              required: ["page_content", "date_created", "auto_created"],
+              properties: {
+                page_content: schema,
+                date_created: {
+                  bsonType: "date",
+                },
+                auto_created: {
+                  bsonType: "bool",
+                },
               },
             },
           },
-        },
-      });
+        });
 
       await this.insertFallbackContent(collectionName, fallbackContent);
     } catch {
@@ -207,7 +216,9 @@ class MongoDatabase {
     if (!this.databaseExists) await this.createPageCollections();
 
     try {
-      return await this.client
+      return await (
+        await this.client
+      )
         .db(this.databaseName)
         .collection(collectionName)
         .findOne(
@@ -221,13 +232,13 @@ class MongoDatabase {
     }
   }
 
-  //Private currently as admin page not yet created
+  //Private & unused currently as admin page not yet created
   private async addPageDocumentByUser(
     collectionName: Pages,
     pageContent: any
   ): Promise<boolean> {
     try {
-      await this.client
+      await (await this.client)
         .db(this.databaseName)
         .collection(collectionName)
         .insertOne({
