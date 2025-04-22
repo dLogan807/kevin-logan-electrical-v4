@@ -29,204 +29,176 @@ export interface PageDocument {
   auto_created: boolean;
 }
 
-//Page content retrieval (cached - cache may not work here)
-export const getPageDocument = cache(
-  async (collectionName: Pages): Promise<PageDocument | null> => {
-    return await MongoDatabase.Instance.getPageDocument(collectionName);
-  }
-);
+const uri: string = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority&appName=kevin-logan-electrical`;
+const client: MongoClient = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+const databaseName = "website_content";
+var databaseExists: boolean = false;
 
 export async function closeConnection(): Promise<boolean> {
-  return await MongoDatabase.Instance.closeConnection();
+  try {
+    await client.close();
+    return true;
+  } catch {
+    return false;
+  }
 }
 
-//Singleton class for MongoDB database operations
-class MongoDatabase {
-  private static _instance: MongoDatabase;
+async function collectionExists(collectionName: Pages): Promise<boolean> {
+  try {
+    return await client
+      .db(databaseName)
+      .listCollections({ name: collectionName })
+      .hasNext();
+  } catch {
+    return false;
+  }
+}
 
-  private readonly uri: string = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority&appName=kevin-logan-electrical`;
-  private readonly client: MongoClient = new MongoClient(this.uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    },
-  });
-  private readonly databaseName = "website_content";
-  private databaseExists: boolean = false;
+function getPageSchema(collectionName: Pages): any {
+  switch (collectionName) {
+    case Pages.Home:
+      return HomeMongoSchema;
+    case Pages.AboutUs:
+      return AboutUsMongoSchema;
+    case Pages.RateAndServices:
+      return RateAndServicesMongoSchema;
+    case Pages.ContactUs:
+      return ContactUsMongoSchema;
+    default:
+      return null;
+  }
+}
 
-  private async MongoDatabase() {}
+function getPageFallbackContent(collectionName: Pages): any {
+  switch (collectionName) {
+    case Pages.Home:
+      return homeFallbackContent;
+    case Pages.AboutUs:
+      return aboutUsFallbackContent;
+    case Pages.RateAndServices:
+      return rateAndServicesFallbackContent;
+    case Pages.ContactUs:
+      return contactUsFallbackContent;
+    default:
+      return null;
+  }
+}
 
-  //Singleton pattern
-  static get Instance() {
-    return this._instance || (this._instance = new this());
+async function insertFallbackContent(
+  collectionName: Pages,
+  pageContent:
+    | HomeContent
+    | AboutUsContent
+    | RateAndServicesContent
+    | ContactUsContent
+): Promise<boolean> {
+  if (databaseExists) return false;
+
+  try {
+    await client.db(databaseName).collection(collectionName).insertOne({
+      page_content: pageContent,
+      date_created: new Date(),
+      auto_created: true,
+    });
+  } catch {
+    return false;
   }
 
-  async closeConnection(): Promise<boolean> {
-    try {
-      await this.client.close();
-      return true;
-    } catch {
-      return false;
-    }
-  }
+  return true;
+}
 
-  private async collectionExists(collectionName: Pages): Promise<boolean> {
-    try {
-      return await this.client
-        .db(this.databaseName)
-        .listCollections({ name: collectionName })
-        .hasNext();
-    } catch {
-      return false;
-    }
-  }
+//Create collection and insert fallback content
+async function createCollection(collectionName: Pages): Promise<boolean> {
+  if (databaseExists) return false;
 
-  private getPageSchema(collectionName: Pages): any {
-    switch (collectionName) {
-      case Pages.Home:
-        return HomeMongoSchema;
-      case Pages.AboutUs:
-        return AboutUsMongoSchema;
-      case Pages.RateAndServices:
-        return RateAndServicesMongoSchema;
-      case Pages.ContactUs:
-        return ContactUsMongoSchema;
-      default:
-        return null;
-    }
-  }
+  const schema = getPageSchema(collectionName);
+  const fallbackContent = getPageFallbackContent(collectionName);
+  if (!schema || !fallbackContent) return false;
 
-  private getPageFallbackContent(collectionName: Pages): any {
-    switch (collectionName) {
-      case Pages.Home:
-        return homeFallbackContent;
-      case Pages.AboutUs:
-        return aboutUsFallbackContent;
-      case Pages.RateAndServices:
-        return rateAndServicesFallbackContent;
-      case Pages.ContactUs:
-        return contactUsFallbackContent;
-      default:
-        return null;
-    }
-  }
-
-  private async insertFallbackContent(
-    collectionName: Pages,
-    pageContent:
-      | HomeContent
-      | AboutUsContent
-      | RateAndServicesContent
-      | ContactUsContent
-  ): Promise<boolean> {
-    if (this.databaseExists) return false;
-
-    try {
-      await this.client
-        .db(this.databaseName)
-        .collection(collectionName)
-        .insertOne({
-          page_content: pageContent,
-          date_created: new Date(),
-          auto_created: true,
-        });
-    } catch {
-      return false;
-    }
-
-    return true;
-  }
-
-  //Create collection and insert fallback content
-  private async createCollection(collectionName: Pages): Promise<boolean> {
-    if (this.databaseExists) return false;
-
-    const schema = this.getPageSchema(collectionName);
-    const fallbackContent = this.getPageFallbackContent(collectionName);
-    if (!schema || !fallbackContent) return false;
-
-    try {
-      await this.client.db(this.databaseName).createCollection(collectionName, {
-        validator: {
-          $jsonSchema: {
-            bsonType: "object",
-            required: ["page_content", "date_created", "auto_created"],
-            properties: {
-              page_content: schema,
-              date_created: {
-                bsonType: "date",
-              },
-              auto_created: {
-                bsonType: "bool",
-              },
+  try {
+    await client.db(databaseName).createCollection(collectionName, {
+      validator: {
+        $jsonSchema: {
+          bsonType: "object",
+          required: ["page_content", "date_created", "auto_created"],
+          properties: {
+            page_content: schema,
+            date_created: {
+              bsonType: "date",
+            },
+            auto_created: {
+              bsonType: "bool",
             },
           },
         },
-      });
+      },
+    });
 
-      await this.insertFallbackContent(collectionName, fallbackContent);
-    } catch {
-      return false;
-    }
-
-    return true;
+    await insertFallbackContent(collectionName, fallbackContent);
+  } catch {
+    return false;
   }
 
-  //Create all collections for defined pages
-  async createPageCollections(): Promise<boolean> {
-    if (this.databaseExists) return true;
-    var allCreated: boolean = true;
+  return true;
+}
 
-    for (const collectionName of Object.values(Pages)) {
-      if (!(await this.collectionExists(collectionName))) {
-        var success: boolean = await this.createCollection(collectionName);
-        if (!success) allCreated = false;
-      }
+//Create all collections for defined pages
+async function createPageCollections(): Promise<boolean> {
+  if (databaseExists) return true;
+  var allCreated: boolean = true;
+
+  for (const collectionName of Object.values(Pages)) {
+    if (!(await collectionExists(collectionName))) {
+      var success: boolean = await createCollection(collectionName);
+      if (!success) allCreated = false;
     }
-
-    this.databaseExists = true;
-    return allCreated;
   }
 
-  //Retrieve the most recent document from the page's collection
-  async getPageDocument(collectionName: Pages): Promise<any | null> {
+  databaseExists = true;
+  return allCreated;
+}
+
+export const getPageDocument = cache(
+  async (collectionName: Pages): Promise<PageDocument | null> => {
     //Attempt to create collections in case they don't exist
-    if (!this.databaseExists) await this.createPageCollections();
+    if (!databaseExists) await createPageCollections();
 
     try {
-      return await this.client
-        .db(this.databaseName)
+      return (await client
+        .db(databaseName)
         .collection(collectionName)
         .findOne(
           {},
           {
             sort: { $natural: -1 },
           }
-        );
+        )) as PageDocument | null;
     } catch {
       return null;
     }
   }
+);
 
-  //Private currently as admin page not yet created
-  private async addPageDocumentByUser(
-    collectionName: Pages,
-    pageContent: any
-  ): Promise<boolean> {
-    try {
-      await this.client
-        .db(this.databaseName)
-        .collection(collectionName)
-        .insertOne({
-          page_content: pageContent,
-          date_created: new Date(),
-          auto_created: false,
-        });
-    } catch {
-      return false;
-    }
+// currently unused as admin page not yet created
+// async function addPageDocumentByUser(
+//   collectionName: Pages,
+//   pageContent: any
+// ): Promise<boolean> {
+//   try {
+//     await client.db(databaseName).collection(collectionName).insertOne({
+//       page_content: pageContent,
+//       date_created: new Date(),
+//       auto_created: false,
+//     });
+//   } catch {
+//     return false;
+//   }
 
-    return true;
-  }
-}
+//   return true;
+// }
