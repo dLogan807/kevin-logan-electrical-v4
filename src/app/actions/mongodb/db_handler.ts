@@ -58,6 +58,8 @@ class MongoDatabase {
       strict: true,
       deprecationErrors: true,
     },
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 5000,
   });
   private readonly _databaseName: string = "website_content";
   private _databaseExists: boolean = false;
