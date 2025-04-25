@@ -1,5 +1,11 @@
 //Schemas for MongoDB collections (validation performed server side via MongoDB Atlas)
 
+export type MongoSchemas =
+  | typeof HomeMongoSchema
+  | typeof AboutUsMongoSchema
+  | typeof RateAndServicesMongoSchema
+  | typeof ContactUsMongoSchema;
+
 export const HomeMongoSchema = {
   bsonType: "object",
   title: "Home Object Validation",
