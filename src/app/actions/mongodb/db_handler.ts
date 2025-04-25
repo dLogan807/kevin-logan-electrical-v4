@@ -30,16 +30,25 @@ type PageContent =
   | RateAndServicesContent
   | ContactUsContent;
 
-export interface PageDocument {
+interface PageDocument {
   page_content: PageContent;
   date_created: Date;
   auto_created: boolean;
 }
 
-//Page content retrieval (cached - cache may not work here)
-export const getPageDocument = cache(
-  async (collectionName: Pages): Promise<PageDocument | null> => {
-    return await MongoDatabase.Instance.getPageDocument(collectionName);
+//Page content retrieval
+export const getPageContent = cache(
+  async (
+    collectionName: Pages,
+    fallbackContent: PageContent
+  ): Promise<PageContent> => {
+    const contentDocument: PageDocument | null =
+      await MongoDatabase.Instance.getPageDocument(collectionName);
+
+    //Return fallback content if database content is retrieved as null
+    return contentDocument && contentDocument.page_content
+      ? (contentDocument.page_content as PageContent)
+      : fallbackContent;
   }
 );
 

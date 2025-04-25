@@ -20,7 +20,7 @@ import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
-import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
+import { getPageContent } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -60,19 +60,12 @@ export const fallbackContent: ContactUsContent = {
 };
 
 //Cache page content for 5 days
-const getPageContent = unstable_cache(
+const getCachedPageContent = unstable_cache(
   async (): Promise<ContactUsContent> => {
-    const contentDocument: PageDocument | null = await getPageDocument(
-      Pages.ContactUs
-    );
-
-    //Return fallback content if database content is retrieved as null
-    const content: ContactUsContent =
-      contentDocument && contentDocument.page_content
-        ? (contentDocument.page_content as ContactUsContent)
-        : fallbackContent;
-
-    return content;
+    return (await getPageContent(
+      Pages.ContactUs,
+      fallbackContent
+    )) as ContactUsContent;
   },
   [Pages.ContactUs],
   { revalidate: 432000, tags: [Pages.ContactUs] }
@@ -87,7 +80,7 @@ export default async function ContactUs() {
       return rawNonce == undefined ? "" : rawNonce;
     });
 
-  const content: ContactUsContent = await getPageContent();
+  const content: ContactUsContent = await getCachedPageContent();
 
   return (
     <ReCaptchaProvider

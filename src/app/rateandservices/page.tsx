@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import { ServicesCard } from "@/components/services_card/services_card";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
-import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
+import { getPageContent } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -74,19 +74,12 @@ export const fallbackContent: RateAndServicesContent = {
 };
 
 //Cache page content for 5 days
-const getPageContent = unstable_cache(
+const getCachedPageContent = unstable_cache(
   async (): Promise<RateAndServicesContent> => {
-    const contentDocument: PageDocument | null = await getPageDocument(
-      Pages.RateAndServices
-    );
-
-    //Return fallback content if database content is retrieved as null
-    const content: RateAndServicesContent =
-      contentDocument && contentDocument.page_content
-        ? (contentDocument.page_content as RateAndServicesContent)
-        : fallbackContent;
-
-    return content;
+    return (await getPageContent(
+      Pages.RateAndServices,
+      fallbackContent
+    )) as RateAndServicesContent;
   },
   [Pages.RateAndServices],
   { revalidate: 432000, tags: [Pages.RateAndServices] }
@@ -95,7 +88,7 @@ const getPageContent = unstable_cache(
 export default async function RateAndServices() {
   const mainSection: string = "main_section";
 
-  const content: RateAndServicesContent = await getPageContent();
+  const content: RateAndServicesContent = await getCachedPageContent();
 
   return (
     <Box className={[classes.rateservice_grid, "content_grid"].join(" ")}>

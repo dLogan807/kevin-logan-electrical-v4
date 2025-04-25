@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import { theme } from "@/components/theme";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
-import { getPageDocument, PageDocument } from "@/actions/mongodb/db_handler";
+import { getPageContent } from "@/actions/mongodb/db_handler";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -37,19 +37,12 @@ export const fallbackContent: AboutUsContent = {
 };
 
 //Cache page content for 5 days
-const getPageContent = unstable_cache(
+const getCachedPageContent = unstable_cache(
   async (): Promise<AboutUsContent> => {
-    const contentDocument: PageDocument | null = await getPageDocument(
-      Pages.AboutUs
-    );
-
-    //Return fallback content if database content is retrieved as null
-    const content: AboutUsContent =
-      contentDocument && contentDocument.page_content
-        ? (contentDocument.page_content as AboutUsContent)
-        : fallbackContent;
-
-    return content;
+    return (await getPageContent(
+      Pages.AboutUs,
+      fallbackContent
+    )) as AboutUsContent;
   },
   [Pages.AboutUs],
   { revalidate: 432000, tags: [Pages.AboutUs] }
@@ -58,7 +51,7 @@ const getPageContent = unstable_cache(
 export default async function AboutUs() {
   const mainSection: string = "main_section";
 
-  const content: AboutUsContent = await getPageContent();
+  const content: AboutUsContent = await getCachedPageContent();
 
   return (
     <Box className={[classes.about_grid, "content_grid"].join(" ")}>
