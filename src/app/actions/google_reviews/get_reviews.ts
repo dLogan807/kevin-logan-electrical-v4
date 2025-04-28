@@ -21,7 +21,10 @@ export type GoogleReview = {
 };
 
 //Cap the comment's length
-function getTrimmedComment(comment: string, maxLength: number = 180): string {
+function getTrimmedComment(comment: string, maxLength?: number): string {
+  if (!comment) return "(No comment left by reviewer.)";
+  maxLength = maxLength || 180;
+
   comment.trim();
 
   if (comment.length > maxLength) {
@@ -35,9 +38,7 @@ function getTrimmedComment(comment: string, maxLength: number = 180): string {
 function getFormattedDate(utcDateString: string): string {
   var formattedDate = "Unknown date";
 
-  if (!utcDateString || utcDateString === "") {
-    return formattedDate;
-  }
+  if (!utcDateString) return formattedDate;
 
   try {
     formattedDate = new Intl.DateTimeFormat("en-NZ", {
@@ -55,6 +56,8 @@ function getFormattedDate(utcDateString: string): string {
 
 //Parse reviews to Type and clean data
 function parseReviews(reviews: any[]): GoogleReview[] {
+  if (!reviews || reviews.length === 0) return [];
+
   const parsedReviews: GoogleReview[] = [];
 
   let id: number = 0;
@@ -76,14 +79,21 @@ function parseReviews(reviews: any[]): GoogleReview[] {
   return parsedReviews;
 }
 
+function invalidFilterInput(
+  reviews: GoogleReview[],
+  nameFilter: string[]
+): boolean {
+  return (
+    !reviews || !nameFilter || nameFilter.length === 0 || reviews.length === 0
+  );
+}
+
 //Remove reviews on a per-name basis
 function filterReviews(
   reviews: GoogleReview[],
   nameFilter: string[]
 ): GoogleReview[] {
-  if (nameFilter.length === 0 || reviews.length === 0) {
-    return reviews;
-  }
+  if (invalidFilterInput(reviews, nameFilter)) return reviews;
 
   nameFilter = nameFilter.map((name) => name.toLowerCase());
 
@@ -100,14 +110,17 @@ function filterReviews(
   return reviews;
 }
 
+//Ensure no spaces and is lowercase
+function formatNameFilter(nameFilter: string[]): string[] {
+  return nameFilter.map((name) => name.toLowerCase().trim());
+}
+
 //Get reviews from Google Places API
 export default async function getGoogleReviews(
   searchQuery: string,
-  nameFilter: string[]
+  nameFilter?: string[]
 ): Promise<GoogleReviews | null> {
-  if (searchQuery === "") {
-    return null;
-  }
+  if (!searchQuery) return null;
 
   const headers: Headers = new Headers();
   headers.set("Accept", "application/json");
@@ -138,8 +151,9 @@ export default async function getGoogleReviews(
       };
     })
     .then((parsedReviews) => {
+      nameFilter ||= [];
       if (nameFilter.length > 0) {
-        nameFilter = nameFilter.map((name) => name.toLowerCase().trim());
+        nameFilter = formatNameFilter(nameFilter);
 
         parsedReviews.reviews = filterReviews(
           parsedReviews.reviews,

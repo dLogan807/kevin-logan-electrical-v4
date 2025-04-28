@@ -11,17 +11,13 @@ export function ThemeSelector() {
   const autoCurrentColorScheme: boolean = useColorScheme() === "dark";
   const currentColorScheme: boolean = colorScheme === "dark";
 
-  var isDark: boolean;
+  const isDark: boolean =
+    colorScheme === "auto" ? autoCurrentColorScheme : currentColorScheme;
 
-  if (colorScheme === "auto") {
-    isDark = autoCurrentColorScheme;
-  } else {
-    isDark = currentColorScheme;
-  }
-  var toolTiptext: string = isDark ? "Light theme" : "Dark theme";
+  const tooltipText: string = isDark ? "Light theme" : "Dark theme";
 
   return (
-    <Tooltip label={toolTiptext}>
+    <Tooltip label={tooltipText}>
       <ActionIcon
         className={classes.icon_container}
         onClick={() => toggleColorScheme()}
@@ -34,8 +30,10 @@ export function ThemeSelector() {
 }
 
 //Return a sun or moon icon depending on scheme
-function ThemeIcon(isDark: any) {
-  return isDark.isDark ? (
+function ThemeIcon({ isDark }: { isDark: boolean }) {
+  if (!isDark) isDark = true;
+
+  return isDark ? (
     <IconSun aria-label="Sun icon" className={classes.icon} />
   ) : (
     <IconMoonStars aria-label="Moon and stars icon" className={classes.icon} />

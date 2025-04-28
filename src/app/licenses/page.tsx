@@ -1,8 +1,26 @@
 import React from "react";
 import { IconExternalLink } from "@tabler/icons-react";
 import { Anchor, Box, Group, Paper, Stack, ThemeIcon } from "@mantine/core";
+import { Metadata } from "next";
 import licensesJSON from "../../../licenses.json";
+
 import classes from "./page.module.css";
+
+export const metadata: Metadata = {
+  title: "Licenses | Kevin Logan Electrical - Your Trusted Electrician",
+  description: "Licenses for software used in this website.",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: false,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+      nosnippet: true,
+    },
+  },
+};
 
 type LicenseFormat = {
   department: string;

@@ -56,7 +56,7 @@ export function ContactForm() {
     setIsSubmitting(true);
 
     //Generate token
-    const action = "contact_form_submit";
+    const action: string = "contact_form_submit";
     const token: string =
       loaded && !error
         ? await executeRecaptcha(action).catch(() => {

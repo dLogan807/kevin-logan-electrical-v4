@@ -11,7 +11,7 @@ export default async function GoogleMap({ query }: { query: string }) {
       ? ""
       : process.env.GOOGLE_MAPS_API_KEY;
 
-  if (query === "" || mapApiKey === "") {
+  if (!query || !mapApiKey) {
     return <Box className={classes.map}>Could not load map.</Box>;
   }
 

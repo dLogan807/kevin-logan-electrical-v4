@@ -14,11 +14,11 @@ export async function sendContactEmail(
   fields: ContactFormData
 ): Promise<EmailSendResponse> {
   //Return if fields are not present
-  if (!fields.email || !fields.name || !fields.jobDetails) {
+  if (!fields || !fields.email || !fields.name || !fields.jobDetails) {
     return {
       sendSuccess: false,
-      notifyTitle: "Could not send the email. Please try again.",
-      notifyMessage: "Required fields were missing.",
+      notifyTitle: "Could not send the email. Please try again",
+      notifyMessage: "Check all required fields are filled",
     };
   }
 

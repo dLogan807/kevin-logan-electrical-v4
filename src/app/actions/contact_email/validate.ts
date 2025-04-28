@@ -26,7 +26,11 @@ async function verifyRecaptcha(
   token: string,
   action: string
 ): Promise<boolean> {
-  const secretKey = "" + process.env.RECAPTCHA_SECRET_KEY;
+  const secretKey: string = "" + process.env.RECAPTCHA_SECRET_KEY;
+
+  //Token may have failed retrieval, but others are expected
+  if (!token) return true;
+  if (!action || !secretKey) return false;
 
   const response: RecaptchaResponse = await fetch(
     "https://www.google.com/recaptcha/api/siteverify?secret=" +
@@ -80,16 +84,17 @@ export async function validateContactEmail(
   );
 
   //Check recaptcha
-  const recaptchaResponse: boolean =
-    token === "" ? true : await verifyRecaptcha(token, action);
+  const recaptchaResponse: boolean = token
+    ? await verifyRecaptcha(token, action)
+    : true;
 
   var response: ContactFormResponse = {
     validated: result.success,
     formErrors: errors,
     recaptchaVerified: recaptchaResponse,
     sendSuccess: false,
-    notifyTitle: "Could not send the email. Please try again.",
-    notifyMessage: "A server error occured.",
+    notifyTitle: "Could not send the email. Please try again",
+    notifyMessage: "reCAPTCHA could not verify if you are human",
   };
 
   //If validated, send email and add to response

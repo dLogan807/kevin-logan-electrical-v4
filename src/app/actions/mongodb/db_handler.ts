@@ -90,6 +90,8 @@ class MongoDatabase {
   }
 
   private async collectionExists(collectionName: Pages): Promise<boolean> {
+    if (!collectionName) return false;
+
     try {
       return await this._client
         .db(this._databaseName)
@@ -101,6 +103,8 @@ class MongoDatabase {
   }
 
   private getPageSchema(collectionName: Pages): MongoSchemas | null {
+    if (!collectionName) return null;
+
     switch (collectionName) {
       case Pages.Home:
         return HomeMongoSchema;
@@ -116,6 +120,8 @@ class MongoDatabase {
   }
 
   private getPageFallbackContent(collectionName: Pages): PageContent | null {
+    if (!collectionName) return null;
+
     switch (collectionName) {
       case Pages.Home:
         return homeFallbackContent;
@@ -134,7 +140,7 @@ class MongoDatabase {
     collectionName: Pages,
     pageContent: PageContent
   ): Promise<boolean> {
-    if (this._databaseExists) return false;
+    if (!collectionName || !pageContent || this._databaseExists) return false;
 
     try {
       await this._client
@@ -154,7 +160,7 @@ class MongoDatabase {
 
   //Create collection and insert fallback content
   private async createCollection(collectionName: Pages): Promise<boolean> {
-    if (this._databaseExists) return false;
+    if (!collectionName || this._databaseExists) return false;
 
     const schema = this.getPageSchema(collectionName);
     const fallbackContent = this.getPageFallbackContent(collectionName);
@@ -209,6 +215,7 @@ class MongoDatabase {
   async getPageDocument(collectionName: Pages): Promise<PageDocument | null> {
     //Attempt to create collections in case they don't exist
     if (!this._databaseExists) await this.createPageCollections();
+    if (!collectionName) return null;
 
     try {
       return await this._client
@@ -230,6 +237,8 @@ class MongoDatabase {
     collectionName: Pages,
     pageContent: PageContent
   ): Promise<boolean> {
+    if (!collectionName || !pageContent) return false;
+
     try {
       await this._client
         .db(this._databaseName)

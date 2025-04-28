@@ -8,13 +8,11 @@
   }
 
   @media (max-width: $mantine-breakpoint-sm) {
-    grid-template-rows: 0.8fr 1fr;
-    grid-template-columns: 2fr 1fr;
     grid-template-areas: "about-1 torbay" "about-2 about-2";
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
-    grid-template-rows: 0.6fr 0.5fr 1fr;
+    grid-template-rows: auto auto 1fr;
     grid-template-columns: 1fr;
     grid-template-areas: "about-1" "torbay" "about-2";
   }
@@ -23,9 +21,10 @@
 .about_text_1 {
   grid-area: about-1;
   white-space: pre-line;
+  height: min-content;
 
-  @media (min-width: $mantine-breakpoint-sm) {
-    height: min-content;
+  @media (max-width: $mantine-breakpoint-sm) and (min-width: $mantine-breakpoint-xs) {
+    height: 100%;
   }
 
   div {
@@ -45,14 +44,12 @@
 .about_text_2 {
   grid-area: about-2;
   white-space: pre-line;
-
-  @media (min-width: $mantine-breakpoint-sm) {
-    height: min-content;
-  }
+  height: min-content;
 }
 
 .about_torbay {
   grid-area: torbay;
+  height: min-content;
   overflow: hidden;
 
   div {
@@ -64,14 +61,23 @@
     align-items: center;
     border-radius: var(--mantine-radius-md);
     overflow: hidden;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      height: auto;
+      max-height: 20rem;
+    }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+      max-height: 11rem;
+    }
   }
 
   img {
+    max-height: 45rem;
     width: auto;
-    height: 45rem;
 
     @media (max-width: $mantine-breakpoint-sm) {
-      height: 25rem;
+      max-height: 25rem;
     }
 
     @media (max-width: $mantine-breakpoint-xs) {
@@ -82,5 +88,9 @@
 
   @media (max-width: $mantine-breakpoint-sm) {
     padding: 0;
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    height: 100%;
   }
 }
