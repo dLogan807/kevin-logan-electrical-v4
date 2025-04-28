@@ -28,7 +28,7 @@ async function verifyRecaptcha(
 ): Promise<boolean> {
   const secretKey: string = "" + process.env.RECAPTCHA_SECRET_KEY;
 
-  //Token may not have failed retrieval, but others are expected
+  //Token may have failed retrieval, but others are expected
   if (!token) return true;
   if (!action || !secretKey) return false;
 
