@@ -1,14 +1,13 @@
-.error_grid {
+.notfound_grid {
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
-  min-height: 100%;
 }
 
 .container {
   text-align: center;
 
   h1 {
-    color: var(--mantine-primary-color-filled);
+    color: var(--mantine-color-pleasant-blue-filled);
     font-size: 10rem;
     margin: 0;
 
@@ -37,7 +36,12 @@
 
     span {
       white-space: normal;
-      padding: 0.3rem;
+      padding: 0.4rem;
+      font-size: var(--mantine-font-size-xl);
+
+      @media (max-width: $mantine-breakpoint-xs) {
+        font-size: var(--mantine-font-size-md);
+      }
     }
   }
 }
