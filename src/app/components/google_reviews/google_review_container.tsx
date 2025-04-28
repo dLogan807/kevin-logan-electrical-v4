@@ -43,8 +43,9 @@ export default async function GoogleReviewContainer({
   query: string;
   nameFilter: string[];
 }) {
-  const googleReviews: GoogleReviews | null =
-    query === "" ? null : await getGoogleReviews(query, nameFilter);
+  const googleReviews: GoogleReviews | null = query
+    ? await getGoogleReviews(query, nameFilter)
+    : null;
 
   if (
     !googleReviews ||

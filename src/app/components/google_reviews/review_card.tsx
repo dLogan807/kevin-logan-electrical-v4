@@ -11,7 +11,7 @@ import { theme } from "@/components/theme";
 import classes from "./review_card.module.css";
 
 function UserImage({ uri }: { uri: string }) {
-  if (uri === "") {
+  if (!uri) {
     return <IconUserCircle aria-label="User icon" width={30} height={30} />;
   }
 
@@ -28,6 +28,8 @@ function UserImage({ uri }: { uri: string }) {
 }
 
 export default function ReviewCard(review: GoogleReview) {
+  if (!review) return <Text>Failed to load this review.</Text>;
+
   return (
     <Blockquote
       color="blue"
