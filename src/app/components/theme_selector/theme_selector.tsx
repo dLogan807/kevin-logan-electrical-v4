@@ -31,7 +31,7 @@ export function ThemeSelector() {
 
 //Return a sun or moon icon depending on scheme
 function ThemeIcon({ isDark }: { isDark: boolean }) {
-  if (!isDark) isDark = true;
+  if (isDark == null) isDark = true;
 
   return isDark ? (
     <IconSun aria-label="Sun icon" className={classes.icon} />
