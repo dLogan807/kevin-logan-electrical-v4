@@ -28,7 +28,7 @@ import classes from "./navbar.module.css";
 import { theme } from "@/components/theme";
 
 //Return the index of the currently navigated route
-function getRoute(path: string | null): Pages | null {
+function getRoute(path: string): Pages | undefined {
   switch (path) {
     case "/":
       return Pages.Home;
@@ -38,9 +38,9 @@ function getRoute(path: string | null): Pages | null {
       return Pages.RateAndServices;
     case "/contactus":
       return Pages.ContactUs;
-    default:
-      return null;
   }
+
+  return undefined;
 }
 
 interface ILink {
@@ -93,18 +93,13 @@ const linkData: ILink[] = [
 export function Navbar() {
   //Maintain path hydration
   const pathname = usePathname();
-  const [path, setPath] = useState<string | null>(null);
-
-  useEffect(() => {
-    setPath(pathname);
-  }, [pathname]);
 
   //Update route on path change
-  const [active, setActive] = useState<Pages | null>(getRoute(path));
+  const [active, setActive] = useState<Pages | undefined>(getRoute(pathname));
 
   useEffect(() => {
-    setActive(getRoute(path));
-  }, [path]);
+    setActive(getRoute(pathname));
+  }, [pathname]);
 
   const [opened, { toggle, close }] = useDisclosure(false);
   const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
