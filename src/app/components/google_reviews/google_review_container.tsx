@@ -82,7 +82,10 @@ export default async function GoogleReviewContainer({
             }
             readOnly
           />
-          <Text>{googleReviews.totalReviewCount} reviews</Text>
+          <Text>
+            {googleReviews.totalReviewCount} review
+            {googleReviews.totalReviewCount === 1 ? "" : "s"}
+          </Text>
         </Group>
         {ReviewButton()}
       </Box>

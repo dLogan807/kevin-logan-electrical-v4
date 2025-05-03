@@ -18,6 +18,7 @@ export default function GoogleReviewCarousel({
       previousControlIcon={<IconChevronLeft aria-label="Left arrow" />}
       classNames={classes}
       className={classes.carousel}
+      withControls={googleReviews.length > 1}
     >
       {googleReviews.map((review: GoogleReview) => (
         <Carousel.Slide className={classes.carousel_slide} key={review.id}>
