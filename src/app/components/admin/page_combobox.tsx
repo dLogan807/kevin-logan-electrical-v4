@@ -42,7 +42,7 @@ export default function PageComboBox({
   }, [selectedPage]);
 
   const form = useForm({
-    mode: "controlled",
+    mode: "uncontrolled",
   });
 
   const component = contentPromise ? (
@@ -81,9 +81,9 @@ export function PageContentDisplay(): React.ReactNode {
   if (!contentSections)
     return <p>No content could be fetched for this page. Please try again.</p>;
 
-  var objectContent = Object.entries(contentSections);
+  const objectContent = Object.entries(contentSections);
 
-  return <>{getObjectEntries(objectContent)}</>;
+  return getObjectEntries(objectContent);
 }
 
 function getObjectEntries(contentObject: [string, any][]): React.ReactNode {
@@ -98,7 +98,7 @@ function getObjectEntries(contentObject: [string, any][]): React.ReactNode {
       );
     } else {
       //console.log(key + ": " + value);
-      return value.toString().length < 40 ? (
+      return value.toString().length < 50 ? (
         <TextInput
           key={key.toString() + randomId()}
           label={key.toString()}
@@ -111,6 +111,7 @@ function getObjectEntries(contentObject: [string, any][]): React.ReactNode {
           label={key.toString()}
           placeholder={"Text to display for " + key}
           defaultValue={value.toString()}
+          autosize={true}
         />
       );
     }
