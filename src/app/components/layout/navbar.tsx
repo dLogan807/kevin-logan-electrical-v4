@@ -94,9 +94,10 @@ export function Navbar() {
   //Maintain path hydration
   const pathname = usePathname();
 
-  //Update route on path change
+  //Update route on manual path change
   const [active, setActive] = useState<Pages | undefined>(getRoute(pathname));
 
+  //Update route when path changes
   useEffect(() => {
     setActive(getRoute(pathname));
   }, [pathname]);

@@ -24,7 +24,7 @@ import {
 } from "@/actions/mongodb/schemas";
 import { cache } from "react";
 
-type PageContent =
+export type PageContent =
   | HomeContent
   | AboutUsContent
   | RateAndServicesContent
@@ -36,7 +36,7 @@ interface PageDocument {
   auto_created: boolean;
 }
 
-//Page content retrieval
+//Cached page content retrieval
 export const getPageContent = cache(
   async (
     collectionName: Pages,
@@ -51,6 +51,18 @@ export const getPageContent = cache(
       : fallbackContent;
   }
 );
+
+//Page content retrieval
+export async function getStoredPageContent(
+  collectionName: Pages
+): Promise<PageContent | null> {
+  const contentDocument: PageDocument | null =
+    await MongoDatabase.Instance.getPageDocument(collectionName);
+
+  return contentDocument && contentDocument.page_content
+    ? (contentDocument.page_content as PageContent)
+    : null;
+}
 
 export async function closeConnection(): Promise<boolean> {
   return await MongoDatabase.Instance.closeConnection();

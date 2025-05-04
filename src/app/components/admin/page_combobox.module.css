@@ -1,0 +1,11 @@
+.root {
+  width: 15rem;
+  margin-bottom: 1rem;
+}
+
+.option {
+  svg {
+    opacity: 0.9;
+    color: var(--mantine-color-pleasant-blue-light-color);
+  }
+}
