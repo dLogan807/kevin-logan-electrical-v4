@@ -1,25 +1,16 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Fieldset,
-  Group,
-  Select,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Box, Select } from "@mantine/core";
 import { Pages } from "../layout/pages";
 import React, { use, useEffect, useState } from "react";
-
-import classes from "./page_combobox.module.css";
 import {
   getStoredPageContent,
   PageContent,
 } from "@/actions/mongodb/db_handler";
 import { PageContentProvider, usePageContext } from "./page_context";
-import { useForm } from "@mantine/form";
-import { randomId } from "@mantine/hooks";
+import { PageForm } from "./page_form";
+
+import classes from "./page_combobox.module.css";
 
 export default function PageComboBox({
   initialPromise,
@@ -41,18 +32,9 @@ export default function PageComboBox({
     setContentPromise(getStoredPageContent(selectedPage));
   }, [selectedPage]);
 
-  const form = useForm({
-    mode: "uncontrolled",
-  });
-
   const component = contentPromise ? (
     <PageContentProvider pageContentPromise={contentPromise}>
-      <form onSubmit={form.onSubmit((values: any) => console.log(values))}>
-        <PageContentDisplay />
-        <Group justify="flex-end" mt="md">
-          <Button type="submit">Submit</Button>
-        </Group>
-      </form>
+      <PageContentDisplay />
     </PageContentProvider>
   ) : (
     <p>Please select a page to edit.</p>
@@ -81,39 +63,5 @@ export function PageContentDisplay(): React.ReactNode {
   if (!contentSections)
     return <p>No content could be fetched for this page. Please try again.</p>;
 
-  const objectContent = Object.entries(contentSections);
-
-  return getObjectEntries(objectContent);
-}
-
-function getObjectEntries(contentObject: [string, any][]): React.ReactNode {
-  return contentObject.map(([key, value]) => {
-    if (typeof value === "object" && value !== null) {
-      //console.log("Found nested object: " + key);
-
-      return (
-        <Fieldset legend={key.toString()} key={key}>
-          {getObjectEntries(Object.entries(value))}
-        </Fieldset>
-      );
-    } else {
-      //console.log(key + ": " + value);
-      return value.toString().length < 50 ? (
-        <TextInput
-          key={key.toString() + randomId()}
-          label={key.toString()}
-          placeholder={"Text to display for " + key}
-          defaultValue={value.toString()}
-        />
-      ) : (
-        <Textarea
-          key={key.toString() + randomId()}
-          label={key.toString()}
-          placeholder={"Text to display for " + key}
-          defaultValue={value.toString()}
-          autosize={true}
-        />
-      );
-    }
-  });
+  return <PageForm initialContent={contentSections} />;
 }
