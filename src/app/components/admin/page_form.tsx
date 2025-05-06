@@ -1,11 +1,6 @@
 import { PageContent } from "@/actions/mongodb/db_handler";
-import {
-  PageFormProvider,
-  usePageForm,
-  usePageFormContext,
-} from "./form_context";
 import React, { useEffect } from "react";
-import { UseFormReturnType } from "@mantine/form";
+import { useForm, UseFormReturnType } from "@mantine/form";
 import {
   ActionIcon,
   Button,
@@ -17,7 +12,7 @@ import {
 import { IconTrash } from "@tabler/icons-react";
 
 export function PageForm({ initialContent }: { initialContent: PageContent }) {
-  const form = usePageForm({
+  const form = useForm<PageContent>({
     mode: "uncontrolled",
   });
 
@@ -27,30 +22,19 @@ export function PageForm({ initialContent }: { initialContent: PageContent }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialContent]);
 
-  return (
-    <PageFormProvider form={form}>
-      <form
-        onSubmit={form.onSubmit(() => {
-          console.log(form.getValues());
-        })}
-      >
-        <FormContent content={form.getValues()} />
-      </form>
-    </PageFormProvider>
-  );
-}
-
-function FormContent({ content }: { content: PageContent }): React.ReactNode {
-  const form = usePageFormContext();
-  const objectContent = Object.entries(content);
+  const objectContent = Object.entries(form.getValues());
 
   return (
-    <>
+    <form
+      onSubmit={form.onSubmit(() => {
+        console.log(form.getValues());
+      })}
+    >
       {getObjectEntries(objectContent, "", form)}
       <Group justify="flex-end" mt="md">
         <Button type="submit">Submit</Button>
       </Group>
-    </>
+    </form>
   );
 }
 

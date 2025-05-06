@@ -10,9 +10,9 @@ import {
 import { PageContentProvider, usePageContext } from "./page_context";
 import { PageForm } from "./page_form";
 
-import classes from "./page_combobox.module.css";
+import classes from "./page_selector.module.css";
 
-export default function PageComboBox({
+export default function PageSelector({
   initialPromise,
 }: {
   initialPromise: Promise<PageContent | null> | null;
@@ -32,9 +32,9 @@ export default function PageComboBox({
     setContentPromise(getStoredPageContent(selectedPage));
   }, [selectedPage]);
 
-  const component = contentPromise ? (
+  const pageContent = contentPromise ? (
     <PageContentProvider pageContentPromise={contentPromise}>
-      <PageContentDisplay />
+      <EditablePageContent />
     </PageContentProvider>
   ) : (
     <p>Please select a page to edit.</p>
@@ -51,12 +51,12 @@ export default function PageComboBox({
         allowDeselect={false}
         classNames={classes}
       />
-      {component}
+      {pageContent}
     </Box>
   );
 }
 
-export function PageContentDisplay(): React.ReactNode {
+export function EditablePageContent(): React.ReactNode {
   const pageContentPromise = usePageContext();
   const contentSections: PageContent | null = use(pageContentPromise);
 

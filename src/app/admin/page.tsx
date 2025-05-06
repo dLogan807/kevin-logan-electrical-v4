@@ -1,6 +1,6 @@
 import { Box, Paper } from "@mantine/core";
 import { Metadata } from "next";
-import PageComboBox from "@/components/admin/page_combobox";
+import PageSelector from "@/components/admin/page_selector";
 
 import classes from "./page.module.css";
 import { getStoredPageContent } from "@/actions/mongodb/db_handler";
@@ -29,7 +29,7 @@ export default function Admin() {
         withBorder
       >
         <h1 className={classes.heading}>Content Management</h1>
-        <PageComboBox initialPromise={getStoredPageContent(Pages.Home)} />
+        <PageSelector initialPromise={getStoredPageContent(Pages.Home)} />
       </Paper>
     </Box>
   );
