@@ -1,7 +1,8 @@
 "use client";
 
 import { PageContent } from "@/actions/mongodb/db_handler";
-import React, { createContext, useContext } from "react";
+import { Loader } from "@mantine/core";
+import React, { createContext, Suspense, useContext } from "react";
 
 export const PageContext = createContext<Promise<PageContent | null> | null>(
   null
@@ -15,9 +16,11 @@ export function PageContentProvider({
   pageContentPromise: Promise<PageContent | null>;
 }) {
   return (
-    <PageContext.Provider value={pageContentPromise}>
-      {children}
-    </PageContext.Provider>
+    <Suspense fallback={<Loader type="bars" />}>
+      <PageContext.Provider value={pageContentPromise}>
+        {children}
+      </PageContext.Provider>
+    </Suspense>
   );
 }
 
