@@ -8,21 +8,33 @@ import {
   Group,
   Textarea,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 
-export function PageForm({ initialContent }: { initialContent: PageContent }) {
+export function PageForm({
+  initialContent,
+  triggerReset,
+}: {
+  initialContent: PageContent;
+  triggerReset?: boolean;
+}) {
   const form = useForm<PageContent>({
     mode: "uncontrolled",
   });
 
+  //Rerender form with new fetched content
   useEffect(() => {
     form.setInitialValues(initialContent);
-    form.reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialContent]);
 
   const objectContent = Object.entries(form.getValues());
+
+  useEffect(() => {
+    form.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerReset]);
 
   return (
     <form
@@ -32,7 +44,9 @@ export function PageForm({ initialContent }: { initialContent: PageContent }) {
     >
       {getObjectEntries(objectContent, "", form)}
       <Group justify="flex-end" mt="md">
-        <Button type="submit">Submit</Button>
+        <Tooltip label="Submit and update website content">
+          <Button type="submit">Submit</Button>
+        </Tooltip>
       </Group>
     </form>
   );
@@ -83,11 +97,12 @@ function getObjectEntries(
           />
           <ActionIcon
             color="red"
+            aria-label="Remove"
             onClick={() => {
               form.removeListItem(path, Number(key));
             }}
           >
-            <IconTrash size={16} />
+            <IconTrash size={16} aria-label="Delete icon" />
           </ActionIcon>
         </Group>
       );
