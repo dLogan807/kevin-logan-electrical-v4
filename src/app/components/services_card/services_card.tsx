@@ -1,4 +1,5 @@
 import { Paper, List, ListItem, ThemeIcon } from "@mantine/core";
+import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 
 import classes from "./services_card.module.css";
@@ -9,7 +10,7 @@ export function ServicesCard({
   headerText,
   listItems,
 }: {
-  headerIcon: any;
+  headerIcon: React.ReactElement;
   headerText: string;
   listItems: string[];
 }) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Group, Select, Tooltip } from "@mantine/core";
+import { Box, Group, Select } from "@mantine/core";
 import { Pages } from "../layout/pages";
 import React, { use, useEffect, useState } from "react";
 import {
@@ -48,40 +48,42 @@ export default function PageSelector({
   return (
     <Box>
       <Group justify="space-between" mt="md">
-        <Select
-          label="Selected page"
-          defaultValue={defaultPage}
-          data={pages}
-          value={selectedPage ? selectedPage : defaultPage}
-          onChange={(_value, option) => setSelectedPage(option.value as Pages)}
-          allowDeselect={false}
-          classNames={classes}
-        />
         <Group justify="space-between" mt="md">
-          <ConfirmationPopover
-            dialogue="Do you want to reset the form to initial values?"
-            buttonText="Reset"
-            buttonColour="red"
-            buttonVariant="outline"
-            clickAction={() => {
-              setTriggerReset(!triggerReset);
-            }}
+          <Select
+            label="Selected page"
+            defaultValue={defaultPage}
+            data={pages}
+            value={selectedPage ? selectedPage : defaultPage}
+            onChange={(_value, option) =>
+              setSelectedPage(option.value as Pages)
+            }
+            allowDeselect={false}
+            classNames={classes}
           />
-          <Tooltip label="Update initial values with latest content">
-            <Button
-              variant="light"
-              color="blue"
-              onClick={() => {
-                setContentPromise(getStoredPageContent(selectedPage));
-              }}
-            >
-              <Group>
-                Refresh
-                <IconRefresh aria-label="Refresh" />
-              </Group>
-            </Button>
-          </Tooltip>
+
+          <ConfirmationPopover
+            dialogue="Reset the form and fetch the latest content?"
+            buttonText="Refresh"
+            buttonTooltip="Update initial values with latest content"
+            buttonColour="red"
+            buttonVariant="light"
+            clickAction={() => {
+              setContentPromise(getStoredPageContent(selectedPage));
+            }}
+          >
+            <IconRefresh aria-label="Refresh" />
+          </ConfirmationPopover>
         </Group>
+
+        <ConfirmationPopover
+          dialogue="Reset the form to its initial values?"
+          buttonText="Reset"
+          buttonColour="red"
+          buttonVariant="outline"
+          clickAction={() => {
+            setTriggerReset(!triggerReset);
+          }}
+        />
       </Group>
 
       {pageContent}

@@ -5,6 +5,7 @@ import {
   Group,
   Popover,
   Text,
+  Tooltip,
 } from "@mantine/core";
 import React, { useState } from "react";
 
@@ -12,6 +13,7 @@ export default function ConfirmationPopover({
   children,
   dialogue,
   buttonText,
+  buttonTooltip,
   buttonColour,
   buttonVariant,
   clickAction,
@@ -19,11 +21,26 @@ export default function ConfirmationPopover({
   children?: React.ReactNode;
   dialogue: string;
   buttonText: string;
+  buttonTooltip?: string;
   buttonColour: DefaultMantineColor | undefined;
   buttonVariant: ButtonVariant;
   clickAction: () => void;
 }) {
   const [confimIsOpened, setConfirmIsOpened] = useState<boolean>(false);
+
+  const outerButton: React.ReactElement = (
+    <Button
+      type="button"
+      color={buttonColour}
+      variant={buttonVariant}
+      onClick={() => setConfirmIsOpened((o) => !o)}
+    >
+      <Group>
+        {buttonText}
+        {children}
+      </Group>
+    </Button>
+  );
 
   return (
     <Popover
@@ -35,17 +52,11 @@ export default function ConfirmationPopover({
       onChange={setConfirmIsOpened}
     >
       <Popover.Target>
-        <Button
-          type="button"
-          color={buttonColour}
-          variant={buttonVariant}
-          onClick={() => setConfirmIsOpened((o) => !o)}
-        >
-          <Group>
-            {buttonText}
-            {children}
-          </Group>
-        </Button>
+        {buttonTooltip ? (
+          <Tooltip label={buttonTooltip}>{outerButton}</Tooltip>
+        ) : (
+          outerButton
+        )}
       </Popover.Target>
       <Popover.Dropdown>
         <Text>{dialogue}</Text>

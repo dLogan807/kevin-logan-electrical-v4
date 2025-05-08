@@ -10,7 +10,7 @@ import {
   TextInput,
   Tooltip,
 } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
+import { IconTrash, IconWorldUp } from "@tabler/icons-react";
 
 export function PageForm({
   initialContent,
@@ -45,7 +45,12 @@ export function PageForm({
       {getObjectEntries(objectContent, "", form)}
       <Group justify="flex-end" mt="md">
         <Tooltip label="Submit and update website content">
-          <Button type="submit">Submit</Button>
+          <Button type="submit">
+            <Group>
+              Submit
+              <IconWorldUp />
+            </Group>
+          </Button>
         </Tooltip>
       </Group>
     </form>
@@ -92,18 +97,20 @@ function getObjectEntries(
           <TextInput
             key={form.key(currentPath)}
             {...form.getInputProps(currentPath)}
-            label={"" + listNum}
+            label={"Item " + listNum}
             placeholder={"Text for " + listNum}
           />
-          <ActionIcon
-            color="red"
-            aria-label="Remove"
-            onClick={() => {
-              form.removeListItem(path, Number(key));
-            }}
-          >
-            <IconTrash size={16} aria-label="Delete icon" />
-          </ActionIcon>
+          <Tooltip label="Delete">
+            <ActionIcon
+              color="red"
+              aria-label="Delete"
+              onClick={() => {
+                form.removeListItem(path, Number(key));
+              }}
+            >
+              <IconTrash size={16} aria-label="Delete icon" />
+            </ActionIcon>
+          </Tooltip>
         </Group>
       );
     }
