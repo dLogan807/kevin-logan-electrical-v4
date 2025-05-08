@@ -61,7 +61,7 @@ export default async function GoogleReviewContainer({
       <Box className={classes.review_summary}>
         <Group className={classes.average_reviews}>
           <ThemeIcon className={"checkmark"}>
-            <IconBrandGoogle aria-label="Google icon" />
+            <IconBrandGoogle aria-label="Google" />
           </ThemeIcon>
           <Text>Overall Rating</Text>
         </Group>

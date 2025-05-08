@@ -64,7 +64,7 @@ export default function PageSelector({
           <ConfirmationPopover
             dialogue="Reset the form and fetch the latest content?"
             buttonText="Refresh"
-            buttonTooltip="Update initial values with latest content"
+            buttonTooltip="Update initial values with the latest content"
             buttonColour="red"
             buttonVariant="light"
             clickAction={() => {
@@ -76,7 +76,7 @@ export default function PageSelector({
         </Group>
 
         <ConfirmationPopover
-          dialogue="Reset the form to its initial values?"
+          dialogue="Reset the form to the last-fetched content?"
           buttonText="Reset"
           buttonColour="red"
           buttonVariant="outline"

@@ -42,13 +42,13 @@ export function PageForm({
         console.log(form.getValues());
       })}
     >
-      {getObjectEntries(objectContent, "", form)}
+      {getFormFields(objectContent, "", form)}
       <Group justify="flex-end" mt="md">
         <Tooltip label="Submit and update website content">
           <Button type="submit">
             <Group>
               Submit
-              <IconWorldUp />
+              <IconWorldUp aria-label="Internet submission" />
             </Group>
           </Button>
         </Tooltip>
@@ -61,29 +61,32 @@ function isNumber(value: string): boolean {
   return value != null && !isNaN(Number(value)) && value.trim() !== "";
 }
 
+function isParent(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
+
 //Recursively generate form fields from entries
-function getObjectEntries(
+function getFormFields(
   contentObject: [string, any][],
   path: string,
   form: UseFormReturnType<PageContent>
 ): React.ReactNode {
   return contentObject.map(([key, value]) => {
-    var currentPath: string = path === "" ? key : path + "." + key;
+    const currentPath: string = path === "" ? key : path + "." + key;
+    const formKey: string = form.key(currentPath);
 
-    //If the value is a parent. Add button if parent is a list
-    if (typeof value === "object" && value !== null) {
+    //Recursive case: if the value is a parent. Add button if parent is a list
+    if (isParent(value)) {
       return (
-        <Fieldset legend={key} key={form.key(currentPath)}>
-          {getObjectEntries(Object.entries(value), currentPath, form)}
+        <Fieldset legend={key} key={formKey}>
+          {getFormFields(Object.entries(value), currentPath, form)}
           {Array.isArray(value) ? (
             <Group justify="center" mt="md">
               <Button onClick={() => form.insertListItem(currentPath, "")}>
                 Add item
               </Button>
             </Group>
-          ) : (
-            <></>
-          )}
+          ) : null}
         </Fieldset>
       );
     }
@@ -95,20 +98,18 @@ function getObjectEntries(
       return (
         <Group key={key}>
           <TextInput
-            key={form.key(currentPath)}
+            key={formKey}
             {...form.getInputProps(currentPath)}
-            label={"Item " + listNum}
-            placeholder={"Text for " + listNum}
+            label={"Entry " + listNum}
           />
-          <Tooltip label="Delete">
+          <Tooltip label="Delete entry">
             <ActionIcon
               color="red"
-              aria-label="Delete"
               onClick={() => {
                 form.removeListItem(path, Number(key));
               }}
             >
-              <IconTrash size={16} aria-label="Delete icon" />
+              <IconTrash size={16} aria-label="Trash" />
             </ActionIcon>
           </Tooltip>
         </Group>
@@ -117,10 +118,9 @@ function getObjectEntries(
 
     return (
       <Textarea
-        key={form.key(currentPath)}
+        key={formKey}
         {...form.getInputProps(currentPath)}
         label={key}
-        placeholder={"Text for " + key}
         rows={1}
         autosize={true}
       />

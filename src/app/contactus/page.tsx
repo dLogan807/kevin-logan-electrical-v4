@@ -105,7 +105,7 @@ export default async function ContactUs() {
             <ListItem
               icon={
                 <ThemeIcon className={"list_icon"}>
-                  <IconMapPin aria-label="Location marker icon" />
+                  <IconMapPin aria-label="Location marker" />
                 </ThemeIcon>
               }
             >
@@ -114,7 +114,7 @@ export default async function ContactUs() {
             <ListItem
               icon={
                 <ThemeIcon className={"list_icon"}>
-                  <IconPhone aria-label="Phone icon" />
+                  <IconPhone aria-label="Phone" />
                 </ThemeIcon>
               }
             >
@@ -127,7 +127,7 @@ export default async function ContactUs() {
             <ListItem
               icon={
                 <ThemeIcon className={"list_icon"}>
-                  <IconDeviceMobile aria-label="Mobile phone icon" />
+                  <IconDeviceMobile aria-label="Mobile phone" />
                 </ThemeIcon>
               }
             >
@@ -140,7 +140,7 @@ export default async function ContactUs() {
             <ListItem
               icon={
                 <ThemeIcon className={"list_icon"}>
-                  <IconMail aria-label="Letter icon" />
+                  <IconMail aria-label="Letter" />
                 </ThemeIcon>
               }
             >
@@ -154,7 +154,7 @@ export default async function ContactUs() {
             <ListItem
               icon={
                 <ThemeIcon className={"list_icon"}>
-                  <IconClockHour2 aria-label="Analogue clock icon" />
+                  <IconClockHour2 aria-label="Analogue clock" />
                 </ThemeIcon>
               }
             >

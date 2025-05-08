@@ -12,7 +12,7 @@ import classes from "./review_card.module.css";
 
 function UserImage({ uri }: { uri: string }) {
   if (!uri) {
-    return <IconUserCircle aria-label="User icon" width={30} height={30} />;
+    return <IconUserCircle aria-label="User" width={30} height={30} />;
   }
 
   return (
@@ -48,7 +48,7 @@ export default function ReviewCard(review: GoogleReview) {
           <Text>{review.publishTime}</Text>
         </Group>
       }
-      icon={<IconMessage2 aria-label="Comment icon" />}
+      icon={<IconMessage2 aria-label="Comment" />}
       className={classes.review_card_blockquote}
     >
       <Group>

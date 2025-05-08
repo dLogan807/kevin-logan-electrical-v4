@@ -24,9 +24,9 @@ export type ContactFormData = {
 //Show notifcation
 function notifyUser(sendSuccess: boolean, title: string, message: string) {
   const icon = sendSuccess ? (
-    <IconCheck className={classes.icon} aria-label="Success icon" />
+    <IconCheck className={classes.icon} aria-label="Success" />
   ) : (
-    <IconX className={classes.icon} aria-label="Failure icon" />
+    <IconX className={classes.icon} aria-label="Failure" />
   );
   const colour: string = sendSuccess ? "green" : "red";
 

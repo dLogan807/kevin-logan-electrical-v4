@@ -63,7 +63,7 @@ export default function Licenses() {
                   <span>{l.name + " " + l.installedVersion}</span>
 
                   <ThemeIcon className={"checkmark"}>
-                    <IconExternalLink aria-label="Open external Github" />
+                    <IconExternalLink aria-label="External website link" />
                   </ThemeIcon>
                 </Group>
 
