@@ -1,0 +1,11 @@
+.text_input_container {
+  align-items: center;
+}
+
+.text_input {
+  div {
+    input {
+      width: 20rem;
+    }
+  }
+}

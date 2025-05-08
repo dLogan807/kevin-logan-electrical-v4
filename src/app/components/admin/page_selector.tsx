@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Group, Select, Text } from "@mantine/core";
+import { Alert, Box, Group, Select, Text } from "@mantine/core";
 import { Pages } from "../layout/pages";
 import React, { use, useEffect, useState } from "react";
 import {
@@ -9,10 +9,10 @@ import {
 } from "@/actions/mongodb/db_handler";
 import { PageContentProvider, usePageContext } from "./page_context";
 import { PageForm } from "./page_form";
+import { IconInfoCircle, IconRefresh } from "@tabler/icons-react";
+import ConfirmationPopover from "./confirmation_popover";
 
 import classes from "./page_selector.module.css";
-import { IconRefresh } from "@tabler/icons-react";
-import ConfirmationPopover from "./confirmation_popover";
 
 export default function PageSelector({
   initialPromise,
@@ -37,7 +37,7 @@ export default function PageSelector({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPage]);
 
-  const pageContentForm = contentPromise ? (
+  const pageContentForm: React.ReactElement = contentPromise ? (
     <PageContentProvider pageContentPromise={contentPromise}>
       <EditablePageContent triggerReset={triggerReset} />
     </PageContentProvider>
@@ -45,10 +45,16 @@ export default function PageSelector({
     <Text>Please select a page to edit.</Text>
   );
 
+  const infoIcon = <IconInfoCircle />;
+
   return (
     <Box>
-      <Group justify="space-between" mt="md">
-        <Group justify="space-between" mt="md">
+      <Alert variant="light" title="Submission" icon={infoIcon}>
+        After submission, it may take up to 5 days to become live on the
+        website. However, the latest content will always be retrieved here.
+      </Alert>
+      <Group className={classes.content_control_group}>
+        <Group className={classes.inner_content_control_group}>
           <Select
             label="Selected page"
             defaultValue={defaultPage}

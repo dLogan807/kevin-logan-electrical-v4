@@ -12,6 +12,8 @@ import {
 } from "@mantine/core";
 import { IconTrash, IconWorldUp } from "@tabler/icons-react";
 
+import classes from "./page_form.module.css";
+
 export function PageForm({
   initialContent,
   triggerReset,
@@ -108,12 +110,7 @@ function FormFields(
       const listNum: Number = Number(key) + 1;
 
       return (
-        <Group key={key}>
-          <TextInput
-            key={formKey}
-            {...form.getInputProps(currentPath)}
-            label={"Entry " + listNum}
-          />
+        <Group key={key} className={classes.text_input_container}>
           <Tooltip label="Delete entry">
             <ActionIcon
               color="red"
@@ -123,7 +120,13 @@ function FormFields(
             >
               <IconTrash size={16} aria-label="Trash" />
             </ActionIcon>
-          </Tooltip>
+          </Tooltip>{" "}
+          <TextInput
+            key={formKey}
+            {...form.getInputProps(currentPath)}
+            label={"Entry " + listNum}
+            className={classes.text_input}
+          />
         </Group>
       );
     }

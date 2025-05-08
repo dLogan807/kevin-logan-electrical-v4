@@ -1,6 +1,15 @@
+.content_control_group {
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 2rem 0 1rem 0;
+}
+
+.inner_content_control_group {
+  align-items: flex-end;
+}
+
 .root {
   width: 15rem;
-  margin-bottom: 1rem;
 }
 
 .option {
