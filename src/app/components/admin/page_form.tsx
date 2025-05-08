@@ -42,7 +42,7 @@ export function PageForm({
         console.log(form.getValues());
       })}
     >
-      {getFormFields(objectContent, "", form)}
+      {FormFields(objectContent, "", form)}
       <Group justify="flex-end" mt="md">
         <Tooltip label="Submit and update website content">
           <Button type="submit">
@@ -65,8 +65,24 @@ function isParent(value: any): boolean {
   return typeof value === "object" && value !== null;
 }
 
+function AddEntryButton({
+  form,
+  currentPath,
+}: {
+  form: UseFormReturnType<PageContent>;
+  currentPath: string;
+}) {
+  return (
+    <Group justify="center" mt="md">
+      <Button onClick={() => form.insertListItem(currentPath, "")}>
+        Add entry
+      </Button>
+    </Group>
+  );
+}
+
 //Recursively generate form fields from entries
-function getFormFields(
+function FormFields(
   contentObject: [string, any][],
   path: string,
   form: UseFormReturnType<PageContent>
@@ -75,17 +91,13 @@ function getFormFields(
     const currentPath: string = path === "" ? key : path + "." + key;
     const formKey: string = form.key(currentPath);
 
-    //Recursive case: if the value is a parent. Add button if parent is a list
+    //If the value has child entries (recursive case). Add button if parent is a list
     if (isParent(value)) {
       return (
         <Fieldset legend={key} key={formKey}>
-          {getFormFields(Object.entries(value), currentPath, form)}
+          {FormFields(Object.entries(value), currentPath, form)}
           {Array.isArray(value) ? (
-            <Group justify="center" mt="md">
-              <Button onClick={() => form.insertListItem(currentPath, "")}>
-                Add item
-              </Button>
-            </Group>
+            <AddEntryButton form={form} currentPath={currentPath} />
           ) : null}
         </Fieldset>
       );

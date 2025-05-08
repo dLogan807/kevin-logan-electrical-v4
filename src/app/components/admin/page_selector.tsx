@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Group, Select } from "@mantine/core";
+import { Box, Group, Select, Text } from "@mantine/core";
 import { Pages } from "../layout/pages";
 import React, { use, useEffect, useState } from "react";
 import {
@@ -25,7 +25,7 @@ export default function PageSelector({
   const [selectedPage, setSelectedPage] = useState<Pages>(defaultPage);
   const [triggerReset, setTriggerReset] = useState<boolean>();
 
-  //Store promise
+  //Store promise for content
   if (!initialPromise) initialPromise = null;
   const [contentPromise, setContentPromise] =
     useState<Promise<PageContent | null> | null>(initialPromise);
@@ -37,12 +37,12 @@ export default function PageSelector({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPage]);
 
-  const pageContent = contentPromise ? (
+  const pageContentForm = contentPromise ? (
     <PageContentProvider pageContentPromise={contentPromise}>
       <EditablePageContent triggerReset={triggerReset} />
     </PageContentProvider>
   ) : (
-    <p>Please select a page to edit.</p>
+    <Text>Please select a page to edit.</Text>
   );
 
   return (
@@ -86,7 +86,7 @@ export default function PageSelector({
         />
       </Group>
 
-      {pageContent}
+      {pageContentForm}
     </Box>
   );
 }

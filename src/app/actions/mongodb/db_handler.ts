@@ -64,10 +64,6 @@ export async function getStoredPageContent(
     : null;
 }
 
-export async function closeConnection(): Promise<boolean> {
-  return await MongoDatabase.Instance.closeConnection();
-}
-
 //Singleton class for MongoDB database operations
 class MongoDatabase {
   private static _instance: MongoDatabase;
