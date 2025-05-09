@@ -75,7 +75,7 @@ function AddEntryButton({
   currentPath: string;
 }) {
   return (
-    <Group justify="center" mt="md">
+    <Group className={classes.add_entry_button}>
       <Button onClick={() => form.insertListItem(currentPath, "")}>
         Add entry
       </Button>
@@ -118,9 +118,9 @@ function FormFields(
                 form.removeListItem(path, Number(key));
               }}
             >
-              <IconTrash size={16} aria-label="Trash" />
+              <IconTrash className={classes.delete_icon} aria-label="Trash" />
             </ActionIcon>
-          </Tooltip>{" "}
+          </Tooltip>
           <TextInput
             key={formKey}
             {...form.getInputProps(currentPath)}
