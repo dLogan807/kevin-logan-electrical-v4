@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import PageSelector from "@/components/admin/page_selector";
 
 import classes from "./page.module.css";
-import { getStoredPageContent } from "@/actions/mongodb/db_handler";
+import { getStoredPageContent } from "@/actions/mongodb/pages";
 import { Pages } from "@/components/layout/pages";
 
 export const metadata: Metadata = {

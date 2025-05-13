@@ -26,7 +26,7 @@ export default function ConfirmationPopover({
   buttonVariant: ButtonVariant;
   clickAction: () => void;
 }) {
-  const [confimIsOpened, setConfirmIsOpened] = useState<boolean>(false);
+  const [confirmIsOpened, setConfirmIsOpened] = useState<boolean>(false);
 
   const outerButton: React.ReactElement = (
     <Button
@@ -48,7 +48,7 @@ export default function ConfirmationPopover({
       position="bottom"
       withArrow
       shadow="md"
-      opened={confimIsOpened}
+      opened={confirmIsOpened}
       onChange={setConfirmIsOpened}
     >
       <Popover.Target>

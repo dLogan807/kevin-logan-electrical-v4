@@ -18,7 +18,7 @@ import GoogleMap from "./components/google_map/google_map";
 import GoogleReviewContainer from "./components/google_reviews/google_review_container";
 import { Pages } from "./components/layout/pages";
 import { unstable_cache } from "next/cache";
-import { getPageContent } from "@/actions/mongodb/db_handler";
+import { getPageContent } from "./actions/mongodb/pages";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {

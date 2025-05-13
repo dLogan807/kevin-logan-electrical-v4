@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import { theme } from "@/components/theme";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
-import { getPageContent } from "@/actions/mongodb/db_handler";
+import { getPageContent } from "@/actions/mongodb/pages";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {

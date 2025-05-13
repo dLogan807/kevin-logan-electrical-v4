@@ -22,9 +22,9 @@ The website interfaces with:
 - A **Contact Form** featuring Zod form validation and Mantine's notification system. Client-side validation is done immediately, then validating on the server when submitted (including with reCAPTCHA v3) via Next.JS server actions.
 - **Google Reviews** are showcased live in a custom component via Google Places API.
 - **Responsive Design** is a core focus of the website, where it is designed to adapt to a wide range of devices.
-- **Performance** was a key consideration. To achieve this, best practices were followed, and pages were carefully optimised. See the [PageSpeed Insights report](https://pagespeed.web.dev/analysis/https-www-kevinloganelectrical-co-nz/vp2fcnc48t?form_factor=mobile).
+- **Performance** was a key consideration. To achieve this, best practices were followed, and pages were carefully optimised.
 - Website text can be **edited on-demand** through MongoDB. Content is cached for 5 days and then [regenerated](https://nextjs.org/docs/app/building-your-application/data-fetching/incremental-static-regeneration).
 
 ### Work in Progress
 
-- **Session Validation** adapted from [Lucia](https://lucia-auth.com/sessions/cookies/nextjs)'s guides (Zero-Clause BSD license).
+- **Session Validation** adapted from [Lucia](https://lucia-auth.com/sessions/cookies/nextjs)'s guides.

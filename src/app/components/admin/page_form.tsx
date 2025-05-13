@@ -1,4 +1,4 @@
-import { PageContent } from "@/actions/mongodb/db_handler";
+import { PageContent } from "@/actions/mongodb/pages";
 import React, { useEffect } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import {
