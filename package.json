@@ -18,6 +18,8 @@
     "@mantine/notifications": "^7.17.7",
     "@mantine/styles": "^6.0.22",
     "@next/third-parties": "^15.3.0",
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
     "@tabler/icons-react": "^2.47.0",
     "@tiptap/extension-link": "^2.11.5",
     "@tiptap/react": "^2.11.5",
