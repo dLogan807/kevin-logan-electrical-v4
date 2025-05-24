@@ -6,9 +6,9 @@ export const UserMongoSchema = {
     _id: { bsonType: "objectId" },
     username: {
       bsonType: "string",
-      minLength: 5,
+      minLength: 7,
       description:
-        "'username' must be a string with minimum length of 5 characters - Required",
+        "'username' must be a string with minimum length of 7 characters - Required",
     },
   },
   additionalProperties: false,
@@ -17,12 +17,18 @@ export const UserMongoSchema = {
 export const SessionMongoSchema = {
   bsonType: "object",
   title: "Session Object Validation",
-  required: ["_id", "user_id", "expires_at"],
+  required: ["_id", "session_id", "user_id", "expires_at"],
   properties: {
     _id: { bsonType: "objectId" },
+    session_id: {
+      bsonType: "string",
+      minLength: 64,
+      maxLength: 64,
+      description: "'session_id' must be a string of length 64 - Required",
+    },
     user_id: {
-      bsonType: "int",
-      description: "'user_id' must be an integer - Required",
+      bsonType: "objectId",
+      description: "'user_id' must be an objectId - Required",
     },
     expires_at: {
       bsonType: "date",

@@ -1,6 +1,6 @@
 "use client";
 
-import { PageContent } from "@/actions/mongodb/pages";
+import { PageContent } from "@/actions/mongodb/pages/page_management";
 import { Box, Loader } from "@mantine/core";
 import React, { createContext, Suspense, useContext } from "react";
 

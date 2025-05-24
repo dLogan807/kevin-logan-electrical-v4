@@ -3,7 +3,10 @@
 import { Alert, Box, Group, Select, Text } from "@mantine/core";
 import { Pages } from "../layout/pages";
 import React, { use, useEffect, useState } from "react";
-import { getStoredPageContent, PageContent } from "@/actions/mongodb/pages";
+import {
+  getStoredPageContent,
+  PageContent,
+} from "@/actions/mongodb/pages/page_management";
 import { PageContentProvider, usePageContext } from "./page_context";
 import { PageForm } from "./page_form";
 import { IconInfoCircle, IconRefresh } from "@tabler/icons-react";

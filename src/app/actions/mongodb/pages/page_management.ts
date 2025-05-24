@@ -1,6 +1,6 @@
 "use server";
 
-import MongoDatabase from "./db_handler";
+import MongoDatabase from "../db_handler";
 import { Pages } from "@/components/layout/pages";
 import {
   HomeMongoSchema,
@@ -8,7 +8,7 @@ import {
   RateAndServicesMongoSchema,
   ContactUsMongoSchema,
   PageSchema,
-} from "@/actions/mongodb/page_schemas";
+} from "@/actions/mongodb/pages/page_schemas";
 import { fallbackContent as homeFallbackContent, HomeContent } from "@/page";
 import {
   fallbackContent as aboutUsFallbackContent,
@@ -65,9 +65,12 @@ export async function getStoredPageContent(
 }
 
 class PageManager {
+  private pageCollectionsInit: boolean = false;
+
   private getPageSchema(collectionName: Pages): PageSchema {
-    if (!collectionName || !(collectionName in Pages))
+    if (!collectionName || !Object.values(Pages).includes(collectionName)) {
       throw Error("Collection must be a valid page.");
+    }
 
     switch (collectionName) {
       case Pages.Home:
@@ -82,7 +85,7 @@ class PageManager {
   }
 
   private getPageFallbackContent(collectionName: Pages): PageContent {
-    if (!collectionName || !(collectionName in Pages))
+    if (!collectionName || !Object.values(Pages).includes(collectionName))
       throw Error("Collection must be a valid page.");
 
     switch (collectionName) {
@@ -99,6 +102,7 @@ class PageManager {
 
   private async insertFallbackContent(collectionName: Pages): Promise<boolean> {
     if (!collectionName) return false;
+    if (await MongoDatabase.collectionExists(collectionName)) return true;
 
     const document = {
       page_content: this.getPageFallbackContent(collectionName),
@@ -122,6 +126,8 @@ class PageManager {
       }
     }
 
+    this.pageCollectionsInit = allCreated;
+
     return allCreated;
   }
 
@@ -135,9 +141,9 @@ class PageManager {
 
   //Retrieve the most recent document from the page's collection
   async getPageDocument(collectionName: Pages): Promise<PageDocument | null> {
+    if (!collectionName) return null;
     //Attempt to create collections in case they don't exist
-    if (!collectionName || !MongoDatabase.collectionExists(collectionName))
-      return null;
+    if (!this.pageCollectionsInit) await this.initPageCollections();
 
     return MongoDatabase.getLatestDocument(collectionName);
   }
