@@ -25,7 +25,7 @@ export type SessionValidationResult =
   | { session: SessionDocument; user: UserDocument }
   | { session: null; user: null };
 
-export function generateSessionToken(): string {
+export async function generateSessionToken(): Promise<string> {
   const bytes = new Uint8Array(24);
   crypto.getRandomValues(bytes);
   const token = encodeBase32LowerCaseNoPadding(bytes);
