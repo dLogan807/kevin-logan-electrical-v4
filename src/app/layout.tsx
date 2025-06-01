@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "./components/layout/footer";
-import { ColorSchemeScript, Box, Paper } from "@mantine/core";
+import { ColorSchemeScript, Box, Paper, mantineHtmlProps } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { Providers } from "@/components/layout/providers";
 import { headers } from "next/headers";
@@ -38,7 +38,7 @@ export default async function RootLayout({
     .then((rawNonce) => rawNonce ?? "");
 
   return (
-    <html lang="en">
+    <html lang="en" {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript defaultColorScheme="auto" nonce={nonce} />
       </head>
