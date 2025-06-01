@@ -3,6 +3,7 @@
 import { ContactFormData } from "@/components/contact_form/contact_form";
 import { schema } from "@/utils/contact_form_validation";
 import { EmailSendResponse, sendContactEmail } from "./send";
+import { verifyRecaptcha } from "../recaptcha/validate";
 
 export type ContactFormResponse = {
   validated: boolean;
@@ -12,53 +13,6 @@ export type ContactFormResponse = {
   notifyTitle: string;
   notifyMessage: string;
 };
-
-type RecaptchaResponse = {
-  success: boolean;
-  score: number;
-  action: string;
-  challenge_ts: string;
-  hostname: string;
-  errorCodes: string[];
-};
-
-async function verifyRecaptcha(
-  token: string,
-  action: string
-): Promise<boolean> {
-  const secretKey: string = "" + process.env.RECAPTCHA_SECRET_KEY;
-
-  //Token may have failed retrieval, but others are expected
-  if (!token) return true;
-  if (!action || !secretKey) return false;
-
-  const response: RecaptchaResponse = await fetch(
-    "https://www.google.com/recaptcha/api/siteverify?secret=" +
-      secretKey +
-      "&response=" +
-      token
-  )
-    .then((response) => {
-      return response.json();
-    })
-    .catch(() => {
-      return {
-        success: true,
-        score: 0.9,
-        action: action,
-        challenge_ts: "",
-        hostname: "",
-        errorCodes: [],
-      };
-    });
-
-  return (
-    response &&
-    response.success &&
-    response.score > 0.5 &&
-    response.action === action
-  );
-}
 
 //Validate and return whether successful and any errors
 export async function validateContactEmail(

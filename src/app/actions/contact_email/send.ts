@@ -71,11 +71,9 @@ export async function sendContactEmail(
         });
       }
     });
-  }).catch(() => {
-    return {
-      sendSuccess: false,
-      notifyTitle: "Could not send the email. Please try again",
-      notifyMessage: "A server error occured",
-    };
-  });
+  }).catch(() => ({
+    sendSuccess: false,
+    notifyTitle: "Could not send the email. Please try again",
+    notifyMessage: "A server error occured",
+  }));
 }

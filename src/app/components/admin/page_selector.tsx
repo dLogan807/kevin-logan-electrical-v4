@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Box, Group, Select, Text } from "@mantine/core";
+import { Alert, Box, Button, Group, Select, Text } from "@mantine/core";
 import { Pages } from "../layout/pages";
 import React, { use, useEffect, useState } from "react";
 import {
@@ -9,10 +9,11 @@ import {
 } from "@/actions/mongodb/pages/page_management";
 import { PageContentProvider, usePageContext } from "./page_context";
 import { PageForm } from "./page_form";
-import { IconInfoCircle, IconRefresh } from "@tabler/icons-react";
+import { IconInfoCircle, IconLogout, IconRefresh } from "@tabler/icons-react";
 import ConfirmationPopover from "./confirmation_popover";
 
 import classes from "./page_selector.module.css";
+import { logout } from "@/actions/mongodb/sessions/session_management";
 
 export default function PageSelector({
   initialPromise,
@@ -24,6 +25,7 @@ export default function PageSelector({
 
   const [selectedPage, setSelectedPage] = useState<Pages>(defaultPage);
   const [triggerReset, setTriggerReset] = useState<boolean>();
+  const [alertClosed, setAlertClosed] = useState<boolean>();
 
   //Store promise for content
   if (!initialPromise) initialPromise = null;
@@ -49,7 +51,25 @@ export default function PageSelector({
 
   return (
     <Box>
-      <Alert variant="light" title="Submission" icon={infoIcon}>
+      <Box className={classes.header_group}>
+        <Button variant="default" onClick={() => logout()}>
+          <Group>
+            <Text>Logout</Text>
+            <IconLogout aria-label="Logout" />
+          </Group>
+        </Button>
+        <h1>Content Mangement</h1>
+      </Box>
+      <Alert
+        variant="light"
+        title="Submission"
+        icon={infoIcon}
+        withCloseButton={true}
+        onClose={() => {
+          setAlertClosed(true);
+        }}
+        hidden={alertClosed}
+      >
         After submission, it may take up to 5 days to become live on the
         website. However, the latest content will always be retrieved here.
       </Alert>

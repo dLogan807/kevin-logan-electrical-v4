@@ -126,7 +126,7 @@ export default async function getGoogleReviews(
   headers.set("Accept", "application/json");
   headers.set("Referer", "https://kevinloganelectrical.co.nz/");
   headers.set("Content-Type", "application/json");
-  headers.set("X-Goog-Api-Key", "" + process.env.GOOGLE_MAPS_API_KEY);
+  headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_MAPS_API_KEY}`);
   headers.set(
     "X-Goog-FieldMask",
     "places.rating,places.userRatingCount,places.reviews"
@@ -142,14 +142,12 @@ export default async function getGoogleReviews(
       }),
     }
   )
-    .then((response) => response.json())
-    .then((data) => {
-      return {
-        reviews: parseReviews(data.places[0].reviews),
-        averageRating: data.places[0].rating,
-        totalReviewCount: data.places[0].userRatingCount,
-      };
-    })
+    .then((res) => res.json())
+    .then((data) => ({
+      reviews: parseReviews(data.places[0].reviews),
+      averageRating: data.places[0].rating,
+      totalReviewCount: data.places[0].userRatingCount,
+    }))
     .then((parsedReviews) => {
       nameFilter ||= [];
       if (nameFilter.length > 0) {

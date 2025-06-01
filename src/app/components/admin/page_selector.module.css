@@ -1,7 +1,30 @@
+.header_group {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-bottom: 1rem;
+  justify-content: center;
+
+  button {
+    position: absolute;
+    right: 0;
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    flex-direction: column;
+    gap: 1rem;
+
+    button {
+      position: relative;
+      align-self: flex-end;
+    }
+  }
+}
+
 .content_control_group {
   justify-content: space-between;
   align-items: flex-end;
-  margin: 2rem 0 1rem 0;
+  margin: 1rem 0 1rem 0;
 }
 
 .inner_content_control_group {

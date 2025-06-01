@@ -1,5 +1,7 @@
 "use server";
 
+//Derived from Lucia under their Zero-Clause BSD license (https://github.com/lucia-auth/lucia/blob/main/LICENSE-0BSD)
+
 import MongoDatabase, { JoinMatchInput } from "../db_handler";
 import { SessionMongoSchema } from "./session_schemas";
 import {
@@ -8,8 +10,8 @@ import {
 } from "@oslojs/encoding";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { ObjectId } from "mongodb";
-
-//Derived from Lucia under their Zero-Clause BSD license (https://github.com/lucia-auth/lucia/blob/main/LICENSE-0BSD)
+import { deleteSessionTokenCookie, getCurrentSession } from "./cookie";
+import { redirect } from "next/navigation";
 
 export interface SessionDocument {
   session_id: string;
@@ -18,7 +20,9 @@ export interface SessionDocument {
 }
 
 export interface UserDocument {
+  _id: ObjectId;
   username: string;
+  hashedPassword: string;
 }
 
 export type SessionValidationResult =
@@ -32,15 +36,17 @@ export async function generateSessionToken(): Promise<string> {
   return token;
 }
 
+async function hashSessionToken(token: string): Promise<string> {
+  return encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+}
+
 export async function createSession(
   token: string,
   userId: ObjectId
 ): Promise<SessionDocument> {
   if (!token || !userId) throw "token and userId must be provided";
 
-  const sessionId: string = encodeHexLowerCase(
-    sha256(new TextEncoder().encode(token))
-  );
+  const sessionId: string = await hashSessionToken(token);
   const day: number = 1000 * 60 * 60 * 24;
   const session: SessionDocument = {
     session_id: sessionId,
@@ -58,10 +64,7 @@ export async function createSession(
 export async function validateSessionToken(
   token: string
 ): Promise<SessionValidationResult> {
-  //Hash token
-  const sessionId: string = encodeHexLowerCase(
-    sha256(new TextEncoder().encode(token))
-  );
+  const sessionId: string = await hashSessionToken(token);
 
   const joinRequiredValues: JoinMatchInput = {
     localCollection: "user_sessions",
@@ -83,17 +86,14 @@ export async function validateSessionToken(
   };
 
   const user: UserDocument = {
+    _id: result.joined_document[0]._id,
     username: result.joined_document[0].username,
+    hashedPassword: result.joined_document[0].password,
   };
 
-  //If session expired, invalidate by deleting
+  //If session expired
   if (Date.now() >= session.expires_at.getTime()) {
-    await MongoDatabase.deleteDocument(
-      "user_sessions",
-      "session_id",
-      sessionId,
-      false
-    );
+    await invalidateSession(sessionId);
     return { session: null, user: null };
   }
 
@@ -118,4 +118,13 @@ export async function invalidateSession(sessionId: string): Promise<void> {
 
 export async function invalidateAllSessions(userId: ObjectId): Promise<void> {
   MongoDatabase.deleteDocument("user_sessions", "user_id", userId, true);
+}
+
+export async function logout() {
+  const sessionId = (await getCurrentSession()).session?.session_id;
+  if (sessionId) await invalidateSession(sessionId);
+
+  await deleteSessionTokenCookie();
+
+  redirect("/admin");
 }

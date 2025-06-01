@@ -38,6 +38,7 @@ class MongoDatabase {
     "about_us",
     "rate_and_services",
     "contact_us",
+    "users",
   ];
   private readonly immutableCollections: string[] = ["users"];
 
@@ -57,8 +58,8 @@ class MongoDatabase {
   private isValidFieldValue(value: FieldValue): boolean {
     return (
       value instanceof ObjectId ||
-      value === "number" ||
-      (value === "string" && value.length > 0)
+      typeof value === "number" ||
+      (typeof value === "string" && value.length > 0)
     );
   }
 
@@ -140,6 +141,16 @@ class MongoDatabase {
     }
 
     return true;
+  }
+
+  async getDocument(collectionName: string, fields: any): Promise<any | null> {
+    if (!(await this.collectionExists(collectionName))) return null;
+
+    try {
+      return await this._db.collection(collectionName).findOne(fields);
+    } catch {
+      return null;
+    }
   }
 
   //Retrieve the most recent document from the collection
@@ -225,8 +236,7 @@ class MongoDatabase {
       !this.collectionExists(collectionName) ||
       !this.isValidString(fieldToMatch) ||
       !this.isValidFieldValue(matchFieldValue) ||
-      !this.isValidString(fieldToUpdate) ||
-      !newValue
+      !this.isValidString(fieldToUpdate)
     )
       return false;
 
@@ -236,7 +246,7 @@ class MongoDatabase {
       throw "Documents in " + collectionName + " cannot be updated.";
 
     const filter = {
-      matchField: matchFieldValue,
+      [fieldToMatch]: matchFieldValue,
     };
 
     const updateDocument = {
@@ -261,15 +271,15 @@ class MongoDatabase {
     collectionName: string,
     fieldToMatch: string,
     matchFieldValue: FieldValue,
-    deleteAllMatches: boolean
+    deleteAllMatches?: boolean
   ): Promise<boolean> {
     if (
       !this.collectionExists(collectionName) ||
       !this.isValidString(fieldToMatch) ||
-      !this.isValidFieldValue(matchFieldValue) ||
-      deleteAllMatches == null
-    )
+      !this.isValidFieldValue(matchFieldValue)
+    ) {
       return false;
+    }
 
     if (this.isImmutableCollection(collectionName))
       throw "Cannot delete document. " + collectionName + " is immutable.";
@@ -277,7 +287,7 @@ class MongoDatabase {
       throw "Documents in " + collectionName + " cannot be deleted.";
 
     const document = {
-      fieldToMatch: matchFieldValue,
+      [fieldToMatch]: matchFieldValue,
     };
 
     const collection = this._db.collection(collectionName);

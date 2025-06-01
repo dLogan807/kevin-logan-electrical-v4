@@ -1,3 +1,7 @@
+"use server";
+
+//Derived from Lucia under their Zero-Clause BSD license (https://github.com/lucia-auth/lucia/blob/main/LICENSE-0BSD)
+
 import { cookies } from "next/headers";
 import { cache } from "react";
 import {

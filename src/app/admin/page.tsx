@@ -1,10 +1,13 @@
-import { Box, Paper } from "@mantine/core";
+import React from "react";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
-import PageSelector from "@/components/admin/page_selector";
-import { getCurrentSession } from "@/actions/mongodb/sessions/cookies";
-import { getStoredPageContent } from "@/actions/mongodb/pages/page_management";
+import { headers } from "next/headers";
+import { Box, Paper } from "@mantine/core";
+import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { Pages } from "@/components/layout/pages";
+import PageSelector from "@/components/admin/page_selector";
+import LoginForm from "../components/admin/login/login_form";
+import { getCurrentSession } from "@/actions/mongodb/sessions/cookie";
+import { getStoredPageContent } from "@/actions/mongodb/pages/page_management";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -24,18 +27,36 @@ export const metadata: Metadata = {
 
 export default async function Admin() {
   const { user } = await getCurrentSession();
-  if (user === null) {
-    return redirect("/");
-  }
 
+  const nonce: string = await headers()
+    .then((headers) => headers.get("x-nonce"))
+    .then((rawNonce) => rawNonce ?? "");
+
+  return (
+    <ReCaptchaProvider
+      className={classes.recaptcha}
+      nonce={nonce}
+      strategy="lazyOnload"
+    >
+      <Container>
+        {user === null ? (
+          <LoginForm />
+        ) : (
+          <PageSelector initialPromise={getStoredPageContent(Pages.Home)} />
+        )}
+      </Container>
+    </ReCaptchaProvider>
+  );
+}
+
+function Container({ children }: { children: React.ReactNode }) {
   return (
     <Box className={[classes.about_grid, "content_grid"].join(" ")}>
       <Paper
         className={[classes.about_text_1, "main_section"].join(" ")}
         withBorder
       >
-        <h1 className={classes.heading}>Content Management</h1>
-        <PageSelector initialPromise={getStoredPageContent(Pages.Home)} />
+        {children}
       </Paper>
     </Box>
   );

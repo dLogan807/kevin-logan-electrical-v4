@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Group, Textarea, TextInput, Text } from "@mantine/core";
+import { Button, Group, Textarea, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import {
   ContactFormResponse,
@@ -10,9 +10,9 @@ import { schema } from "@/utils/contact_form_validation";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useReCaptcha } from "next-recaptcha-v3";
-import Link from "next/link";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import classes from "./contact_form.module.css";
+import RecaptchaDisclaimer from "../recaptcha/disclaimer";
 
 export type ContactFormData = {
   name: string;
@@ -49,60 +49,60 @@ export function ContactForm() {
   });
   const { executeRecaptcha, loaded, error } = useReCaptcha();
 
-  async function onSubmit(fields: ContactFormData) {
-    if (isSubmitting) return;
+  const onSubmit = useCallback(
+    async (fields: ContactFormData) => {
+      if (isSubmitting) return;
 
-    //Disable submit button while submiting
-    setIsSubmitting(true);
+      //Disable submit button while submiting
+      setIsSubmitting(true);
 
-    //Generate token
-    const action: string = "contact_form_submit";
-    const token: string =
-      loaded && !error
-        ? await executeRecaptcha(action).catch(() => {
-            return "";
-          })
-        : "";
+      //Generate recaptcha token
+      const action: string = "contact_form_submit";
+      const token: string =
+        loaded && !error
+          ? await executeRecaptcha(action).catch(() => {
+              return "";
+            })
+          : "";
 
-    //Send to server action for validation and sending
-    const response: ContactFormResponse = await validateContactEmail(
-      JSON.stringify({ fields, token, action })
-    )
-      .then((response) => JSON.parse(response))
-      .catch(() => {
-        return {
-          validated: true,
-          recaptchaVerified: true,
-          formErrors: {},
-          sendSuccess: false,
-          notifyTitle: "Connection timed out",
-          notifyMessage: "Check your internet connection",
-        };
-      });
+      //Send to server action for validation and sending
+      const response: ContactFormResponse = await validateContactEmail(
+        JSON.stringify({ fields, token, action })
+      )
+        .then((response) => JSON.parse(response))
+        .catch(() => {
+          return {
+            validated: true,
+            recaptchaVerified: true,
+            formErrors: {},
+            sendSuccess: false,
+            notifyTitle: "Connection timed out",
+            notifyMessage: "Check your internet connection",
+          };
+        });
 
-    //Reset form or show errors
-    if (response.validated && response.recaptchaVerified) {
-      notifyUser(
-        response.sendSuccess,
-        response.notifyTitle,
-        response.notifyMessage
-      );
+      //Reset form or show errors
+      if (response.validated && response.recaptchaVerified) {
+        if (response.sendSuccess) form.reset();
 
-      if (response.sendSuccess) {
-        form.reset();
+        notifyUser(
+          response.sendSuccess,
+          response.notifyTitle,
+          response.notifyMessage
+        );
+      } else {
+        form.setErrors(response.formErrors);
+
+        if (!response.recaptchaVerified) {
+          notifyUser(false, "reCAPTCHA failed", "Please try again");
+        }
       }
-    } else {
-      //Show validation errors
-      form.setErrors(response.formErrors);
 
-      if (!response.recaptchaVerified) {
-        notifyUser(false, "reCAPTCHA failed", "Please try again");
-      }
-    }
-
-    //Enable submit button
-    setIsSubmitting(false);
-  }
+      //Enable submit button
+      setIsSubmitting(false);
+    },
+    [isSubmitting, loaded, error, executeRecaptcha, form]
+  );
 
   return (
     <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
@@ -112,6 +112,7 @@ export function ContactForm() {
         label="Your name"
         key={form.key("name")}
         {...form.getInputProps("name")}
+        disabled={isSubmitting}
       />
       <TextInput
         className={classes.form_field}
@@ -119,12 +120,14 @@ export function ContactForm() {
         label="Email"
         key={form.key("email")}
         {...form.getInputProps("email")}
+        disabled={isSubmitting}
       />
       <TextInput
         className={classes.form_field}
         label="Phone"
         key={form.key("phone")}
         {...form.getInputProps("phone")}
+        disabled={isSubmitting}
       />
       <Textarea
         className={classes.form_field}
@@ -134,11 +137,9 @@ export function ContactForm() {
         rows={4}
         key={form.key("jobDetails")}
         {...form.getInputProps("jobDetails")}
+        disabled={isSubmitting}
       />
-      {/* prettier-ignore */}
-      <Text className={classes.recaptcha_disclaimer}>
-        This site is protected by reCAPTCHA and the Google <Link href="https://policies.google.com/privacy">Privacy Policy</Link> and <Link href="https://policies.google.com/terms">Terms of Service</Link> apply.
-      </Text>
+      <RecaptchaDisclaimer />
       <Group>
         <Button
           className={classes.submit_button}

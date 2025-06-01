@@ -38,3 +38,9 @@
 .delete_icon {
   width: 1rem;
 }
+
+.submit_button_group {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}

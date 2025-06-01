@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Anchor,
   Box,
@@ -71,16 +72,46 @@ const getCachedPageContent = unstable_cache(
   { revalidate: 432000, tags: [Pages.ContactUs] }
 );
 
+function ListIcon({ icon }: { icon: React.ReactElement }) {
+  return <ThemeIcon className={"list_icon"}>{icon}</ThemeIcon>;
+}
+
+function TelLink({
+  phoneNumber,
+  isMobile,
+}: {
+  phoneNumber: string;
+  isMobile: boolean;
+}) {
+  const telHref = `tel:${isMobile ? "+64" : ""}${phoneNumber.split(" ").join("")}`;
+
+  return <Anchor href={telHref}>{phoneNumber}</Anchor>;
+}
+
 export default async function ContactUs() {
   const mainSection: string = "main_section";
 
   const nonce: string = await headers()
     .then((headers) => headers.get("x-nonce"))
-    .then((rawNonce) => {
-      return rawNonce == undefined ? "" : rawNonce;
-    });
+    .then((rawNonce) => rawNonce ?? "");
 
   const content: ContactUsContent = await getCachedPageContent();
+
+  const mapIcon: React.ReactElement = (
+    <ListIcon icon={<IconMapPin aria-label="Location marker" />} />
+  );
+  const phoneIcon: React.ReactElement = (
+    <ListIcon icon={<IconPhone aria-label="Phone" />} />
+  );
+  const mobilePhoneIcon: React.ReactElement = (
+    <ListIcon icon={<IconDeviceMobile aria-label="Mobile phone" />} />
+  );
+  const emailIcon: React.ReactElement = (
+    <ListIcon icon={<IconMail aria-label="Email" />} />
+  );
+  const serviceHoursIcon: React.ReactElement = (
+    <ListIcon icon={<IconClockHour2 aria-label="Service hours" />} />
+  );
 
   return (
     <ReCaptchaProvider
@@ -102,48 +133,22 @@ export default async function ContactUs() {
         >
           <h4>{content.contact_details.title}</h4>
           <List>
-            <ListItem
-              icon={
-                <ThemeIcon className={"list_icon"}>
-                  <IconMapPin aria-label="Location marker" />
-                </ThemeIcon>
-              }
-            >
+            <ListItem icon={mapIcon}>
               {content.contact_details.location}
             </ListItem>
-            <ListItem
-              icon={
-                <ThemeIcon className={"list_icon"}>
-                  <IconPhone aria-label="Phone" />
-                </ThemeIcon>
-              }
-            >
-              <Anchor
-                href={`tel:${content.contact_details.phone.split(" ").join("")}`}
-              >
-                {content.contact_details.phone}
-              </Anchor>
+            <ListItem icon={phoneIcon}>
+              <TelLink
+                phoneNumber={content.contact_details.phone}
+                isMobile={false}
+              />
             </ListItem>
-            <ListItem
-              icon={
-                <ThemeIcon className={"list_icon"}>
-                  <IconDeviceMobile aria-label="Mobile phone" />
-                </ThemeIcon>
-              }
-            >
-              <Anchor
-                href={`tel:+64${content.contact_details.mobile.split(" ").join("")}`}
-              >
-                {content.contact_details.mobile}
-              </Anchor>
+            <ListItem icon={mobilePhoneIcon}>
+              <TelLink
+                phoneNumber={content.contact_details.mobile}
+                isMobile={true}
+              />
             </ListItem>
-            <ListItem
-              icon={
-                <ThemeIcon className={"list_icon"}>
-                  <IconMail aria-label="Letter" />
-                </ThemeIcon>
-              }
-            >
+            <ListItem icon={emailIcon}>
               <Anchor href={`mailto:${content.contact_details.email}`}>
                 {content.contact_details.email}
               </Anchor>
@@ -151,13 +156,7 @@ export default async function ContactUs() {
           </List>
           <h4>{content.service_hours.title}</h4>
           <List>
-            <ListItem
-              icon={
-                <ThemeIcon className={"list_icon"}>
-                  <IconClockHour2 aria-label="Analogue clock" />
-                </ThemeIcon>
-              }
-            >
+            <ListItem icon={serviceHoursIcon}>
               <Text>{content.service_hours.hours}</Text>
               <Text>{content.service_hours.days}</Text>
             </ListItem>

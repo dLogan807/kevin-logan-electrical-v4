@@ -45,7 +45,7 @@ export function PageForm({
       })}
     >
       {FormFields(objectContent, "", form)}
-      <Group justify="flex-end" mt="md">
+      <Group className={classes.submit_button_group}>
         <Tooltip label="Submit and update website content">
           <Button type="submit">
             <Group>
@@ -96,7 +96,7 @@ function FormFields(
     //If the value has child entries (recursive case). Add button if parent is a list
     if (isParent(value)) {
       return (
-        <Fieldset legend={key} key={formKey}>
+        <Fieldset legend={<b>{key}</b>} key={formKey}>
           {FormFields(Object.entries(value), currentPath, form)}
           {Array.isArray(value) ? (
             <AddEntryButton form={form} currentPath={currentPath} />

@@ -35,9 +35,7 @@ export default async function RootLayout({
 }) {
   const nonce: string = await headers()
     .then((headers) => headers.get("x-nonce"))
-    .then((rawNonce) => {
-      return rawNonce == undefined ? "" : rawNonce;
-    });
+    .then((rawNonce) => rawNonce ?? "");
 
   return (
     <html lang="en">

@@ -10,6 +10,12 @@ export const UserMongoSchema = {
       description:
         "'username' must be a string with minimum length of 7 characters - Required",
     },
+    hashedPassword: {
+      bsonType: "string",
+      minLength: 64,
+      description:
+        "'hashedPassword' must be a string of at least 64 characters - Required",
+    },
   },
   additionalProperties: false,
 };

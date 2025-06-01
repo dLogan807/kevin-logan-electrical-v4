@@ -6,7 +6,3 @@
   margin-top: 1rem;
   width: 100%;
 }
-
-.recaptcha_disclaimer {
-  --text-fz: var(--mantine-font-size-xs);
-}
