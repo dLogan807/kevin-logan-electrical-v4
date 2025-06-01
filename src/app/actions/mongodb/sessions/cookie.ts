@@ -7,7 +7,7 @@ import { cache } from "react";
 import {
   SessionValidationResult,
   validateSessionToken,
-} from "@/actions/mongodb/sessions/session_management";
+} from "@/actions/mongodb/sessions/management";
 
 export async function setSessionTokenCookie(
   token: string,

@@ -21,7 +21,7 @@ import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
-import { getPageContent } from "@/actions/mongodb/pages/page_management";
+import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {

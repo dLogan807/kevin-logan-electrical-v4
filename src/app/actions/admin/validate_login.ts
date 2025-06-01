@@ -9,7 +9,7 @@ import {
   createSession,
   generateSessionToken,
   UserDocument,
-} from "../mongodb/sessions/session_management";
+} from "../mongodb/sessions/management";
 
 type SessionInfo = {
   token: string;

@@ -7,7 +7,7 @@ import { Pages } from "@/components/layout/pages";
 import PageSelector from "@/components/admin/page_selector";
 import LoginForm from "../components/admin/login/login_form";
 import { getCurrentSession } from "@/actions/mongodb/sessions/cookie";
-import { getStoredPageContent } from "@/actions/mongodb/pages/page_management";
+import { getStoredPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {

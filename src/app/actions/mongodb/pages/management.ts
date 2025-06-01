@@ -8,7 +8,7 @@ import {
   RateAndServicesMongoSchema,
   ContactUsMongoSchema,
   PageSchema,
-} from "@/actions/mongodb/pages/page_schemas";
+} from "@/actions/mongodb/pages/schemas";
 import { fallbackContent as homeFallbackContent, HomeContent } from "@/page";
 import {
   fallbackContent as aboutUsFallbackContent,

@@ -6,14 +6,14 @@ import React, { use, useEffect, useState } from "react";
 import {
   getStoredPageContent,
   PageContent,
-} from "@/actions/mongodb/pages/page_management";
+} from "@/actions/mongodb/pages/management";
 import { PageContentProvider, usePageContext } from "./page_context";
 import { PageForm } from "./page_form";
 import { IconInfoCircle, IconLogout, IconRefresh } from "@tabler/icons-react";
 import ConfirmationPopover from "./confirmation_popover";
 
 import classes from "./page_selector.module.css";
-import { logout } from "@/actions/mongodb/sessions/session_management";
+import { logout } from "@/actions/mongodb/sessions/management";
 
 export default function PageSelector({
   initialPromise,

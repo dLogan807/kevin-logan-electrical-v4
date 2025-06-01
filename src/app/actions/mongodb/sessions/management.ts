@@ -3,7 +3,7 @@
 //Derived from Lucia under their Zero-Clause BSD license (https://github.com/lucia-auth/lucia/blob/main/LICENSE-0BSD)
 
 import MongoDatabase, { JoinMatchInput } from "../db_handler";
-import { SessionMongoSchema } from "./session_schemas";
+import { SessionMongoSchema } from "./schemas";
 import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
