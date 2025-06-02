@@ -10,9 +10,12 @@ export type FormMessage = {
 
 export function FormAlert({ formMessage }: { formMessage: FormMessage }) {
   const errorIcon: React.ReactElement = formMessage.isError ? (
-    <IconExclamationCircle className={classes.input_icon} />
+    <IconExclamationCircle
+      className={classes.input_icon}
+      aria-label="Failure"
+    />
   ) : (
-    <IconCircleCheck className={classes.input_icon} />
+    <IconCircleCheck className={classes.input_icon} aria-label="Success" />
   );
 
   const colour: string = formMessage.isError ? "red" : "green";

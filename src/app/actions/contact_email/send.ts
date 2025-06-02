@@ -6,7 +6,6 @@ import Mail from "nodemailer/lib/mailer";
 
 export type EmailSendResponse = {
   sendSuccess: boolean;
-  notifyTitle: string;
   notifyMessage: string;
 };
 
@@ -17,8 +16,7 @@ export async function sendContactEmail(
   if (!fields || !fields.email || !fields.name || !fields.jobDetails) {
     return {
       sendSuccess: false,
-      notifyTitle: "Could not send the email. Please try again",
-      notifyMessage: "Check all required fields are filled",
+      notifyMessage: "Email not sent. Check required fields for errors",
     };
   }
 
@@ -60,20 +58,17 @@ export async function sendContactEmail(
       if (!error) {
         resolve({
           sendSuccess: true,
-          notifyTitle: "Email sent",
-          notifyMessage: "We'll get back to you soon",
+          notifyMessage: "Email sent! We'll get back to you soon",
         });
       } else {
         resolve({
           sendSuccess: false,
-          notifyTitle: "Could not send the email. Please try again",
-          notifyMessage: "The mail server did not respond",
+          notifyMessage: "Could not send the email. Please try again",
         });
       }
     });
   }).catch(() => ({
     sendSuccess: false,
-    notifyTitle: "Could not send the email. Please try again",
-    notifyMessage: "A server error occured",
+    notifyMessage: "Could not send the email. Please try again",
   }));
 }

@@ -19,12 +19,9 @@ The website interfaces with:
 ## Features
 
 - An **Adaptive Light/Dark Theme** was implemented for modernity and convenience. Defaults to the user's browser theme and stores its last interaction state.
-- A **Contact Form** featuring Zod form validation and Mantine's notification system. Client-side validation is done immediately, then validating on the server when submitted (including with reCAPTCHA v3) via Next.JS server actions.
+- A **Contact Form** featuring Zod form validation. Client-side validation is done immediately, then validating on the server when submitted (including with reCAPTCHA v3) via Next.JS server actions.
 - **Google Reviews** are showcased live in a custom component via Google Places API.
 - **Responsive Design** is a core focus of the website, where it is designed to adapt to a wide range of devices.
 - **Performance** was a key consideration. To achieve this, best practices were followed, and pages were carefully optimised.
-- Website text can be **edited on-demand** through MongoDB. Content is cached for 5 days and then [regenerated](https://nextjs.org/docs/app/building-your-application/data-fetching/incremental-static-regeneration).
-
-### Work in Progress
-
+- Website text can be **edited on-demand** through an admin page. Content is cached for 5 days and then [regenerated](https://nextjs.org/docs/app/building-your-application/data-fetching/incremental-static-regeneration).
 - **Session Validation** adapted from [Lucia](https://lucia-auth.com/sessions/cookies/nextjs)'s guides.

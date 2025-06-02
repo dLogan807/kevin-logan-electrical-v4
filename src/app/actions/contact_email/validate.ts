@@ -10,7 +10,6 @@ export type ContactFormResponse = {
   recaptchaVerified: boolean;
   formErrors: { [k: string]: string };
   sendSuccess: boolean;
-  notifyTitle: string;
   notifyMessage: string;
 };
 
@@ -47,8 +46,10 @@ export async function validateContactEmail(
     formErrors: errors,
     recaptchaVerified: recaptchaResponse,
     sendSuccess: false,
-    notifyTitle: "Could not send the email. Please try again",
-    notifyMessage: "reCAPTCHA could not verify if you are human",
+    notifyMessage:
+      Object.keys(errors).length === 0
+        ? "Email not sent. reCAPTCHA failed"
+        : "Email not sent. Check required fields for errors",
   };
 
   //If validated, send email and add to response
