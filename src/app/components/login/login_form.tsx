@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Alert,
   Box,
   Button,
   Fieldset,
@@ -11,11 +10,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import {
-  IconExclamationCircle,
-  IconLock,
-  IconUserCircle,
-} from "@tabler/icons-react";
+import { IconLock, IconUserCircle } from "@tabler/icons-react";
 import { schema } from "@/utils/login_form_validation";
 import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
 import {
@@ -25,6 +20,13 @@ import {
 import { useReCaptcha } from "next-recaptcha-v3";
 import classes from "./login_form.module.css";
 import { setSessionTokenCookie } from "@/actions/mongodb/sessions/cookie";
+import {
+  ReadonlyURLSearchParams,
+  redirect,
+  useSearchParams,
+  useRouter,
+} from "next/navigation";
+import { FormAlert, FormMessage } from "@/components/form/form_alert";
 
 export type LoginFormData = {
   username: string;
@@ -32,9 +34,9 @@ export type LoginFormData = {
 };
 
 export default function LoginForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formError, setFormError] = useState("");
+  //Form
   const { executeRecaptcha, loaded, error } = useReCaptcha();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<LoginFormData>({
     mode: "uncontrolled",
     initialValues: {
@@ -45,11 +47,30 @@ export default function LoginForm() {
     validateInputOnBlur: true,
   });
 
+  //Form message
+  const searchParams: ReadonlyURLSearchParams = useSearchParams();
+  const isLoggedOut: string | null = searchParams.get("logout");
+  const defaultMessage: FormMessage = isLoggedOut
+    ? {
+        message: "Successfully logged out",
+      }
+    : {};
+
+  const [formMessage, setFormMessage] = useState<FormMessage>(defaultMessage);
+
+  //Clear logout URI params
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/login", { scroll: false });
+  }, [router]);
+
+  //Handle submit
   async function onSubmit(formValues: LoginFormData) {
     if (isSubmitting) return;
 
     setIsSubmitting(true);
-    setFormError("");
+    setFormMessage({ message: "" });
 
     //Get recaptcha token
     const action: string = "login_form_submit";
@@ -65,7 +86,10 @@ export default function LoginForm() {
       token,
       action
     ).catch(() => {
-      setFormError("Check your internet connection");
+      setFormMessage({
+        message: "Check your internet connection",
+        isError: true,
+      });
 
       return {
         validated: true,
@@ -77,29 +101,35 @@ export default function LoginForm() {
 
     //Handle form post-validation
     if (response.validated && response.recaptchaVerified && response.session) {
-      //Where is it best to call these? Client or server?
+      setFormMessage({
+        message: "Successfully logged in! Please wait...",
+      });
+
       await setSessionTokenCookie(
         response.session.token,
         response.session.expires_at
       );
 
-      form.reset();
+      return redirect("/admin");
     } else {
       form.setErrors(response.formErrors);
 
       if (!response.recaptchaVerified) {
-        setFormError("reCAPTCHA failed");
+        setFormMessage({
+          message: "reCAPTCHA failed",
+          isError: true,
+        });
       } else if (Object.keys(response.formErrors).length === 0) {
-        setFormError("Username or password is incorrect");
+        setFormMessage({
+          message: "Incorrect username or password",
+          isError: true,
+        });
       }
     }
 
     setIsSubmitting(false);
   }
 
-  const errorIcon: React.ReactElement = (
-    <IconExclamationCircle className={classes.input_icon} />
-  );
   const userIcon: React.ReactElement = (
     <IconUserCircle className={classes.input_icon} />
   );
@@ -115,16 +145,9 @@ export default function LoginForm() {
       className={classes.form}
     >
       <Stack className={classes.form_stack}>
-        <h1 className={classes.heading}>Admin</h1>
         <Fieldset legend="Please log in to continue">
           <Stack>
-            <Alert
-              variant="light"
-              color="red"
-              title={formError}
-              icon={errorIcon}
-              hidden={formError === ""}
-            />
+            <FormAlert formMessage={formMessage} />
             <TextInput
               label="Username"
               leftSection={userIcon}

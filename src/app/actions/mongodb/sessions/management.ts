@@ -2,7 +2,7 @@
 
 //Derived from Lucia under their Zero-Clause BSD license (https://github.com/lucia-auth/lucia/blob/main/LICENSE-0BSD)
 
-import MongoDatabase, { JoinMatchInput } from "../db_handler";
+import MongoDatabase, { JoinMatchInput } from "../db";
 import { SessionMongoSchema } from "./schemas";
 import {
   encodeBase32LowerCaseNoPadding,
@@ -44,7 +44,7 @@ export async function createSession(
   token: string,
   userId: ObjectId
 ): Promise<SessionDocument> {
-  if (!token || !userId) throw "token and userId must be provided";
+  if (!token || !userId) throw new Error("token and userId must be provided");
 
   const sessionId: string = await hashSessionToken(token);
   const day: number = 1000 * 60 * 60 * 24;
@@ -101,7 +101,7 @@ export async function validateSessionToken(
   const day: number = 1000 * 60 * 60 * 24;
   if (Date.now() >= session.expires_at.getTime() - day * 15) {
     session.expires_at = new Date(Date.now() + day * 30);
-    MongoDatabase.updateDocument(
+    MongoDatabase.updateDocumentField(
       "user_sessions",
       "session_id",
       session.session_id,
@@ -126,5 +126,5 @@ export async function logout() {
 
   await deleteSessionTokenCookie();
 
-  redirect("/admin");
+  redirect("/login?logout=success");
 }

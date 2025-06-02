@@ -212,8 +212,12 @@ class MongoDatabase {
   async addDocument(collectionName: string, document: any): Promise<boolean> {
     if (!(await this.collectionExists(collectionName)) || !document)
       return false;
-    if (this.isImmutableCollection(collectionName))
-      throw "Cannot add document. " + collectionName + " is immutable.";
+
+    if (this.isImmutableCollection(collectionName)) {
+      throw new Error(
+        "Cannot add document. " + collectionName + " is immutable."
+      );
+    }
 
     try {
       await this._db.collection(collectionName).insertOne(document);
@@ -225,7 +229,7 @@ class MongoDatabase {
   }
 
   //Set a document field to a new value
-  async updateDocument(
+  async updateDocumentField(
     collectionName: string,
     fieldToMatch: string,
     matchFieldValue: FieldValue,
@@ -240,10 +244,9 @@ class MongoDatabase {
     )
       return false;
 
-    if (this.isImmutableCollection(collectionName))
-      throw "Cannot update document. " + collectionName + " is immutable.";
-    if (this.isNoUpdateCollection(collectionName))
-      throw "Documents in " + collectionName + " cannot be updated.";
+    if (this.isNoUpdateCollection(collectionName)) {
+      throw new Error("Documents in " + collectionName + " cannot be updated.");
+    }
 
     const filter = {
       [fieldToMatch]: matchFieldValue,
@@ -281,10 +284,9 @@ class MongoDatabase {
       return false;
     }
 
-    if (this.isImmutableCollection(collectionName))
-      throw "Cannot delete document. " + collectionName + " is immutable.";
-    if (this.isNoUpdateCollection(collectionName))
-      throw "Documents in " + collectionName + " cannot be deleted.";
+    if (this.isNoUpdateCollection(collectionName)) {
+      throw new Error("Documents in " + collectionName + " cannot be deleted.");
+    }
 
     const document = {
       [fieldToMatch]: matchFieldValue,

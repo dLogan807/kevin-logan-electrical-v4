@@ -1,6 +1,6 @@
 "use server";
 
-import MongoDatabase from "../db_handler";
+import MongoDatabase from "../db";
 import { Pages } from "@/components/layout/pages";
 import {
   HomeMongoSchema,
@@ -23,6 +23,7 @@ import {
   ContactUsContent,
 } from "@/contactus/page";
 import { cache } from "react";
+import { getCurrentSession } from "../sessions/cookie";
 
 export type PageContent =
   | HomeContent
@@ -52,10 +53,26 @@ export const getPageContent = cache(
   }
 );
 
+export async function addPageDocument(
+  collectionName: Pages,
+  pageContent: PageContent
+): Promise<boolean> {
+  const { session } = await getCurrentSession();
+  if (session === null) return false;
+
+  return await new PageManager().addPageDocumentByUser(
+    collectionName,
+    pageContent
+  );
+}
+
 //Page content retrieval
 export async function getStoredPageContent(
   collectionName: Pages
 ): Promise<PageContent | null> {
+  const { session } = await getCurrentSession();
+  if (session === null) return null;
+
   const contentDocument: PageDocument | null =
     await new PageManager().getPageDocument(collectionName);
 
@@ -69,7 +86,7 @@ class PageManager {
 
   private getPageSchema(collectionName: Pages): PageSchema {
     if (!collectionName || !Object.values(Pages).includes(collectionName)) {
-      throw Error("Collection must be a valid page.");
+      throw new Error("Collection must be a valid page.");
     }
 
     switch (collectionName) {
@@ -86,7 +103,7 @@ class PageManager {
 
   private getPageFallbackContent(collectionName: Pages): PageContent {
     if (!collectionName || !Object.values(Pages).includes(collectionName))
-      throw Error("Collection must be a valid page.");
+      throw new Error("Collection must be a valid page.");
 
     switch (collectionName) {
       case Pages.Home:
@@ -148,8 +165,8 @@ class PageManager {
     return MongoDatabase.getLatestDocument(collectionName);
   }
 
-  //Private currently as admin page not yet created
-  private async addPageDocumentByUser(
+  //Add a document (latest doc will display on website)
+  async addPageDocumentByUser(
     collectionName: Pages,
     pageContent: PageContent
   ): Promise<boolean> {

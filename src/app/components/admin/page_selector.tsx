@@ -24,8 +24,6 @@ export default function PageSelector({
   const defaultPage = pages[0];
 
   const [selectedPage, setSelectedPage] = useState<Pages>(defaultPage);
-  const [triggerReset, setTriggerReset] = useState<boolean>();
-  const [alertClosed, setAlertClosed] = useState<boolean>();
 
   //Store promise for content
   if (!initialPromise) initialPromise = null;
@@ -35,44 +33,24 @@ export default function PageSelector({
   //Get page content from database when selection changes
   useEffect(() => {
     setContentPromise(getStoredPageContent(selectedPage));
-    setTriggerReset(!triggerReset);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPage]);
 
   const pageContentForm: React.ReactElement = contentPromise ? (
     <PageContentProvider pageContentPromise={contentPromise}>
-      <EditablePageContent triggerReset={triggerReset} />
+      <EditablePageContent selectedPage={selectedPage} />
     </PageContentProvider>
   ) : (
     <Text>Please select a page to edit.</Text>
   );
 
-  const infoIcon = <IconInfoCircle />;
-
   return (
     <Box>
       <Box className={classes.header_group}>
-        <Button variant="default" onClick={() => logout()}>
-          <Group>
-            <Text>Logout</Text>
-            <IconLogout aria-label="Logout" />
-          </Group>
-        </Button>
+        <LogoutButton />
         <h1>Content Mangement</h1>
       </Box>
-      <Alert
-        variant="light"
-        title="Submission"
-        icon={infoIcon}
-        withCloseButton={true}
-        onClose={() => {
-          setAlertClosed(true);
-        }}
-        hidden={alertClosed}
-      >
-        After submission, it may take up to 5 days to become live on the
-        website. However, the latest content will always be retrieved here.
-      </Alert>
+      <ContentAlert />
       <Group className={classes.content_control_group}>
         <Group className={classes.inner_content_control_group}>
           <Select
@@ -100,16 +78,6 @@ export default function PageSelector({
             <IconRefresh aria-label="Refresh" />
           </ConfirmationPopover>
         </Group>
-
-        <ConfirmationPopover
-          dialogue="Reset the form to the last-fetched content?"
-          buttonText="Reset"
-          buttonColour="red"
-          buttonVariant="outline"
-          clickAction={() => {
-            setTriggerReset(!triggerReset);
-          }}
-        />
       </Group>
 
       {pageContentForm}
@@ -117,10 +85,50 @@ export default function PageSelector({
   );
 }
 
-export function EditablePageContent({
-  triggerReset,
+function LogoutButton() {
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+  return (
+    <Button
+      variant="default"
+      loading={isLoggingOut}
+      onClick={() => {
+        setIsLoggingOut(true);
+        logout();
+      }}
+    >
+      <Group>
+        <Text>Logout</Text>
+        <IconLogout aria-label="Logout" />
+      </Group>
+    </Button>
+  );
+}
+
+function ContentAlert() {
+  const [alertClosed, setAlertClosed] = useState<boolean>(false);
+  const infoIcon = <IconInfoCircle />;
+
+  return (
+    <Alert
+      variant="light"
+      title="Submission"
+      icon={infoIcon}
+      withCloseButton={true}
+      onClose={() => {
+        setAlertClosed(true);
+      }}
+      hidden={alertClosed}
+    >
+      After submission, it may take up to 5 days to become live on the website.
+      However, the latest content will always be retrieved here.
+    </Alert>
+  );
+}
+
+function EditablePageContent({
+  selectedPage,
 }: {
-  triggerReset?: boolean;
+  selectedPage: Pages;
 }): React.ReactNode {
   const pageContentPromise = usePageContext();
   const contentSections: PageContent | null = use(pageContentPromise);
@@ -129,6 +137,6 @@ export function EditablePageContent({
     return <p>No content could be fetched for this page. Please try again.</p>;
 
   return (
-    <PageForm initialContent={contentSections} triggerReset={triggerReset} />
+    <PageForm selectedPage={selectedPage} initialContent={contentSections} />
   );
 }

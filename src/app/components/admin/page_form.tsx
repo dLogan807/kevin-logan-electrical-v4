@@ -1,60 +1,80 @@
-import { PageContent } from "@/actions/mongodb/pages/page_management";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import {
   ActionIcon,
   Button,
   Fieldset,
   Group,
+  Stack,
   Textarea,
   TextInput,
   Tooltip,
 } from "@mantine/core";
 import { IconTrash, IconWorldUp } from "@tabler/icons-react";
+import {
+  addPageDocument,
+  PageContent,
+} from "@/actions/mongodb/pages/management";
+import { Pages } from "../layout/pages";
 
 import classes from "./page_form.module.css";
+import { FormAlert, FormMessage } from "@/components/form/form_alert";
 
 export function PageForm({
+  selectedPage,
   initialContent,
-  triggerReset,
 }: {
+  selectedPage: Pages;
   initialContent: PageContent;
-  triggerReset?: boolean;
 }) {
   const form = useForm<PageContent>({
     mode: "uncontrolled",
   });
+  const [formMessage, setFormMessage] = useState<FormMessage>({});
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   //Rerender form with new fetched content
   useEffect(() => {
     form.setInitialValues(initialContent);
+    form.reset();
+    setFormMessage({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialContent]);
 
   const objectContent = Object.entries(form.getValues());
 
-  useEffect(() => {
-    form.reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triggerReset]);
+  async function handleSubmit() {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    const submitSuccess: boolean = await addPageDocument(
+      selectedPage,
+      form.getValues()
+    );
+    const submitMessage: FormMessage = submitSuccess
+      ? { message: "Success! " + selectedPage + " has been updated" }
+      : { message: "Failed to update " + selectedPage, isError: true };
+    setFormMessage(submitMessage);
+
+    setIsSubmitting(false);
+  }
 
   return (
-    <form
-      onSubmit={form.onSubmit(() => {
-        console.log(form.getValues());
-      })}
-    >
-      {FormFields(objectContent, "", form)}
-      <Group className={classes.submit_button_group}>
-        <Tooltip label="Submit and update website content">
-          <Button type="submit">
-            <Group>
-              Submit
-              <IconWorldUp aria-label="Internet submission" />
-            </Group>
-          </Button>
-        </Tooltip>
-      </Group>
+    <form onSubmit={form.onSubmit(() => handleSubmit())}>
+      <Stack>
+        {FormFields(objectContent, "", form)}
+        <FormAlert formMessage={formMessage} />
+        <Group className={classes.submit_button_group}>
+          <Tooltip label="Submit and update website content">
+            <Button type="submit" loading={isSubmitting}>
+              <Group>
+                Submit
+                <IconWorldUp aria-label="Internet submission" />
+              </Group>
+            </Button>
+          </Tooltip>
+        </Group>
+      </Stack>
     </form>
   );
 }
