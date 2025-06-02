@@ -3,7 +3,7 @@
 import { ContactFormData } from "@/components/contact_form/contact_form";
 import { schema } from "@/utils/contact_form_validation";
 import { EmailSendResponse, sendContactEmail } from "./send";
-import { verifyRecaptcha } from "../recaptcha/validate";
+import { verifyRecaptcha } from "../validate_recaptcha";
 
 export type ContactFormResponse = {
   validated: boolean;
@@ -52,7 +52,7 @@ export async function validateContactEmail(
         : "Email not sent. Check required fields for errors",
   };
 
-  //If validated, send email and add to response
+  //If validated, send email (message to user will change)
   if (result.success && recaptchaResponse) {
     const emailResponse: EmailSendResponse = await sendContactEmail(fields);
 

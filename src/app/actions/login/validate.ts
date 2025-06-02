@@ -1,7 +1,7 @@
 "use server";
 
 import { schema } from "@/utils/login_form_validation";
-import { verifyRecaptcha } from "../recaptcha/validate";
+import { verifyRecaptcha } from "../validate_recaptcha";
 import { LoginFormData } from "@/components/login/login_form";
 import { verifyPasswordHash } from "./password";
 import MongoDatabase from "@/actions/mongodb/db";

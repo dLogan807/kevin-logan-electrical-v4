@@ -13,10 +13,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
 import { schema } from "@/utils/login_form_validation";
 import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
-import {
-  LoginFormResponse,
-  validateLoginForm,
-} from "@/actions/admin/validate_login";
+import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import classes from "./login_form.module.css";
 import { setSessionTokenCookie } from "@/actions/mongodb/sessions/cookie";
