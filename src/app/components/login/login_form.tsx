@@ -24,10 +24,12 @@ import {
   useRouter,
 } from "next/navigation";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
+import Honeypot from "../form/honeypot";
 
 export type LoginFormData = {
   username: string;
   password: string;
+  email?: string;
 };
 
 export default function LoginForm() {
@@ -39,6 +41,7 @@ export default function LoginForm() {
     initialValues: {
       username: "",
       password: "",
+      email: "",
     },
     validate: zodResolver(schema),
     validateInputOnBlur: true,
@@ -46,8 +49,8 @@ export default function LoginForm() {
 
   //Form message
   const searchParams: ReadonlyURLSearchParams = useSearchParams();
-  const isLoggedOut: string | null = searchParams.get("logout");
-  const defaultMessage: FormMessage = isLoggedOut
+  const loggedOut: string | null = searchParams.get("logout");
+  const defaultMessage: FormMessage = loggedOut
     ? {
         message: "Successfully logged out",
       }
@@ -92,6 +95,7 @@ export default function LoginForm() {
         validated: true,
         formErrors: {},
         recaptchaVerified: true,
+        honeypotFilled: false,
         session: null,
       };
     });
@@ -145,6 +149,7 @@ export default function LoginForm() {
         <Fieldset legend="Please log in to continue">
           <Stack>
             <FormAlert formMessage={formMessage} />
+            <Honeypot form={form} label="Email" fieldKey="email" />
             <TextInput
               label="Username"
               leftSection={userIcon}

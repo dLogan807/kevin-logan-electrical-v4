@@ -12,12 +12,14 @@ import { useState, useCallback } from "react";
 import classes from "./contact_form.module.css";
 import RecaptchaDisclaimer from "../recaptcha/disclaimer";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
+import Honeypot from "../form/honeypot";
 
 export type ContactFormData = {
   name: string;
   email: string;
   phone: string | null;
   jobDetails: string;
+  website?: string;
 };
 
 export function ContactForm() {
@@ -25,7 +27,13 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { name: "", email: "", phone: "", jobDetails: "" },
+    initialValues: {
+      name: "",
+      email: "",
+      phone: "",
+      jobDetails: "",
+      website: "",
+    },
     validate: zodResolver(schema),
     validateInputOnBlur: true,
   });
@@ -105,6 +113,7 @@ export function ContactForm() {
           {...form.getInputProps("phone")}
           disabled={isSubmitting}
         />
+        <Honeypot form={form} label="Website" fieldKey="website" />
         <Textarea
           className={classes.form_field}
           withAsterisk

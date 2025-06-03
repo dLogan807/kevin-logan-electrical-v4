@@ -36,15 +36,10 @@ export async function validateContactEmail(
     result.error?.issues?.map((issue) => [issue.path[0], issue.message]) || []
   );
 
-  //Check recaptcha
-  const recaptchaResponse: boolean = token
-    ? await verifyRecaptcha(token, action)
-    : true;
-
   var response: ContactFormResponse = {
     validated: result.success,
     formErrors: errors,
-    recaptchaVerified: recaptchaResponse,
+    recaptchaVerified: false,
     sendSuccess: false,
     notifyMessage:
       Object.keys(errors).length === 0
@@ -52,8 +47,20 @@ export async function validateContactEmail(
         : "Email not sent. Check required fields for errors",
   };
 
+  //Likely bot if filled
+  if (fields.website != undefined && fields.website != "") {
+    response.notifyMessage = "Email not sent. reCAPTCHA failed";
+
+    return JSON.stringify(response);
+  }
+
+  //Check recaptcha
+  response.recaptchaVerified = token
+    ? await verifyRecaptcha(token, action)
+    : true;
+
   //If validated, send email (message to user will change)
-  if (result.success && recaptchaResponse) {
+  if (response.validated && response.recaptchaVerified) {
     const emailResponse: EmailSendResponse = await sendContactEmail(fields);
 
     response = { ...response, ...emailResponse };
