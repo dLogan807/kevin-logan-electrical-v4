@@ -5,7 +5,8 @@ import {
 } from "@tabler/icons-react";
 import { Box, Button, Group, Rating, Text, ThemeIcon } from "@mantine/core";
 import Link from "next/link";
-import getGoogleReviews, {
+import {
+  getGoogleReviews,
   GoogleReviews,
 } from "@/actions/google_reviews/get_reviews";
 import GoogleReviewCarousel from "./carousel";

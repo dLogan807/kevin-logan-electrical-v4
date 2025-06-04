@@ -173,6 +173,9 @@ class PageManager {
   ): Promise<boolean> {
     if (!collectionName || !pageContent) return false;
 
+    const { session } = await getCurrentSession();
+    if (session === null) return false;
+
     const document: PageDocument = {
       page_content: pageContent,
       date_created: new Date(),

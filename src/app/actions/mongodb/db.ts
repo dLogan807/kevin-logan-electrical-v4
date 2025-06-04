@@ -98,7 +98,7 @@ class MongoDatabase {
     }
   }
 
-  //Ensure of correct type and
+  //Ensure of correct type
   private async isValidJoinMatchInput(input: JoinMatchInput) {
     if (!input) return false;
 

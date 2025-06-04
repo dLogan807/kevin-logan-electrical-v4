@@ -1,5 +1,7 @@
 "use server";
 
+import { cache } from "react";
+
 //IMPORTANT: Ensure rate limiting is in place in the Google Places Console
 
 export type GoogleReviews = {
@@ -116,52 +118,54 @@ function formatNameFilter(nameFilter: string[]): string[] {
 }
 
 //Get reviews from Google Places API
-export default async function getGoogleReviews(
-  searchQuery: string,
-  nameFilter?: string[]
-): Promise<GoogleReviews | null> {
-  if (!searchQuery) return null;
+export const getGoogleReviews = cache(
+  async (
+    searchQuery: string,
+    nameFilter?: string[]
+  ): Promise<GoogleReviews | null> => {
+    if (!searchQuery) return null;
 
-  const headers: Headers = new Headers();
-  headers.set("Accept", "application/json");
-  headers.set("Referer", "https://kevinloganelectrical.co.nz/");
-  headers.set("Content-Type", "application/json");
-  headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_MAPS_API_KEY}`);
-  headers.set(
-    "X-Goog-FieldMask",
-    "places.rating,places.userRatingCount,places.reviews"
-  );
+    const headers: Headers = new Headers();
+    headers.set("Accept", "application/json");
+    headers.set("Referer", "https://kevinloganelectrical.co.nz/");
+    headers.set("Content-Type", "application/json");
+    headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_MAPS_API_KEY}`);
+    headers.set(
+      "X-Goog-FieldMask",
+      "places.rating,places.userRatingCount,places.reviews"
+    );
 
-  const reviews: GoogleReviews | null = await fetch(
-    "https://places.googleapis.com/v1/places:searchText",
-    {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify({
-        textQuery: searchQuery,
-      }),
-    }
-  )
-    .then((res) => res.json())
-    .then((data) => ({
-      reviews: parseReviews(data.places[0].reviews),
-      averageRating: data.places[0].rating,
-      totalReviewCount: data.places[0].userRatingCount,
-    }))
-    .then((parsedReviews) => {
-      nameFilter ||= [];
-      if (nameFilter.length > 0) {
-        nameFilter = formatNameFilter(nameFilter);
-
-        parsedReviews.reviews = filterReviews(
-          parsedReviews.reviews,
-          nameFilter
-        );
+    const reviews: GoogleReviews | null = await fetch(
+      "https://places.googleapis.com/v1/places:searchText",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          textQuery: searchQuery,
+        }),
       }
+    )
+      .then((res) => res.json())
+      .then((data) => ({
+        reviews: parseReviews(data.places[0].reviews),
+        averageRating: data.places[0].rating,
+        totalReviewCount: data.places[0].userRatingCount,
+      }))
+      .then((parsedReviews) => {
+        nameFilter ||= [];
+        if (nameFilter.length > 0) {
+          nameFilter = formatNameFilter(nameFilter);
 
-      return parsedReviews;
-    })
-    .catch(() => null);
+          parsedReviews.reviews = filterReviews(
+            parsedReviews.reviews,
+            nameFilter
+          );
+        }
 
-  return reviews;
-}
+        return parsedReviews;
+      })
+      .catch(() => null);
+
+    return reviews;
+  }
+);
