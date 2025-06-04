@@ -1,26 +1,24 @@
 "use server";
 
-import { schema } from "@/utils/login_form_validation";
-import { verifyRecaptcha } from "../validate_recaptcha";
 import { LoginFormData } from "@/components/login/login_form";
-import { verifyPasswordHash } from "./password";
+import { verifyPasswordHash } from "@/actions/login/password";
 import MongoDatabase from "@/actions/mongodb/db";
 import {
   createSession,
   generateSessionToken,
   UserDocument,
-} from "../mongodb/sessions/management";
+} from "@/actions/mongodb/sessions/management";
+import { FormResponse, validateForm } from "@/actions/validate_form";
+import { FormType } from "@/utils/form_schemas/schemas";
+import { setSessionTokenCookie } from "@/actions/mongodb/sessions/cookie";
 
 type SessionInfo = {
   token: string;
   expires_at: Date;
 };
 
-export type LoginFormResponse = {
-  validated: boolean;
-  recaptchaVerified: boolean;
-  formErrors: { [k: string]: string };
-  session: SessionInfo | null;
+export type LoginFormResponse = FormResponse & {
+  sessionCreated: boolean;
 };
 
 async function validateUser(
@@ -56,34 +54,33 @@ export async function validateLoginForm(
   token: string,
   action: string
 ): Promise<LoginFormResponse> {
-  const parseResult = schema.safeParse({
-    username: formValues.username,
-    password: formValues.password,
-  });
-
-  //Map zod errors to form errors
-  const errors = Object.fromEntries(
-    parseResult.error?.issues?.map((issue) => [issue.path[0], issue.message]) ||
-      []
+  const validationResult: FormResponse = await validateForm(
+    FormType.LOGIN,
+    formValues,
+    token,
+    action
   );
 
   var response: LoginFormResponse = {
-    validated: parseResult.success,
-    recaptchaVerified: false,
-    formErrors: errors,
-    session: null,
+    ...validationResult,
+    sessionCreated: false,
   };
 
+  if (!response.validated || !response.recaptchaVerified) {
+    return response;
+  }
+
   //Likely bot if filled
-  if (formValues.email != undefined && formValues.email != "") return response;
+  if (formValues.email) {
+    response.recaptchaVerified = false;
+    return response;
+  }
 
-  //Check recaptcha
-  response.recaptchaVerified = token
-    ? await verifyRecaptcha(token, action)
-    : true;
+  const session: SessionInfo | null = await validateUser(formValues);
 
-  if (response.validated && response.recaptchaVerified) {
-    response.session = await validateUser(formValues);
+  if (session !== null) {
+    await setSessionTokenCookie(session.token, session.expires_at);
+    response.sessionCreated = true;
   }
 
   return response;

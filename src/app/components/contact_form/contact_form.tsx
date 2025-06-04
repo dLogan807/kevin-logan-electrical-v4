@@ -5,14 +5,14 @@ import { useForm, zodResolver } from "@mantine/form";
 import {
   ContactFormResponse,
   validateContactEmail,
-} from "@/actions/contact_email/validate";
-import { schema } from "@/utils/contact_form_validation";
+} from "@/actions/contact_email/send_and_validate";
 import { useReCaptcha } from "next-recaptcha-v3";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import classes from "./contact_form.module.css";
 import RecaptchaDisclaimer from "../recaptcha/disclaimer";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "../form/honeypot";
+import { FormType, getFormSchema } from "@/utils/form_schemas/schemas";
 
 export type ContactFormData = {
   name: string;
@@ -21,6 +21,29 @@ export type ContactFormData = {
   jobDetails: string;
   website?: string;
 };
+
+function getFormMessage(response: ContactFormResponse): FormMessage {
+  if (response.submitError) {
+    return {
+      message: "Email not sent. Check your internet connection",
+      isError: true,
+    };
+  } else if (!response.validated) {
+    return {
+      message: "Email not sent. Check required fields for errors",
+      isError: true,
+    };
+  } else if (!response.recaptchaVerified) {
+    return { message: "Email not sent. reCAPTCHA failed", isError: true };
+  } else if (!response.sendSuccess) {
+    return {
+      message: "Something went wrong. Please try again",
+      isError: true,
+    };
+  } else {
+    return { message: "Email sent! We'll get back to you soon" };
+  }
+}
 
 export function ContactForm() {
   const { executeRecaptcha, loaded, error } = useReCaptcha();
@@ -34,58 +57,43 @@ export function ContactForm() {
       jobDetails: "",
       website: "",
     },
-    validate: zodResolver(schema),
+    validate: zodResolver(getFormSchema(FormType.CONTACT_US)),
     validateInputOnBlur: true,
   });
   const [formMessage, setFormMessage] = useState<FormMessage>({});
 
-  const onSubmit = useCallback(
-    async (fields: ContactFormData) => {
-      if (isSubmitting) return;
-      setIsSubmitting(true);
-      setFormMessage({});
+  const onSubmit = async (fields: ContactFormData) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    setFormMessage({});
 
-      //Generate recaptcha token
-      const action: string = "contact_form_submit";
-      const token: string =
-        loaded && !error
-          ? await executeRecaptcha(action).catch(() => {
-              return "";
-            })
-          : "";
+    //Generate recaptcha token
+    const action: string = "contact_form_submit";
+    const token: string =
+      loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
 
-      //Send to server action for validation and sending
-      const response: ContactFormResponse = await validateContactEmail(
-        JSON.stringify({ fields, token, action })
-      )
-        .then((response) => JSON.parse(response))
-        .catch(() => {
-          return {
-            validated: true,
-            recaptchaVerified: true,
-            formErrors: {},
-            sendSuccess: false,
-            notifyMessage: "Email not sent. Check your internet connection",
-          };
-        });
+    //Send to server action for validation and sending
+    const response: ContactFormResponse = await validateContactEmail(
+      fields,
+      token,
+      action
+    ).catch(() => ({
+      validated: false,
+      formErrors: {},
+      recaptchaVerified: false,
+      submitError: true,
+      sendSuccess: false,
+    }));
 
-      //Reset form or show errors
-      if (response.validated && response.recaptchaVerified) {
-        if (response.sendSuccess) form.reset();
-      } else {
-        form.setErrors(response.formErrors);
-      }
+    setFormMessage(getFormMessage(response));
+    form.setErrors(response.formErrors);
 
-      setFormMessage({
-        message: response.notifyMessage,
-        isError: !response.sendSuccess,
-      });
+    if (response.sendSuccess) {
+      form.reset();
+    }
 
-      //Enable submit button
-      setIsSubmitting(false);
-    },
-    [isSubmitting, loaded, error, executeRecaptcha, form]
-  );
+    setIsSubmitting(false);
+  };
 
   return (
     <form onSubmit={form.onSubmit((values) => onSubmit(values))}>

@@ -11,20 +11,18 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
-import { schema } from "@/utils/login_form_validation";
 import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
 import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import classes from "./login_form.module.css";
-import { setSessionTokenCookie } from "@/actions/mongodb/sessions/cookie";
 import {
   ReadonlyURLSearchParams,
-  redirect,
   useSearchParams,
   useRouter,
 } from "next/navigation";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "../form/honeypot";
+import { FormType, getFormSchema } from "@/utils/form_schemas/schemas";
 
 export type LoginFormData = {
   username: string;
@@ -32,10 +30,34 @@ export type LoginFormData = {
   email?: string;
 };
 
+function getFormMessage(response: LoginFormResponse): FormMessage {
+  if (response.submitError) {
+    return {
+      message: "Check your internet connection",
+      isError: true,
+    };
+  } else if (!response.validated) {
+    return {
+      message: "Check required fields for errors",
+      isError: true,
+    };
+  } else if (!response.recaptchaVerified) {
+    return { message: "reCAPTCHA failed", isError: true };
+  } else if (!response.sessionCreated) {
+    return {
+      message: "Incorrect username or password",
+      isError: true,
+    };
+  } else {
+    return { message: "Successfully logged in! Please wait..." };
+  }
+}
+
 export default function LoginForm() {
   //Form
   const { executeRecaptcha, loaded, error } = useReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const schema = getFormSchema(FormType.LOGIN);
   const form = useForm<LoginFormData>({
     mode: "uncontrolled",
     initialValues: {
@@ -60,7 +82,6 @@ export default function LoginForm() {
 
   //Clear logout URI params
   const router = useRouter();
-
   useEffect(() => {
     router.replace("/login", { scroll: false });
   }, [router]);
@@ -75,60 +96,32 @@ export default function LoginForm() {
     //Get recaptcha token
     const action: string = "login_form_submit";
     const token: string =
-      loaded && !error
-        ? await executeRecaptcha(action).catch(() => {
-            return "";
-          })
-        : "";
+      loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
 
     const response: LoginFormResponse = await validateLoginForm(
       formValues,
       token,
       action
-    ).catch(() => {
-      setFormMessage({
-        message: "Check your internet connection",
-        isError: true,
-      });
+    ).catch(() => ({
+      validated: false,
+      formErrors: {},
+      recaptchaVerified: false,
+      submitError: true,
+      sessionCreated: false,
+    }));
 
-      return {
-        validated: true,
-        formErrors: {},
-        recaptchaVerified: true,
-        honeypotFilled: false,
-        session: null,
-      };
-    });
+    setFormMessage(getFormMessage(response));
+    form.setErrors(response.formErrors);
 
-    //Handle form post-validation
-    if (response.validated && response.recaptchaVerified && response.session) {
-      setFormMessage({
-        message: "Successfully logged in! Please wait...",
-      });
-
-      await setSessionTokenCookie(
-        response.session.token,
-        response.session.expires_at
-      );
-
-      return redirect("/admin");
+    if (
+      response.validated &&
+      response.recaptchaVerified &&
+      response.sessionCreated
+    ) {
+      router.push("/admin");
     } else {
-      form.setErrors(response.formErrors);
-
-      if (!response.recaptchaVerified) {
-        setFormMessage({
-          message: "reCAPTCHA failed",
-          isError: true,
-        });
-      } else if (Object.keys(response.formErrors).length === 0) {
-        setFormMessage({
-          message: "Incorrect username or password",
-          isError: true,
-        });
-      }
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
   }
 
   const userIcon: React.ReactElement = (
@@ -140,15 +133,12 @@ export default function LoginForm() {
 
   return (
     <form
-      onSubmit={form.onSubmit((values) => {
-        onSubmit(values);
-      })}
+      onSubmit={form.onSubmit((values) => onSubmit(values))}
       className={classes.form}
     >
       <Stack className={classes.form_stack}>
         <Fieldset legend="Please log in to continue">
           <Stack>
-            <FormAlert formMessage={formMessage} />
             <Honeypot form={form} label="Email" fieldKey="email" />
             <TextInput
               label="Username"
@@ -164,6 +154,7 @@ export default function LoginForm() {
               {...form.getInputProps("password")}
               disabled={isSubmitting}
             />
+            <FormAlert formMessage={formMessage} />
             <Box className={classes.submit_button_group}>
               <Button type="submit" variant="filled" loading={isSubmitting}>
                 Login

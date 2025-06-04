@@ -53,6 +53,7 @@ export const getPageContent = cache(
   }
 );
 
+//Update (add) latest page content
 export async function addPageDocument(
   collectionName: Pages,
   pageContent: PageContent
@@ -66,7 +67,7 @@ export async function addPageDocument(
   );
 }
 
-//Page content retrieval
+//Latest page content retrieval
 export async function getStoredPageContent(
   collectionName: Pages
 ): Promise<PageContent | null> {
@@ -76,7 +77,7 @@ export async function getStoredPageContent(
   const contentDocument: PageDocument | null =
     await new PageManager().getPageDocument(collectionName);
 
-  return contentDocument && contentDocument.page_content
+  return contentDocument?.page_content
     ? (contentDocument.page_content as PageContent)
     : null;
 }
