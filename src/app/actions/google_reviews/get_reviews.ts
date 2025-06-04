@@ -161,10 +161,7 @@ export default async function getGoogleReviews(
 
       return parsedReviews;
     })
-    .catch(() => {
-      console.log("Error: Unable to fetch reviews");
-      return null;
-    });
+    .catch(() => null);
 
   return reviews;
 }

@@ -11,14 +11,19 @@ export default function GoogleReviewCarousel({
 }: {
   googleReviews: GoogleReview[];
 }) {
+  const areMultipleReviews: boolean = googleReviews.length > 1;
+
   return (
     <Carousel
-      loop={true}
+      emblaOptions={{
+        loop: true,
+        watchDrag: areMultipleReviews,
+      }}
       nextControlIcon={<IconChevronRight aria-label="Right arrow" />}
       previousControlIcon={<IconChevronLeft aria-label="Left arrow" />}
       classNames={classes}
       className={classes.carousel}
-      withControls={googleReviews.length > 1}
+      withControls={areMultipleReviews}
     >
       {googleReviews.map((review: GoogleReview) => (
         <Carousel.Slide className={classes.carousel_slide} key={review.id}>

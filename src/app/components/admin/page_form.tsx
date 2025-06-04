@@ -43,7 +43,7 @@ export function PageForm({
 
   const objectContent = Object.entries(form.getValues());
 
-  async function handleSubmit() {
+  async function onSubmit() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
@@ -60,7 +60,7 @@ export function PageForm({
   }
 
   return (
-    <form onSubmit={form.onSubmit(() => handleSubmit())}>
+    <form onSubmit={form.onSubmit(() => onSubmit())}>
       <Stack>
         {FormFields(objectContent, "", form)}
         <FormAlert formMessage={formMessage} />
@@ -134,9 +134,7 @@ function FormFields(
           <Tooltip label="Delete entry">
             <ActionIcon
               color="red"
-              onClick={() => {
-                form.removeListItem(path, Number(key));
-              }}
+              onClick={() => form.removeListItem(path, Number(key))}
             >
               <IconTrash className={classes.delete_icon} aria-label="Trash" />
             </ActionIcon>

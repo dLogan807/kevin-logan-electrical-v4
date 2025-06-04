@@ -9,7 +9,8 @@ import {
   Stack,
   TextInput,
 } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
 import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
 import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
@@ -21,8 +22,9 @@ import {
   useRouter,
 } from "next/navigation";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
-import Honeypot from "../form/honeypot";
+import Honeypot from "@/components/form/honeypot";
 import { FormType, getFormSchema } from "@/utils/form_schemas/schemas";
+import { useDisclosure } from "@mantine/hooks";
 
 export type LoginFormData = {
   username: string;
@@ -57,6 +59,7 @@ export default function LoginForm() {
   //Form
   const { executeRecaptcha, loaded, error } = useReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [passwordVisible, { toggle }] = useDisclosure(false);
   const schema = getFormSchema(FormType.LOGIN);
   const form = useForm<LoginFormData>({
     mode: "uncontrolled",
@@ -92,6 +95,7 @@ export default function LoginForm() {
 
     setIsSubmitting(true);
     setFormMessage({ message: "" });
+    if (passwordVisible) toggle();
 
     //Get recaptcha token
     const action: string = "login_form_submit";
@@ -152,6 +156,8 @@ export default function LoginForm() {
               leftSection={passwordIcon}
               key={form.key("password")}
               {...form.getInputProps("password")}
+              onVisibilityChange={toggle}
+              visible={passwordVisible}
               disabled={isSubmitting}
             />
             <FormAlert formMessage={formMessage} />

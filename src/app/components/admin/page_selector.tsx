@@ -33,7 +33,6 @@ export default function PageSelector({
   //Get page content from database when selection changes
   useEffect(() => {
     setContentPromise(getStoredPageContent(selectedPage));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPage]);
 
   const pageContentForm: React.ReactElement = contentPromise ? (
