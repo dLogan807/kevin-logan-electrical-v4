@@ -1,9 +1,9 @@
 import React from "react";
+import Link from "next/link";
 import { IconExternalLink } from "@tabler/icons-react";
-import { Anchor, Box, Group, Paper, Stack, ThemeIcon } from "@mantine/core";
+import { Box, Button, Paper, Stack, Text, ThemeIcon } from "@mantine/core";
 import { Metadata } from "next";
 import licensesJSON from "../../../licenses.json";
-
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -47,31 +47,33 @@ export default function Licenses() {
       >
         <Stack className={classes.heading}>
           <h1>Open Source Licenses</h1>
-          <h2>All licenses for software used in this website</h2>
+          <Text>
+            The following open source libraries were used in the making of this
+            website
+          </Text>
         </Stack>
-        <Stack gap="xl">
-          {licenses.map((l) => (
-            <Anchor
-              key={l.name}
-              href={l.link.replace("git+", "").replace("ssh://", "")}
+        <Stack gap="lg">
+          {licenses.map((p) => (
+            <Link
+              key={p.name}
+              href={p.link.replace("git+", "").replace("ssh://", "")}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Open Github repo for ${l.name}`}
+              aria-label={`Open Github repository for ${p.name}`}
+              className={classes.package_link}
             >
-              <Stack gap="xs">
-                <Group>
-                  <span>{l.name + " " + l.installedVersion}</span>
-
-                  <ThemeIcon className={"checkmark"}>
+              <Button variant="outline">
+                <Box className={classes.info_container}>
+                  <p>{p.name + " " + p.installedVersion}</p>
+                  <p>{"License: " + p.licenseType}</p>
+                  <ThemeIcon
+                    className={["checkmark", classes.link_icon].join(" ")}
+                  >
                     <IconExternalLink aria-label="External website link" />
                   </ThemeIcon>
-                </Group>
-
-                <Box>
-                  {[l.licenseType, l.author].filter(Boolean).join(", ")}
                 </Box>
-              </Stack>
-            </Anchor>
+              </Button>
+            </Link>
           ))}
         </Stack>
       </Paper>
