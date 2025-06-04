@@ -28,7 +28,7 @@ import classes from "./navbar.module.css";
 import { theme } from "@/components/theme";
 
 //Return the index of the currently navigated route
-function getRoute(path: string | null): Pages | null {
+function getRoute(path: string): Pages | undefined {
   switch (path) {
     case "/":
       return Pages.Home;
@@ -38,9 +38,9 @@ function getRoute(path: string | null): Pages | null {
       return Pages.RateAndServices;
     case "/contactus":
       return Pages.ContactUs;
-    default:
-      return null;
   }
+
+  return undefined;
 }
 
 interface ILink {
@@ -93,32 +93,28 @@ const linkData: ILink[] = [
 export function Navbar() {
   //Maintain path hydration
   const pathname = usePathname();
-  const [path, setPath] = useState<string | null>(null);
 
+  //Update route on manual path change
+  const [active, setActive] = useState<Pages | undefined>(getRoute(pathname));
+
+  //Update route when path changes
   useEffect(() => {
-    setPath(pathname);
+    setActive(getRoute(pathname));
   }, [pathname]);
 
-  //Update route on path change
-  const [active, setActive] = useState<Pages | null>(getRoute(path));
-
-  useEffect(() => {
-    setActive(getRoute(path));
-  }, [path]);
-
-  const [opened, { toggle, close }] = useDisclosure(false);
+  const [mobileNavOpened, { toggle, close }] = useDisclosure(false);
   const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
 
   //Close on escape keypress
   useWindowEvent("keydown", (event) => {
-    if (event.code === "Escape" && opened) {
+    if (event.code === "Escape" && mobileNavOpened) {
       event.preventDefault();
       close();
     }
   });
 
   //Close on window resize to desktop view
-  if (isDesktop && opened) {
+  if (isDesktop && mobileNavOpened) {
     close();
   }
 
@@ -155,9 +151,10 @@ export function Navbar() {
         </Container>
         <nav>
           <Group
-            className={[classes.navbar, opened ? classes.navbar_open : ""].join(
-              " "
-            )}
+            className={[
+              classes.navbar,
+              mobileNavOpened ? classes.navbar_open : "",
+            ].join(" ")}
           >
             <Group>{links}</Group>
             <Stack>{links}</Stack>
@@ -168,7 +165,7 @@ export function Navbar() {
         <Container className={classes.inner_end}>
           <DynamicThemeSelector />
           <Burger
-            opened={opened}
+            opened={mobileNavOpened}
             onClick={toggle}
             aria-label="Toggle navigation panel"
           />

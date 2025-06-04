@@ -34,8 +34,8 @@ function ThemeIcon({ isDark }: { isDark: boolean }) {
   if (isDark == null) isDark = true;
 
   return isDark ? (
-    <IconSun aria-label="Sun icon" className={classes.icon} />
+    <IconSun aria-label="Sun" className={classes.icon} />
   ) : (
-    <IconMoonStars aria-label="Moon and stars icon" className={classes.icon} />
+    <IconMoonStars aria-label="Moon and stars" className={classes.icon} />
   );
 }

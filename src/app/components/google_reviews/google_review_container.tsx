@@ -5,7 +5,8 @@ import {
 } from "@tabler/icons-react";
 import { Box, Button, Group, Rating, Text, ThemeIcon } from "@mantine/core";
 import Link from "next/link";
-import getGoogleReviews, {
+import {
+  getGoogleReviews,
   GoogleReviews,
 } from "@/actions/google_reviews/get_reviews";
 import GoogleReviewCarousel from "./carousel";
@@ -61,7 +62,7 @@ export default async function GoogleReviewContainer({
       <Box className={classes.review_summary}>
         <Group className={classes.average_reviews}>
           <ThemeIcon className={"checkmark"}>
-            <IconBrandGoogle aria-label="Google icon" />
+            <IconBrandGoogle aria-label="Google" />
           </ThemeIcon>
           <Text>Overall Rating</Text>
         </Group>
@@ -82,7 +83,10 @@ export default async function GoogleReviewContainer({
             }
             readOnly
           />
-          <Text>{googleReviews.totalReviewCount} reviews</Text>
+          <Text>
+            {googleReviews.totalReviewCount} review
+            {googleReviews.totalReviewCount === 1 ? "" : "s"}
+          </Text>
         </Group>
         {ReviewButton()}
       </Box>

@@ -2,4 +2,60 @@
   h2 {
     padding-bottom: var(--mantine-spacing-md);
   }
+
+  p {
+    padding-bottom: var(--mantine-spacing-md);
+  }
+}
+
+.package_link {
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 100%;
+
+    button {
+      font-size: var(--mantine-font-size-sm);
+      width: 100%;
+
+      span {
+        width: 100%;
+      }
+    }
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    button {
+      padding: 1rem;
+      height: fit-content;
+    }
+  }
+}
+
+.info_container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  p {
+    margin: 0;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+      width: 100%;
+      text-align: left;
+    }
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 100%;
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex-direction: column;
+  }
+}
+
+.link_icon {
+  @media (max-width: $mantine-breakpoint-sm) {
+    position: absolute;
+    right: 1rem;
+  }
 }

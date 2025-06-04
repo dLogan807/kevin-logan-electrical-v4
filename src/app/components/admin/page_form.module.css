@@ -1,0 +1,45 @@
+.text_input_container {
+  align-items: center;
+  margin-bottom: 1rem;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+}
+
+.text_input {
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 100%;
+  }
+
+  div {
+    @media (max-width: $mantine-breakpoint-sm) {
+      width: 100%;
+    }
+
+    input {
+      width: 20rem;
+
+      @media (max-width: $mantine-breakpoint-sm) {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.add_entry_button {
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.delete_icon {
+  width: 1rem;
+}
+
+.submit_button_group {
+  display: flex;
+  justify-content: flex-end;
+}

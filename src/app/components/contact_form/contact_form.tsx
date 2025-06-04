@@ -1,153 +1,150 @@
 "use client";
 
-import { Button, Group, Textarea, TextInput, Text } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 import {
   ContactFormResponse,
   validateContactEmail,
-} from "@/actions/contact_email/validate";
-import { schema } from "@/utils/contact_form_validation";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
+} from "@/actions/contact_email/send_and_validate";
 import { useReCaptcha } from "next-recaptcha-v3";
-import Link from "next/link";
 import { useState } from "react";
 import classes from "./contact_form.module.css";
+import RecaptchaDisclaimer from "../recaptcha/disclaimer";
+import { FormAlert, FormMessage } from "@/components/form/form_alert";
+import Honeypot from "../form/honeypot";
+import { FormType, getFormSchema } from "@/utils/form_schemas/schemas";
 
 export type ContactFormData = {
   name: string;
   email: string;
   phone: string | null;
   jobDetails: string;
+  website?: string;
 };
 
-//Show notifcation
-function notifyUser(sendSuccess: boolean, title: string, message: string) {
-  const icon = sendSuccess ? (
-    <IconCheck className={classes.icon} aria-label="Success icon" />
-  ) : (
-    <IconX className={classes.icon} aria-label="Failure icon" />
-  );
-  const colour: string = sendSuccess ? "green" : "red";
-
-  notifications.show({
-    title: title,
-    message: message,
-    icon: icon,
-    color: colour,
-    withBorder: true,
-  });
+function getFormMessage(response: ContactFormResponse): FormMessage {
+  if (response.submitError) {
+    return {
+      message: "Email not sent. Check your internet connection",
+      isError: true,
+    };
+  } else if (!response.validated) {
+    return {
+      message: "Email not sent. Check required fields for errors",
+      isError: true,
+    };
+  } else if (!response.recaptchaVerified) {
+    return { message: "Email not sent. reCAPTCHA failed", isError: true };
+  } else if (!response.sendSuccess) {
+    return {
+      message: "Something went wrong. Please try again",
+      isError: true,
+    };
+  } else {
+    return { message: "Email sent! We'll get back to you soon" };
+  }
 }
 
 export function ContactForm() {
+  const { executeRecaptcha, loaded, error } = useReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { name: "", email: "", phone: "", jobDetails: "" },
-    validate: zodResolver(schema),
+    initialValues: {
+      name: "",
+      email: "",
+      phone: "",
+      jobDetails: "",
+      website: "",
+    },
+    validate: zodResolver(getFormSchema(FormType.CONTACT_US)),
     validateInputOnBlur: true,
   });
-  const { executeRecaptcha, loaded, error } = useReCaptcha();
+  const [formMessage, setFormMessage] = useState<FormMessage>({});
 
-  async function onSubmit(fields: ContactFormData) {
+  const onSubmit = async (fields: ContactFormData) => {
     if (isSubmitting) return;
-
-    //Disable submit button while submiting
     setIsSubmitting(true);
+    setFormMessage({});
 
-    //Generate token
+    //Generate recaptcha token
     const action: string = "contact_form_submit";
     const token: string =
-      loaded && !error
-        ? await executeRecaptcha(action).catch(() => {
-            return "";
-          })
-        : "";
+      loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
 
     //Send to server action for validation and sending
     const response: ContactFormResponse = await validateContactEmail(
-      JSON.stringify({ fields, token, action })
-    )
-      .then((response) => JSON.parse(response))
-      .catch(() => {
-        return {
-          validated: true,
-          recaptchaVerified: true,
-          formErrors: {},
-          sendSuccess: false,
-          notifyTitle: "Connection timed out",
-          notifyMessage: "Check your internet connection",
-        };
-      });
+      fields,
+      token,
+      action
+    ).catch(() => ({
+      validated: false,
+      formErrors: {},
+      recaptchaVerified: false,
+      submitError: true,
+      sendSuccess: false,
+    }));
 
-    //Reset form or show errors
-    if (response.validated && response.recaptchaVerified) {
-      notifyUser(
-        response.sendSuccess,
-        response.notifyTitle,
-        response.notifyMessage
-      );
+    setFormMessage(getFormMessage(response));
+    form.setErrors(response.formErrors);
 
-      if (response.sendSuccess) {
-        form.reset();
-      }
-    } else {
-      //Show validation errors
-      form.setErrors(response.formErrors);
-
-      if (!response.recaptchaVerified) {
-        notifyUser(false, "reCAPTCHA failed", "Please try again");
-      }
+    if (response.sendSuccess) {
+      form.reset();
     }
 
-    //Enable submit button
     setIsSubmitting(false);
-  }
+  };
 
   return (
     <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
-      <TextInput
-        className={classes.form_field}
-        withAsterisk
-        label="Your name"
-        key={form.key("name")}
-        {...form.getInputProps("name")}
-      />
-      <TextInput
-        className={classes.form_field}
-        withAsterisk
-        label="Email"
-        key={form.key("email")}
-        {...form.getInputProps("email")}
-      />
-      <TextInput
-        className={classes.form_field}
-        label="Phone"
-        key={form.key("phone")}
-        {...form.getInputProps("phone")}
-      />
-      <Textarea
-        className={classes.form_field}
-        withAsterisk
-        label="Job details"
-        resize="vertical"
-        rows={4}
-        key={form.key("jobDetails")}
-        {...form.getInputProps("jobDetails")}
-      />
-      {/* prettier-ignore */}
-      <Text className={classes.recaptcha_disclaimer}>
-        This site is protected by reCAPTCHA and the Google <Link href="https://policies.google.com/privacy">Privacy Policy</Link> and <Link href="https://policies.google.com/terms">Terms of Service</Link> apply.
-      </Text>
-      <Group>
-        <Button
-          className={classes.submit_button}
-          type="submit"
-          loading={isSubmitting}
-        >
-          Send
-        </Button>
-      </Group>
+      <Stack>
+        <TextInput
+          className={classes.form_field}
+          withAsterisk
+          label="Your name"
+          key={form.key("name")}
+          {...form.getInputProps("name")}
+          disabled={isSubmitting}
+        />
+        <TextInput
+          className={classes.form_field}
+          withAsterisk
+          label="Email"
+          key={form.key("email")}
+          {...form.getInputProps("email")}
+          disabled={isSubmitting}
+        />
+        <TextInput
+          className={classes.form_field}
+          label="Phone"
+          key={form.key("phone")}
+          {...form.getInputProps("phone")}
+          disabled={isSubmitting}
+        />
+        <Honeypot form={form} label="Website" fieldKey="website" />
+        <Textarea
+          className={classes.form_field}
+          withAsterisk
+          label="Job details"
+          resize="vertical"
+          rows={4}
+          key={form.key("jobDetails")}
+          {...form.getInputProps("jobDetails")}
+          disabled={isSubmitting}
+        />
+        <RecaptchaDisclaimer />
+        <FormAlert formMessage={formMessage} />
+        <Group>
+          <Button
+            className={classes.submit_button}
+            type="submit"
+            loading={isSubmitting}
+          >
+            Send
+          </Button>
+        </Group>
+      </Stack>
     </form>
   );
 }

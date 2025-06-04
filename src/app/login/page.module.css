@@ -1,0 +1,4 @@
+.heading {
+  text-align: center;
+  padding-bottom: var(--mantine-spacing-md);
+}

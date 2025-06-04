@@ -18,7 +18,7 @@ export function Footer() {
         <Anchor href="tel:+64274978473" aria-label="Mobile phone number">
           <Group>
             <ThemeIcon className={"checkmark"}>
-              <IconPhone aria-label="Phone icon" />
+              <IconPhone aria-label="Phone" />
             </ThemeIcon>
             0274 978 473
           </Group>
