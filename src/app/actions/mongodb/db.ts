@@ -269,6 +269,49 @@ class MongoDatabase {
     }
   }
 
+  async incrementDocumentField(
+    collectionName: string,
+    fieldToMatch: string,
+    matchFieldValue: string,
+    fieldToIncrement: string,
+    incrementAmount: number
+  ): Promise<boolean> {
+    if (
+      !this.collectionExists(collectionName) ||
+      !this.isValidString(fieldToMatch) ||
+      !this.isValidString(matchFieldValue) ||
+      !this.isValidString(fieldToIncrement)
+    )
+      return false;
+
+    if (this.isNoUpdateCollection(collectionName)) {
+      throw new Error("Documents in " + collectionName + " cannot be updated.");
+    }
+
+    const collection = this._db.collection(collectionName);
+
+    const filter = {
+      [fieldToMatch]: matchFieldValue,
+    };
+
+    const updateDocument = {
+      $inc: {
+        [fieldToIncrement]: incrementAmount,
+      },
+    };
+
+    try {
+      const incResult: UpdateResult = await collection.updateOne(
+        filter,
+        updateDocument
+      );
+
+      return incResult.modifiedCount > 0;
+    } catch {
+      return false;
+    }
+  }
+
   //Set a document field to a new value
   async deleteDocument(
     collectionName: string,
