@@ -6,15 +6,14 @@ export const RateLimitSchema = {
     _id: { bsonType: "objectId" },
     requestType: {
       bsonType: "string",
-      description: "'ip' must be a string - Required",
-      unique: true,
+      description: "'requestType' must be a string - Required",
     },
     count: {
       bsonType: "number",
       description: "'count' must be a number - Required",
     },
     resetDate: {
-      bsonType: "Date",
+      bsonType: "date",
       description: "'resetDate' must be a number - Required",
     },
   },
