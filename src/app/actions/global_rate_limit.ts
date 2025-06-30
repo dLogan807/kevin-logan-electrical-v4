@@ -12,7 +12,7 @@ interface RateLimitDocument {
 const COLLECTION: string = "global_rate_limit";
 
 export async function rateLimitReached(requestType: string): Promise<boolean> {
-  const MAX_MONTLY_REQUESTS: number = 950;
+  const MAX_MONTLY_REQUESTS: number = 930;
   const DAYS_IN_MONTH: number = 31;
   const MAX_DAILY_REQUESTS: number = MAX_MONTLY_REQUESTS / DAYS_IN_MONTH;
 
