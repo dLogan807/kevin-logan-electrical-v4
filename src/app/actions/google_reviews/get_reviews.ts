@@ -1,8 +1,7 @@
 "use server";
 
 import { cache } from "react";
-
-//IMPORTANT: Ensure rate limiting is in place in the Google Places Console
+import { rateLimitReached } from "@/actions/global_rate_limit";
 
 export type GoogleReviews = {
   reviews: GoogleReview[];
@@ -124,6 +123,7 @@ export const getGoogleReviews = cache(
     nameFilter?: string[]
   ): Promise<GoogleReviews | null> => {
     if (!searchQuery) return null;
+    if (await rateLimitReached("google_reviews")) return null;
 
     const headers: Headers = new Headers();
     headers.set("Accept", "application/json");
