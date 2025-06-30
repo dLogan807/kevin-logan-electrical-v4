@@ -269,6 +269,29 @@ class MongoDatabase {
     }
   }
 
+  async updateDocument(
+    collectionName: string,
+    filter: any,
+    updateDocument: any
+  ): Promise<boolean> {
+    if (!this.collectionExists(collectionName) || !filter || !updateDocument)
+      return false;
+
+    if (this.isNoUpdateCollection(collectionName)) {
+      throw new Error("Documents in " + collectionName + " cannot be updated.");
+    }
+
+    try {
+      const updateResult: UpdateResult = await this._db
+        .collection(collectionName)
+        .updateOne(filter, updateDocument);
+
+      return updateResult.modifiedCount > 0;
+    } catch {
+      return false;
+    }
+  }
+
   //Set a document field to a new value
   async deleteDocument(
     collectionName: string,

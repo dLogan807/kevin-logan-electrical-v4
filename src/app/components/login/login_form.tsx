@@ -129,10 +129,10 @@ export default function LoginForm() {
   }
 
   const userIcon: React.ReactElement = (
-    <IconUserCircle className={classes.input_icon} />
+    <IconUserCircle className={classes.input_icon} aria-label="Username" />
   );
   const passwordIcon: React.ReactElement = (
-    <IconLock className={classes.input_icon} />
+    <IconLock className={classes.input_icon} aria-label="Password" />
   );
 
   return (
