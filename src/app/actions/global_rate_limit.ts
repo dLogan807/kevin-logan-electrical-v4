@@ -2,6 +2,7 @@
 
 import MongoDatabase from "@/actions/mongodb/db";
 import { RateLimitSchema } from "./rate_limit/schema";
+import { Document, Filter, UpdateFilter, WithId } from "mongodb";
 
 interface RateLimitDocument {
   requestType: string;
@@ -23,25 +24,27 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
     requestType: requestType,
   };
 
-  const rateDocument: RateLimitDocument | null =
-    await MongoDatabase.getDocument(COLLECTION, query);
+  const rateDocument: WithId<Document> | null = await MongoDatabase.getDocument(
+    COLLECTION,
+    query
+  );
 
   //No document exists or is missing fields
-  if (
-    !rateDocument ||
-    rateDocument.count === null ||
-    rateDocument.resetDate === null ||
-    rateDocument.requestType === null
-  ) {
+  if (!rateDocument || rateDocument.requestType === null) {
     const document: RateLimitDocument = {
       requestType: requestType,
       count: 1,
       resetDate: getDateInOneDay(),
     };
 
-    await MongoDatabase.addDocument(COLLECTION, document);
-
-    return true;
+    const createFailed: boolean = !(await MongoDatabase.addDocument(
+      COLLECTION,
+      document
+    ));
+    return createFailed;
+  } else if (rateDocument.count === null || rateDocument.resetDate === null) {
+    const resetFailed: boolean = !(await reset(requestType));
+    return resetFailed;
   }
 
   //Reset is due
@@ -64,33 +67,33 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
 
 //Increment rate limit
 async function increment(requestType: string): Promise<boolean> {
-  const filter = {
-    requestType: requestType,
+  const filter: Filter<Document> = {
+    requestType,
   };
 
-  const updateDocument = {
+  const document: UpdateFilter<Document> = {
     $inc: {
       count: 1,
     },
   };
 
-  return MongoDatabase.updateDocument(COLLECTION, filter, updateDocument);
+  return MongoDatabase.updateDocument(COLLECTION, filter, document);
 }
 
 //Reset limit
-async function reset(requestType: string) {
-  const filter = {
-    requestType: requestType,
+async function reset(requestType: string): Promise<boolean> {
+  const filter: Filter<Document> = {
+    requestType,
   };
 
-  const updateDocument = {
+  const document: UpdateFilter<Document> = {
     $set: {
       count: 1,
       resetDate: getDateInOneDay(),
     },
   };
 
-  await MongoDatabase.updateDocument(COLLECTION, filter, updateDocument);
+  return await MongoDatabase.updateDocument(COLLECTION, filter, document);
 }
 
 //Returns the date-time a day from now
