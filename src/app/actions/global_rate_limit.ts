@@ -11,6 +11,7 @@ interface RateLimitDocument {
 
 const COLLECTION: string = "global_rate_limit";
 
+//Check and increment rate limit
 export async function rateLimitReached(requestType: string): Promise<boolean> {
   const MAX_MONTLY_REQUESTS: number = 930;
   const DAYS_IN_MONTH: number = 31;
@@ -25,11 +26,12 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
   const rateDocument: RateLimitDocument | null =
     await MongoDatabase.getDocument(COLLECTION, query);
 
+  //No document exists or is missing fields
   if (
     !rateDocument ||
-    !rateDocument.count ||
-    !rateDocument.resetDate ||
-    !rateDocument.requestType
+    rateDocument.count === null ||
+    rateDocument.resetDate === null ||
+    rateDocument.requestType === null
   ) {
     const document: RateLimitDocument = {
       requestType: requestType,
@@ -42,24 +44,26 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
     return true;
   }
 
+  //Reset is due
   const currentDate = new Date(Date.now());
-
   if (currentDate > rateDocument.resetDate) {
     await reset(requestType);
 
     return false;
   }
 
-  if (rateDocument.count > MAX_DAILY_REQUESTS) {
+  //Requests exceeded
+  if (rateDocument.count >= MAX_DAILY_REQUESTS) {
     return true;
   }
 
-  await increment(requestType);
-
-  return false;
+  //If increment failed, prevent usage
+  const incrementFailed: boolean = !(await increment(requestType));
+  return incrementFailed;
 }
 
-async function increment(requestType: string) {
+//Increment rate limit
+async function increment(requestType: string): Promise<boolean> {
   const filter = {
     requestType: requestType,
   };
@@ -70,9 +74,10 @@ async function increment(requestType: string) {
     },
   };
 
-  MongoDatabase.updateDocument(COLLECTION, filter, updateDocument);
+  return MongoDatabase.updateDocument(COLLECTION, filter, updateDocument);
 }
 
+//Reset limit
 async function reset(requestType: string) {
   const filter = {
     requestType: requestType,
@@ -88,6 +93,7 @@ async function reset(requestType: string) {
   await MongoDatabase.updateDocument(COLLECTION, filter, updateDocument);
 }
 
+//Returns the date-time a day from now
 function getDateInOneDay(): Date {
   const date: Date = new Date(Date.now());
   date.setDate(date.getDate() + 1);
