@@ -78,7 +78,14 @@ class MongoDatabase {
 
     try {
       return await this._db.listCollections({ name: collectionName }).hasNext();
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to check for collection:", {
+          collection: collectionName,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
   }
@@ -99,7 +106,15 @@ class MongoDatabase {
           $jsonSchema: schema,
         },
       });
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to create collection:", {
+          collection: collectionName,
+          schema: JSON.stringify(schema),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
 
@@ -116,7 +131,15 @@ class MongoDatabase {
       return (await this._db
         .collection(collectionName)
         .findOne(query)) as WithId<T> | null;
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to get document:", {
+          collection: collectionName,
+          query: JSON.stringify(query),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return null;
     }
   }
@@ -135,7 +158,14 @@ class MongoDatabase {
           sort: { $natural: -1 },
         }
       )) as WithId<T> | null;
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Failed to get latest document:", {
+          collection: collectionName,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return null;
     }
   }
@@ -171,7 +201,15 @@ class MongoDatabase {
         .aggregate(pipeline);
 
       return await aggregationResult.next();
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to execute join:", {
+          collection: collectionName,
+          aggregationQuery: JSON.stringify(pipeline),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return null;
     }
   }
@@ -193,7 +231,15 @@ class MongoDatabase {
     const collection = this._db.collection(collectionName);
     try {
       await collection.insertOne(document as OptionalId<Document>);
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to add document:", {
+          collection: collectionName,
+          document: JSON.stringify(document),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
 
@@ -225,7 +271,16 @@ class MongoDatabase {
       );
 
       return updateResult.modifiedCount > 0;
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to update document:", {
+          collection: collectionName,
+          query: JSON.stringify(query),
+          document: JSON.stringify(document),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
   }
@@ -249,7 +304,16 @@ class MongoDatabase {
         : await collection.deleteOne(query);
 
       return deleteResult.deletedCount > 0;
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to delete document:", {
+          collection: collectionName,
+          query: JSON.stringify(query),
+          deleteAllRequest: deleteAllMatches,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
   }
@@ -258,7 +322,13 @@ class MongoDatabase {
     try {
       await this._client.close();
       return true;
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Failed to close connection", {
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
   }
