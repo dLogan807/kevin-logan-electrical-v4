@@ -27,10 +27,8 @@ async function validateUser(
   const query = {
     username: formValues.username,
   };
-  const userDocument: UserDocument | null = await MongoDatabase.getDocument(
-    "users",
-    query
-  );
+  const userDocument: UserDocument | null =
+    await MongoDatabase.getDocument<UserDocument>("users", query);
 
   if (
     userDocument &&

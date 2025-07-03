@@ -9,19 +9,16 @@ import {
   ContactUsMongoSchema,
   PageSchema,
 } from "@/actions/mongodb/pages/schemas";
-import { fallbackContent as homeFallbackContent, HomeContent } from "@/page";
 import {
-  fallbackContent as aboutUsFallbackContent,
+  HomeFallback,
+  HomeContent,
+  AboutUsFallback,
   AboutUsContent,
-} from "@/aboutus/page";
-import {
-  fallbackContent as rateAndServicesFallbackContent,
+  RateAndServicesFallback,
   RateAndServicesContent,
-} from "@/rateandservices/page";
-import {
-  fallbackContent as contactUsFallbackContent,
+  ContactUsFallback,
   ContactUsContent,
-} from "@/contactus/page";
+} from "@/actions/mongodb/pages/fallback_content";
 import { cache } from "react";
 import { getCurrentSession } from "../sessions/cookie";
 
@@ -31,6 +28,20 @@ export type PageContent =
   | RateAndServicesContent
   | ContactUsContent;
 
+const pageSchemaMap: Record<Pages, PageSchema> = {
+  [Pages.Home]: HomeMongoSchema,
+  [Pages.AboutUs]: AboutUsMongoSchema,
+  [Pages.RateAndServices]: RateAndServicesMongoSchema,
+  [Pages.ContactUs]: ContactUsMongoSchema,
+};
+
+const pageFallbackContentMap: Record<Pages, PageContent> = {
+  [Pages.Home]: HomeFallback,
+  [Pages.AboutUs]: AboutUsFallback,
+  [Pages.RateAndServices]: RateAndServicesFallback,
+  [Pages.ContactUs]: ContactUsFallback,
+};
+
 interface PageDocument {
   page_content: PageContent;
   date_created: Date;
@@ -39,16 +50,16 @@ interface PageDocument {
 
 //Cached page content retrieval
 export const getPageContent = cache(
-  async (
+  async <T extends PageContent>(
     collectionName: Pages,
-    fallbackContent: PageContent
-  ): Promise<PageContent> => {
+    fallbackContent: T
+  ): Promise<T> => {
     const contentDocument: PageDocument | null =
       await new PageManager().getPageDocument(collectionName);
 
-    //Return fallback content if database content is retrieved as null
+    //Return fallback content if database content is null
     return contentDocument && contentDocument.page_content
-      ? (contentDocument.page_content as PageContent)
+      ? (contentDocument.page_content as T)
       : fallbackContent;
   }
 );
@@ -58,6 +69,7 @@ export async function addPageDocument(
   collectionName: Pages,
   pageContent: PageContent
 ): Promise<boolean> {
+  //auth
   const { session } = await getCurrentSession();
   if (session === null) return false;
 
@@ -86,36 +98,19 @@ class PageManager {
   private pageCollectionsInit: boolean = false;
 
   private getPageSchema(collectionName: Pages): PageSchema {
-    if (!collectionName || !Object.values(Pages).includes(collectionName)) {
+    const schema = pageSchemaMap[collectionName];
+    if (!schema) {
       throw new Error("Collection must be a valid page.");
     }
-
-    switch (collectionName) {
-      case Pages.Home:
-        return HomeMongoSchema;
-      case Pages.AboutUs:
-        return AboutUsMongoSchema;
-      case Pages.RateAndServices:
-        return RateAndServicesMongoSchema;
-      case Pages.ContactUs:
-        return ContactUsMongoSchema;
-    }
+    return schema;
   }
 
   private getPageFallbackContent(collectionName: Pages): PageContent {
-    if (!collectionName || !Object.values(Pages).includes(collectionName))
+    const fallbackContent = pageFallbackContentMap[collectionName];
+    if (!fallbackContent) {
       throw new Error("Collection must be a valid page.");
-
-    switch (collectionName) {
-      case Pages.Home:
-        return homeFallbackContent;
-      case Pages.AboutUs:
-        return aboutUsFallbackContent;
-      case Pages.RateAndServices:
-        return rateAndServicesFallbackContent;
-      case Pages.ContactUs:
-        return contactUsFallbackContent;
     }
+    return fallbackContent;
   }
 
   private async insertFallbackContent(collectionName: Pages): Promise<boolean> {
@@ -163,7 +158,7 @@ class PageManager {
     //Attempt to create collections in case they don't exist
     if (!this.pageCollectionsInit) await this.initPageCollections();
 
-    return MongoDatabase.getLatestDocument(collectionName);
+    return await MongoDatabase.getLatestDocument<PageDocument>(collectionName);
   }
 
   //Add a document (latest doc will display on website)
@@ -182,6 +177,9 @@ class PageManager {
       auto_created: false,
     };
 
-    return await MongoDatabase.addDocument(collectionName, document);
+    return await MongoDatabase.addDocument<PageDocument>(
+      collectionName,
+      document
+    );
   }
 }
