@@ -1,7 +1,7 @@
 "use server";
 
 import MongoDatabase from "@/actions/mongodb/db";
-import { RateLimitSchema } from "./rate_limit/schema";
+import { RateLimitSchema } from "./schema";
 import { Document, Filter, UpdateFilter, WithId } from "mongodb";
 
 interface RateLimitDocument {
