@@ -4,6 +4,10 @@ import { Metadata } from "next";
 import { ServicesCard } from "@/components/services_card/services_card";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
+import {
+  RateAndServicesFallback,
+  RateAndServicesContent,
+} from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
@@ -13,73 +17,10 @@ export const metadata: Metadata = {
     "I offer a wide range of residential services at Kevin Logan Electrical for an affordable rate of $90/hr incl GST.",
 };
 
-export type RateAndServicesContent = {
-  rate: {
-    title: string;
-    text: string;
-  };
-  estimates: {
-    title: string;
-    text: string;
-  };
-  services: {
-    title: string;
-    description: string;
-    categories: {
-      interior: string[];
-      exterior: string[];
-      renovations_and_maintenance: string[];
-    };
-  };
-};
-
-export const fallbackContent: RateAndServicesContent = {
-  rate: {
-    title: "Standard Rate",
-    text: "Hourly rate — $90/hr incl. GST. Please note an additional travel charge dependent on mileage.",
-  },
-  estimates: {
-    title: "Estimates",
-    text: "Please call if you would like an estimate on the cost of a job. Often the price indicated over the phone is very close to the actual cost of the job. When the job is complete, an itemised invoice is given listing the materials used plus additional labour costs.",
-  },
-  services: {
-    title: "Services",
-    description:
-      "I offer a wide range of residential services. If you'd like to inquire about a particular job, don't hesitate to give me a call.",
-    categories: {
-      interior: [
-        "Lighting",
-        "Powerpoints",
-        "Hot water faults",
-        "Hood / Fan installations",
-        "Fault-finding",
-      ],
-      exterior: [
-        "Outdoor lighting / Sockets",
-        "Garden lighting",
-        "Security lights",
-        "Swimming pools / Spa pools",
-        "Sub mains to exterior buildings",
-        "EV charge stations",
-      ],
-      renovations_and_maintenance: [
-        "Switchboard upgrades",
-        "Oven / Hob repairs",
-        "Complete rewires",
-        "Kitchens",
-        "Bathrooms",
-      ],
-    },
-  },
-};
-
 //Cache page content for 5 days
 const getCachedPageContent = unstable_cache(
   async (): Promise<RateAndServicesContent> => {
-    return (await getPageContent(
-      Pages.RateAndServices,
-      fallbackContent
-    )) as RateAndServicesContent;
+    return await getPageContent(Pages.RateAndServices, RateAndServicesFallback);
   },
   [Pages.RateAndServices],
   { revalidate: 432000, tags: [Pages.RateAndServices] }
