@@ -7,6 +7,10 @@ import { Metadata } from "next";
 import { theme } from "@/components/theme";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
+import {
+  AboutUsFallback,
+  AboutUsContent,
+} from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
@@ -16,33 +20,10 @@ export const metadata: Metadata = {
     "Find out more about Kevin Logan Electrical. Serving the North Shore community since 1992 and proud to be your local electrician of choice.",
 };
 
-export type AboutUsContent = {
-  top_section: {
-    text: string;
-    button_text: string;
-  };
-  bottom_section: {
-    text: string;
-  };
-};
-
-export const fallbackContent: AboutUsContent = {
-  top_section: {
-    text: "I founded Kevin Logan Electrical in 1992 and have since been proudly serving the North Shore community. Based in Torbay, you can count on me as your local electrician.",
-    button_text: "Registered Electrician",
-  },
-  bottom_section: {
-    text: "I specialise in residential work, offering a competent and reliable electrical service you can count on. In addition, with my friendly and professional manner, I can answer any questions you may have about my business or services. I pride myself on quality workmanship and professional service from repairs and maintenance to installations. \n\n At Kevin Logan Electrical, my goal is to provide you with a courteous, prompt, professional service of the highest calibre.",
-  },
-};
-
 //Cache page content for 5 days
 const getCachedPageContent = unstable_cache(
   async (): Promise<AboutUsContent> => {
-    return (await getPageContent(
-      Pages.AboutUs,
-      fallbackContent
-    )) as AboutUsContent;
+    return await getPageContent(Pages.AboutUs, AboutUsFallback);
   },
   [Pages.AboutUs],
   { revalidate: 432000, tags: [Pages.AboutUs] }

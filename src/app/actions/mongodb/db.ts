@@ -1,21 +1,14 @@
 import {
   DeleteResult,
+  Document,
+  Filter,
   MongoClient,
-  ObjectId,
+  OptionalId,
   ServerApiVersion,
+  UpdateFilter,
   UpdateResult,
+  WithId,
 } from "mongodb";
-
-type FieldValue = ObjectId | string | number;
-
-export interface JoinMatchInput {
-  localCollection: string;
-  localField: string;
-  localMatchFieldName: string;
-  matchWithValue: FieldValue;
-  foreignCollection: string;
-  foreignField: string;
-}
 
 //Singleton class for MongoDB database operations
 class MongoDatabase {
@@ -55,14 +48,6 @@ class MongoDatabase {
     return typeof input === "string" && input.length > 0;
   }
 
-  private isValidFieldValue(value: FieldValue): boolean {
-    return (
-      value instanceof ObjectId ||
-      typeof value === "number" ||
-      (typeof value === "string" && value.length > 0)
-    );
-  }
-
   private isInArray(stringArray: string[], searchValue: string): boolean {
     if (
       !this.isValidString(searchValue) ||
@@ -93,31 +78,16 @@ class MongoDatabase {
 
     try {
       return await this._db.listCollections({ name: collectionName }).hasNext();
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to check for collection:", {
+          collection: collectionName,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
-  }
-
-  //Ensure of correct type
-  private async isValidJoinMatchInput(input: JoinMatchInput) {
-    if (!input) return false;
-
-    const inputDefined: boolean =
-      input &&
-      this.isValidString(input.localCollection) &&
-      this.isValidString(input.localField) &&
-      this.isValidString(input.localMatchFieldName) &&
-      this.isValidString(input.foreignCollection) &&
-      this.isValidString(input.foreignField);
-    if (!inputDefined) return false;
-
-    if (!this.isValidFieldValue(input.matchWithValue)) return false;
-
-    const collectionsExist: boolean =
-      (await this.collectionExists(input.localCollection)) &&
-      (await this.collectionExists(input.foreignCollection));
-
-    return collectionsExist;
   }
 
   //------ Database functions ------
@@ -125,10 +95,10 @@ class MongoDatabase {
   //Create collection with document validation schema
   async createCollection(
     collectionName: string,
-    schema: any
+    schema: Document
   ): Promise<boolean> {
     if (await this.collectionExists(collectionName)) return true;
-    if (!schema) return false;
+    if (schema == null) return false;
 
     try {
       await this._db.createCollection(collectionName, {
@@ -136,60 +106,88 @@ class MongoDatabase {
           $jsonSchema: schema,
         },
       });
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to create collection:", {
+          collection: collectionName,
+          schema: JSON.stringify(schema),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
 
     return true;
   }
 
-  async getDocument(collectionName: string, fields: any): Promise<any | null> {
+  async getDocument<T = Document>(
+    collectionName: string,
+    query: Filter<Document>
+  ): Promise<WithId<T> | null> {
     if (!(await this.collectionExists(collectionName))) return null;
 
     try {
-      return await this._db.collection(collectionName).findOne(fields);
-    } catch {
+      return (await this._db
+        .collection(collectionName)
+        .findOne(query)) as WithId<T> | null;
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to get document:", {
+          collection: collectionName,
+          query: JSON.stringify(query),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return null;
     }
   }
 
   //Retrieve the most recent document from the collection
-  async getLatestDocument(collectionName: string): Promise<any | null> {
+  async getLatestDocument<T = Document>(
+    collectionName: string
+  ): Promise<WithId<T> | null> {
     if (!(await this.collectionExists(collectionName))) return null;
 
+    const collection = this._db.collection(collectionName);
     try {
-      return await this._db.collection(collectionName).findOne(
+      return (await collection.findOne(
         {},
         {
           sort: { $natural: -1 },
         }
-      );
-    } catch {
+      )) as WithId<T> | null;
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Failed to get latest document:", {
+          collection: collectionName,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return null;
     }
   }
 
-  //Perform 1-1 inner join matching id
-  async getJoinedDocumentMatchingValue(
-    input: JoinMatchInput
-  ): Promise<any | null> {
-    if (!this.isValidJoinMatchInput(input)) return null;
+  //Perform 1-1 inner join
+  async getInnerJoinedDocument(
+    collectionName: string,
+    match: Document,
+    lookup: Document
+  ): Promise<Document | null> {
+    if (
+      !this.collectionExists(collectionName) ||
+      match == null ||
+      lookup == null
+    ) {
+      return null;
+    }
 
     //Create aggregation pipeline
-    const pipeline = [];
-    pipeline.push({
-      $match: {
-        [input.localMatchFieldName]: input.matchWithValue,
-      },
-    });
-    pipeline.push({
-      $lookup: {
-        from: input.foreignCollection,
-        localField: input.localField,
-        foreignField: input.foreignField,
-        as: "joined_document",
-      },
-    });
+    const pipeline: Document[] = [];
+    pipeline.push(match);
+    pipeline.push(lookup);
     pipeline.push({
       $match: {
         joined_document: { $ne: [] },
@@ -199,18 +197,29 @@ class MongoDatabase {
     //Execute
     try {
       const aggregationResult = this._db
-        .collection(input.localCollection)
+        .collection(collectionName)
         .aggregate(pipeline);
 
       return await aggregationResult.next();
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to execute join:", {
+          collection: collectionName,
+          aggregationQuery: JSON.stringify(pipeline),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return null;
     }
   }
 
   //Add document to existing collection. Validated via schema
-  async addDocument(collectionName: string, document: any): Promise<boolean> {
-    if (!(await this.collectionExists(collectionName)) || !document)
+  async addDocument<T = Document>(
+    collectionName: string,
+    document: OptionalId<T>
+  ): Promise<boolean> {
+    if (!(await this.collectionExists(collectionName)) || document == null)
       return false;
 
     if (this.isImmutableCollection(collectionName)) {
@@ -219,28 +228,34 @@ class MongoDatabase {
       );
     }
 
+    const collection = this._db.collection(collectionName);
     try {
-      await this._db.collection(collectionName).insertOne(document);
-    } catch {
+      await collection.insertOne(document as OptionalId<Document>);
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to add document:", {
+          collection: collectionName,
+          document: JSON.stringify(document),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
 
     return true;
   }
 
-  //Set a document field to a new value
-  async updateDocumentField(
+  //Update a document
+  async updateDocument(
     collectionName: string,
-    fieldToMatch: string,
-    matchFieldValue: FieldValue,
-    fieldToUpdate: string,
-    newValue: any
+    query: Filter<Document>,
+    document: UpdateFilter<Document>
   ): Promise<boolean> {
     if (
       !this.collectionExists(collectionName) ||
-      !this.isValidString(fieldToMatch) ||
-      !this.isValidFieldValue(matchFieldValue) ||
-      !this.isValidString(fieldToUpdate)
+      query == null ||
+      document == null
     )
       return false;
 
@@ -248,82 +263,57 @@ class MongoDatabase {
       throw new Error("Documents in " + collectionName + " cannot be updated.");
     }
 
-    const filter = {
-      [fieldToMatch]: matchFieldValue,
-    };
-
-    const updateDocument = {
-      $set: {
-        [fieldToUpdate]: newValue,
-      },
-    };
-
+    const collection = this._db.collection(collectionName);
     try {
-      const updateResult: UpdateResult = await this._db
-        .collection(collectionName)
-        .updateOne(filter, updateDocument);
+      const updateResult: UpdateResult = await collection.updateOne(
+        query,
+        document
+      );
 
       return updateResult.modifiedCount > 0;
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to update document:", {
+          collection: collectionName,
+          query: JSON.stringify(query),
+          document: JSON.stringify(document),
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
   }
 
-  async updateDocument(
-    collectionName: string,
-    filter: any,
-    updateDocument: any
-  ): Promise<boolean> {
-    if (!this.collectionExists(collectionName) || !filter || !updateDocument)
-      return false;
-
-    if (this.isNoUpdateCollection(collectionName)) {
-      throw new Error("Documents in " + collectionName + " cannot be updated.");
-    }
-
-    try {
-      const updateResult: UpdateResult = await this._db
-        .collection(collectionName)
-        .updateOne(filter, updateDocument);
-
-      return updateResult.modifiedCount > 0;
-    } catch {
-      return false;
-    }
-  }
-
-  //Set a document field to a new value
+  //Delete document(s)
   async deleteDocument(
     collectionName: string,
-    fieldToMatch: string,
-    matchFieldValue: FieldValue,
+    query: Filter<Document>,
     deleteAllMatches?: boolean
   ): Promise<boolean> {
-    if (
-      !this.collectionExists(collectionName) ||
-      !this.isValidString(fieldToMatch) ||
-      !this.isValidFieldValue(matchFieldValue)
-    ) {
-      return false;
-    }
+    if (!this.collectionExists(collectionName) || query == null) return false;
 
     if (this.isNoUpdateCollection(collectionName)) {
       throw new Error("Documents in " + collectionName + " cannot be deleted.");
     }
 
-    const document = {
-      [fieldToMatch]: matchFieldValue,
-    };
-
     const collection = this._db.collection(collectionName);
-
     try {
       const deleteResult: DeleteResult = deleteAllMatches
-        ? await collection.deleteMany(document)
-        : await collection.deleteOne(document);
+        ? await collection.deleteMany(query)
+        : await collection.deleteOne(query);
 
       return deleteResult.deletedCount > 0;
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to delete document:", {
+          collection: collectionName,
+          query: JSON.stringify(query),
+          deleteAllRequest: deleteAllMatches,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
   }
@@ -332,7 +322,13 @@ class MongoDatabase {
     try {
       await this._client.close();
       return true;
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Failed to close connection", {
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+
       return false;
     }
   }

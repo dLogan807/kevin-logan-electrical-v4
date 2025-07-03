@@ -18,6 +18,10 @@ import GoogleMap from "./components/google_map/google_map";
 import GoogleReviewContainer from "./components/google_reviews/google_review_container";
 import { Pages } from "./components/layout/pages";
 import { unstable_cache } from "next/cache";
+import {
+  HomeFallback,
+  HomeContent,
+} from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "./actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
@@ -27,47 +31,10 @@ export const metadata: Metadata = {
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
 };
 
-export type HomeContent = {
-  tagline: {
-    title: string;
-    subtitle: string;
-    description: string;
-    button_text: string;
-  };
-  summary: {
-    title: string;
-    items: string[];
-  };
-  review_name_filter: string[];
-};
-
-export const fallbackContent: HomeContent = {
-  tagline: {
-    title: "Your Trusted Local Electrician",
-    subtitle: "30 years of experience you can rely on",
-    description:
-      "At Kevin Logan Electrical, we believe in providing a competent, professional, and courteous electrical service. Striving to give you results of the highest quality is at our forefront.",
-    button_text: "Get in touch",
-  },
-  summary: {
-    title: "Our Service",
-    items: [
-      "Based in Torbay, North Shore",
-      "Professional, Friendly & Approachable",
-      "Wide Range of Residential Services",
-      "Affordable $90/hr incl. GST",
-      "Independent",
-      "Committed to Sustainability",
-      "Satisfaction Guaranteed",
-    ],
-  },
-  review_name_filter: [],
-};
-
 //Cache page content for 5 days
 const getCachedPageContent = unstable_cache(
   async (): Promise<HomeContent> => {
-    return (await getPageContent(Pages.Home, fallbackContent)) as HomeContent;
+    return await getPageContent(Pages.Home, HomeFallback);
   },
   [Pages.Home],
   { revalidate: 432000, tags: [Pages.Home] }

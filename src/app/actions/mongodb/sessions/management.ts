@@ -2,14 +2,15 @@
 
 //Derived from Lucia under their Zero-Clause BSD license (https://github.com/lucia-auth/lucia/blob/main/LICENSE-0BSD)
 
-import MongoDatabase, { JoinMatchInput } from "../db";
+import MongoDatabase from "../db";
+import { Document, Filter, ObjectId, UpdateFilter } from "mongodb";
+
 import { SessionMongoSchema } from "./schemas";
 import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
 } from "@oslojs/encoding";
 import { sha256 } from "@oslojs/crypto/sha2";
-import { ObjectId } from "mongodb";
 import { deleteSessionTokenCookie, getCurrentSession } from "./cookie";
 import { redirect } from "next/navigation";
 
@@ -66,17 +67,26 @@ export async function validateSessionToken(
 ): Promise<SessionValidationResult> {
   const sessionId: string = await hashSessionToken(token);
 
-  const joinRequiredValues: JoinMatchInput = {
-    localCollection: "user_sessions",
-    localField: "user_id",
-    localMatchFieldName: "session_id",
-    matchWithValue: sessionId,
-    foreignCollection: "users",
-    foreignField: "_id",
+  const match: Document = {
+    $match: {
+      session_id: sessionId,
+    },
   };
 
-  const result: any | null =
-    await MongoDatabase.getJoinedDocumentMatchingValue(joinRequiredValues);
+  const lookup: Document = {
+    $lookup: {
+      from: "users",
+      localField: "user_id",
+      foreignField: "_id",
+      as: "joined_document",
+    },
+  };
+
+  const result: Document | null = await MongoDatabase.getInnerJoinedDocument(
+    "user_sessions",
+    match,
+    lookup
+  );
   if (result === null) return { session: null, user: null };
 
   const session: SessionDocument = {
@@ -101,23 +111,33 @@ export async function validateSessionToken(
   const day: number = 1000 * 60 * 60 * 24;
   if (Date.now() >= session.expires_at.getTime() - day * 15) {
     session.expires_at = new Date(Date.now() + day * 30);
-    MongoDatabase.updateDocumentField(
-      "user_sessions",
-      "session_id",
-      session.session_id,
-      "expires_at",
-      session.expires_at
-    );
+
+    const query: Filter<Document> = {
+      session_id: session.session_id,
+    };
+    const document: UpdateFilter<Document> = {
+      $set: {
+        expires_at: session.expires_at,
+      },
+    };
+
+    MongoDatabase.updateDocument("user_sessions", query, document);
   }
   return { session, user };
 }
 
 export async function invalidateSession(sessionId: string): Promise<void> {
-  MongoDatabase.deleteDocument("user_sessions", "session_id", sessionId, false);
+  const query: Filter<Document> = {
+    session_id: sessionId,
+  };
+  MongoDatabase.deleteDocument("user_sessions", query, false);
 }
 
 export async function invalidateAllSessions(userId: ObjectId): Promise<void> {
-  MongoDatabase.deleteDocument("user_sessions", "user_id", userId, true);
+  const query: Filter<Document> = {
+    user_id: userId,
+  };
+  MongoDatabase.deleteDocument("user_sessions", query, true);
 }
 
 export async function logout() {

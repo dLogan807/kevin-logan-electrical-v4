@@ -21,6 +21,10 @@ import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
+import {
+  ContactUsFallback,
+  ContactUsContent,
+} from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
@@ -30,43 +34,10 @@ export const metadata: Metadata = {
     "Contact Kevin Logan Electrical. Open Monday to Friday, don't hesitate to give me call for a reliable service of the highest calibre.",
 };
 
-export type ContactUsContent = {
-  contact_details: {
-    title: string;
-    location: string;
-    phone: string;
-    mobile: string;
-    email: string;
-  };
-  service_hours: {
-    title: string;
-    hours: string;
-    days: string;
-  };
-};
-
-export const fallbackContent: ContactUsContent = {
-  contact_details: {
-    title: "Contact Details",
-    location: "Based in Torbay, servicing the North Shore",
-    phone: "09 473 9712",
-    mobile: "0274 978 473",
-    email: "kevinlog@kevinloganelectrical.co.nz",
-  },
-  service_hours: {
-    title: "Service Hours",
-    hours: "8 AM - 5 PM",
-    days: "Monday - Friday",
-  },
-};
-
 //Cache page content for 5 days
 const getCachedPageContent = unstable_cache(
   async (): Promise<ContactUsContent> => {
-    return (await getPageContent(
-      Pages.ContactUs,
-      fallbackContent
-    )) as ContactUsContent;
+    return await getPageContent(Pages.ContactUs, ContactUsFallback);
   },
   [Pages.ContactUs],
   { revalidate: 432000, tags: [Pages.ContactUs] }

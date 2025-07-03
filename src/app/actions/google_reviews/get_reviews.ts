@@ -1,7 +1,7 @@
 "use server";
 
 import { cache } from "react";
-import { rateLimitReached } from "@/actions/global_rate_limit";
+import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
 
 export type GoogleReviews = {
   reviews: GoogleReview[];
@@ -37,7 +37,7 @@ function getTrimmedComment(comment: string, maxLength?: number): string {
 
 //Return the date in the format DD/MM/YYYY
 function getFormattedDate(utcDateString: string): string {
-  var formattedDate = "Unknown date";
+  let formattedDate: string = "Unknown date";
 
   if (!utcDateString) return formattedDate;
 
