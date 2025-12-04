@@ -15,6 +15,7 @@
     "@mantine/core": "^8.3.9",
     "@mantine/form": "^8.3.9",
     "@mantine/hooks": "^8.3.9",
+    "@mantine/styles": "^6.0.22",
     "@next/third-parties": "^16.0.7",
     "@node-rs/argon2": "^2.0.2",
     "@oslojs/crypto": "^1.0.1",
