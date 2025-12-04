@@ -10,7 +10,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { zodResolver } from "mantine-form-zod-resolver";
+import { zod4Resolver } from "mantine-form-zod-resolver";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
 import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
 import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
@@ -68,7 +68,7 @@ export default function LoginForm() {
       password: "",
       email: "",
     },
-    validate: zodResolver(schema),
+    validate: zod4Resolver(schema),
     validateInputOnBlur: true,
   });
 
