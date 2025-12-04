@@ -13,6 +13,7 @@
   justify-content: space-between;
   align-items: center;
   --container-size: var(--container-size-md);
+  padding: 0 1rem;
 }
 
 .logo {
