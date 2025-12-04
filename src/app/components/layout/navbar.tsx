@@ -143,7 +143,7 @@ export function Navbar() {
           </Link>
         </div>
         <nav>
-          <Group
+          <div
             className={[
               classes.navbar,
               mobileNavOpened ? classes.navbar_open : "",
@@ -152,7 +152,7 @@ export function Navbar() {
             <Group>{links}</Group>
             <Stack>{links}</Stack>
             <Overlay onClick={close} />
-          </Group>
+          </div>
         </nav>
 
         <div className={classes.inner_end}>
