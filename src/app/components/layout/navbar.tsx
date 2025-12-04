@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Container,
-  Group,
-  Stack,
-  Burger,
-  ActionIcon,
-  Overlay,
-} from "@mantine/core";
+import { Group, Stack, Burger, ActionIcon, Overlay } from "@mantine/core";
 import { useDisclosure, useMediaQuery, useWindowEvent } from "@mantine/hooks";
 import logo from "@/assets/logo.webp";
 import Image from "next/image";
@@ -137,8 +130,8 @@ export function Navbar() {
 
   return (
     <header className={classes.header}>
-      <Container className={classes.inner}>
-        <Container className={classes.logo}>
+      <div className={classes.inner}>
+        <div className={classes.logo}>
           <Link href="/" aria-label="Kevin Logan Electrical Home">
             <Image
               src={logo}
@@ -148,9 +141,9 @@ export function Navbar() {
               priority
             />
           </Link>
-        </Container>
+        </div>
         <nav>
-          <Group
+          <div
             className={[
               classes.navbar,
               mobileNavOpened ? classes.navbar_open : "",
@@ -159,18 +152,18 @@ export function Navbar() {
             <Group>{links}</Group>
             <Stack>{links}</Stack>
             <Overlay onClick={close} />
-          </Group>
+          </div>
         </nav>
 
-        <Container className={classes.inner_end}>
+        <div className={classes.inner_end}>
           <DynamicThemeSelector />
           <Burger
             opened={mobileNavOpened}
             onClick={toggle}
             aria-label="Toggle navigation panel"
           />
-        </Container>
-      </Container>
+        </div>
+      </div>
     </header>
   );
 }

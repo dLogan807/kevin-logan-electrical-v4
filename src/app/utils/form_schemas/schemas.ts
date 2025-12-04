@@ -4,9 +4,7 @@ import { loginFormSchema } from "./login";
 import { LoginFormData } from "@/components/login/login_form";
 
 export enum FormType {
-  // eslint-disable-next-line no-unused-vars
   CONTACT_US = "contact_us",
-  // eslint-disable-next-line no-unused-vars
   LOGIN = "login",
 }
 

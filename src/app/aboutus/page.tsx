@@ -42,14 +42,14 @@ export default async function AboutUs() {
       >
         <Stack>
           <Text>{content.top_section.text}</Text>
-          <Button
-            leftSection={<IconCertificate aria-label="Certificate" />}
-            component={Link}
-            aria-label="Electrical Workers Registration Board website"
+          <Link
             href="https://kete.mbie.govt.nz/EW/EWPRSearch/practitioner/?id=efe7cde3-b142-df11-917a-005056ae567f"
+            aria-label="Electrical Workers Registration Board website"
           >
-            {content.top_section.button_text}
-          </Button>
+            <Button leftSection={<IconCertificate aria-label="Certificate" />}>
+              {content.top_section.button_text}
+            </Button>
+          </Link>
         </Stack>
       </Paper>
       <Paper

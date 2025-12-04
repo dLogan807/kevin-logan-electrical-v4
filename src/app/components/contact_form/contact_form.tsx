@@ -2,7 +2,7 @@
 
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { zodResolver } from "mantine-form-zod-resolver";
+import { zod4Resolver } from "mantine-form-zod-resolver";
 import {
   ContactFormResponse,
   validateContactEmail,
@@ -58,7 +58,7 @@ export function ContactForm() {
       jobDetails: "",
       website: "",
     },
-    validate: zodResolver(getFormSchema(FormType.CONTACT_US)),
+    validate: zod4Resolver(getFormSchema(FormType.CONTACT_US)),
     validateInputOnBlur: true,
   });
   const [formMessage, setFormMessage] = useState<FormMessage>({});
@@ -69,8 +69,8 @@ export function ContactForm() {
     setFormMessage({});
 
     //Generate recaptcha token
-    const action: string = "contact_form_submit";
-    const token: string =
+    const action = "contact_form_submit";
+    const token =
       loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
 
     //Send to server action for validation and sending
