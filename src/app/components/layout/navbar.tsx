@@ -130,7 +130,7 @@ export function Navbar() {
 
   return (
     <header className={classes.header}>
-      <Group className={classes.inner}>
+      <div className={classes.inner}>
         <div className={classes.logo}>
           <Link href="/" aria-label="Kevin Logan Electrical Home">
             <Image
@@ -163,7 +163,7 @@ export function Navbar() {
             aria-label="Toggle navigation panel"
           />
         </div>
-      </Group>
+      </div>
     </header>
   );
 }
