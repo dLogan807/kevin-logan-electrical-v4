@@ -10,10 +10,14 @@
   height: 100%;
   width: auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   --container-size: var(--container-size-md);
-  padding: 0 1rem;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
 }
 
 .logo {
@@ -53,7 +57,7 @@
     --burger-size: var(--burger-size-sm);
 
     @media (min-width: $mantine-breakpoint-sm) {
-      visibility: hidden;
+      display: none;
     }
   }
 }
