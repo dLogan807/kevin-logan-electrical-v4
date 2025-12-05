@@ -44,7 +44,7 @@ const getCachedPageContent = unstable_cache(
 );
 
 function ListIcon({ icon }: { icon: React.ReactElement }) {
-  return <ThemeIcon className={"list_icon"}>{icon}</ThemeIcon>;
+  return <ThemeIcon classNames={{ root: "list_icon" }}>{icon}</ThemeIcon>;
 }
 
 function TelLink({
@@ -90,20 +90,25 @@ export default async function ContactUs() {
       nonce={nonce}
       strategy="lazyOnload"
     >
-      <Box className={[classes.contactus_grid, "content_grid"].join(" ")}>
+      <Box className={`${classes.contactus_grid} content_grid`}>
         <Paper
-          className={[classes.contact_form, mainSection].join(" ")}
+          classNames={{ root: `${classes.contact_form} ${mainSection}` }}
           withBorder
         >
           <h4>Send an email</h4>
           <ContactForm />
         </Paper>
         <Paper
-          className={[classes.contact_details, mainSection].join(" ")}
+          classNames={{ root: `${classes.contact_details} ${mainSection}` }}
           withBorder
         >
           <h4>{content.contact_details.title}</h4>
-          <List>
+          <List
+            classNames={{
+              root: classes.contact_details_list,
+              item: classes.contact_details_list_label,
+            }}
+          >
             <ListItem icon={mapIcon}>
               {content.contact_details.location}
             </ListItem>
@@ -126,7 +131,12 @@ export default async function ContactUs() {
             </ListItem>
           </List>
           <h4>{content.service_hours.title}</h4>
-          <List>
+          <List
+            classNames={{
+              root: classes.contact_details_list,
+              item: classes.contact_details_list_label,
+            }}
+          >
             <ListItem icon={serviceHoursIcon}>
               <Text>{content.service_hours.hours}</Text>
               <Text>{content.service_hours.days}</Text>
