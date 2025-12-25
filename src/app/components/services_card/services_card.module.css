@@ -9,10 +9,11 @@
 
   @media (max-width: $mantine-breakpoint-sm) {
     width: 80%;
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   @media (max-width: $mantine-breakpoint-xs) {
+    padding: 1rem;
     width: 100%;
   }
 }

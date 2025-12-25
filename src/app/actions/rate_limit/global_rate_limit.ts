@@ -24,7 +24,7 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
     requestType: requestType,
   };
 
-  const rateDocument: WithId<Document> | null = await MongoDatabase.getDocument(
+  const rateDocument = await MongoDatabase.getDocument<RateLimitDocument>(
     COLLECTION,
     query
   );
@@ -37,7 +37,7 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
       resetDate: getDateInOneDay(),
     };
 
-    const createFailed: boolean = !(await MongoDatabase.addDocument(
+    const createFailed = !(await MongoDatabase.addDocument<RateLimitDocument>(
       COLLECTION,
       document
     ));

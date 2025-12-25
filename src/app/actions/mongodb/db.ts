@@ -14,7 +14,7 @@ import {
 class MongoDatabase {
   private static _instance: MongoDatabase;
 
-  private readonly _uri: string = "" + process.env.MONGO_DB_URI;
+  private readonly _uri: string = `${process.env.MONGO_DB_URI}`;
   private readonly _client: MongoClient = new MongoClient(this._uri, {
     serverApi: {
       version: ServerApiVersion.v1,
@@ -34,8 +34,6 @@ class MongoDatabase {
     "users",
   ];
   private readonly immutableCollections: string[] = ["users"];
-
-  private MongoDatabase() {}
 
   //Singleton pattern
   static get Instance() {
@@ -121,16 +119,14 @@ class MongoDatabase {
     return true;
   }
 
-  async getDocument<T = Document>(
+  async getDocument<T extends Document>(
     collectionName: string,
-    query: Filter<Document>
+    query: Filter<T>
   ): Promise<WithId<T> | null> {
     if (!(await this.collectionExists(collectionName))) return null;
 
     try {
-      return (await this._db
-        .collection(collectionName)
-        .findOne(query)) as WithId<T> | null;
+      return await this._db.collection<T>(collectionName).findOne(query);
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
         console.error("Failed to get document:", {
@@ -145,19 +141,19 @@ class MongoDatabase {
   }
 
   //Retrieve the most recent document from the collection
-  async getLatestDocument<T = Document>(
+  async getLatestDocument<T extends Document>(
     collectionName: string
   ): Promise<WithId<T> | null> {
     if (!(await this.collectionExists(collectionName))) return null;
 
-    const collection = this._db.collection(collectionName);
+    const collection = this._db.collection<T>(collectionName);
     try {
-      return (await collection.findOne(
+      return await collection.findOne(
         {},
         {
           sort: { $natural: -1 },
         }
-      )) as WithId<T> | null;
+      );
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
         console.warn("Failed to get latest document:", {
@@ -215,7 +211,7 @@ class MongoDatabase {
   }
 
   //Add document to existing collection. Validated via schema
-  async addDocument<T = Document>(
+  async addDocument<T extends Document>(
     collectionName: string,
     document: OptionalId<T>
   ): Promise<boolean> {
@@ -230,7 +226,7 @@ class MongoDatabase {
 
     const collection = this._db.collection(collectionName);
     try {
-      await collection.insertOne(document as OptionalId<Document>);
+      await collection.insertOne(document);
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
         console.error("Failed to add document:", {

@@ -1,5 +1,7 @@
+import { Document } from "mongodb";
+
 // Home
-export type HomeContent = {
+export interface HomeContent extends Document {
   tagline: {
     title: string;
     subtitle: string;
@@ -11,7 +13,7 @@ export type HomeContent = {
     items: string[];
   };
   review_name_filter: string[];
-};
+}
 
 export const HomeFallback: HomeContent = {
   tagline: {
@@ -36,8 +38,8 @@ export const HomeFallback: HomeContent = {
   review_name_filter: [],
 };
 
-//About Us
-export type AboutUsContent = {
+// About Us
+export interface AboutUsContent extends Document {
   top_section: {
     text: string;
     button_text: string;
@@ -45,7 +47,7 @@ export type AboutUsContent = {
   bottom_section: {
     text: string;
   };
-};
+}
 
 export const AboutUsFallback: AboutUsContent = {
   top_section: {
@@ -57,8 +59,8 @@ export const AboutUsFallback: AboutUsContent = {
   },
 };
 
-//Rate and Services
-export type RateAndServicesContent = {
+// Rate and Services
+export interface RateAndServicesContent extends Document {
   rate: {
     title: string;
     text: string;
@@ -76,7 +78,7 @@ export type RateAndServicesContent = {
       renovations_and_maintenance: string[];
     };
   };
-};
+}
 
 export const RateAndServicesFallback: RateAndServicesContent = {
   rate: {
@@ -118,8 +120,8 @@ export const RateAndServicesFallback: RateAndServicesContent = {
   },
 };
 
-//Contact Us
-export type ContactUsContent = {
+// Contact Us
+export interface ContactUsContent extends Document {
   contact_details: {
     title: string;
     location: string;
@@ -132,7 +134,7 @@ export type ContactUsContent = {
     hours: string;
     days: string;
   };
-};
+}
 
 export const ContactUsFallback: ContactUsContent = {
   contact_details: {
