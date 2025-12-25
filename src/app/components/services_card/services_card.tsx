@@ -1,7 +1,6 @@
 import { Paper, List, ListItem, ThemeIcon } from "@mantine/core";
 import React from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
-
 import classes from "./services_card.module.css";
 
 //Card for services section of rate and services page
@@ -16,12 +15,13 @@ export function ServicesCard({
 }) {
   return (
     <Paper
-      className={[classes.services_list, "main_section"].join(" ")}
+      classNames={{ root: `${classes.services_list_container} main_section` }}
       withBorder
     >
       <ThemeIcon className={"list_icon"}>{headerIcon}</ThemeIcon>
       <h5>{headerText}</h5>
       <List
+        classNames={{ root: classes.services_list }}
         icon={
           <ThemeIcon className={"checkmark"}>
             <IconCircleCheck />
