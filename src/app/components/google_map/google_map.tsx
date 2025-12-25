@@ -4,7 +4,6 @@ import { Box } from "@mantine/core";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 import classes from "./google_map.module.css";
 
-//Card for services section of rate and services page
 export default async function GoogleMap({ query }: { query: string }) {
   const mapApiKey: string =
     process.env.GOOGLE_MAPS_API_KEY == undefined

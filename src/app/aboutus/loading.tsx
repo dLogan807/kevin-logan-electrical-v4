@@ -5,16 +5,10 @@ export default function Loading() {
   const mainSection: string = "main_section";
 
   return (
-    <Box className={[classes.about_grid, "content_grid"].join(" ")}>
-      <Skeleton
-        className={[classes.about_text_1, mainSection].join(" ")}
-      ></Skeleton>
-      <Skeleton
-        className={[classes.about_torbay, mainSection].join(" ")}
-      ></Skeleton>
-      <Skeleton
-        className={[classes.about_text_2, mainSection].join(" ")}
-      ></Skeleton>
+    <Box className={`${classes.about_grid} content_grid`}>
+      <Skeleton className={`${classes.about_text_1} ${mainSection}`}></Skeleton>
+      <Skeleton className={`${classes.about_torbay} ${mainSection}`}></Skeleton>
+      <Skeleton className={`${classes.about_text_2} ${mainSection}`}></Skeleton>
     </Box>
   );
 }

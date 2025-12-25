@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 //Cache page content for 5 days
 const getCachedPageContent = unstable_cache(
   async (): Promise<ContactUsContent> => {
-    return await getPageContent(Pages.ContactUs, ContactUsFallback);
+    return await getPageContent(Pages.ContactUs);
   },
   [Pages.ContactUs],
   { revalidate: 432000, tags: [Pages.ContactUs] }

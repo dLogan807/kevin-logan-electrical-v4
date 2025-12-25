@@ -144,10 +144,9 @@ export function Navbar() {
         </div>
         <nav>
           <div
-            className={[
-              classes.navbar,
-              mobileNavOpened ? classes.navbar_open : "",
-            ].join(" ")}
+            className={`
+              ${classes.navbar}
+              ${mobileNavOpened ? classes.navbar_open : ""}`}
           >
             <Group>{links}</Group>
             <Stack>{links}</Stack>

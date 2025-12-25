@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 //Cache page content for 5 days
 const getCachedPageContent = unstable_cache(
   async (): Promise<HomeContent> => {
-    return await getPageContent(Pages.Home, HomeFallback);
+    return await getPageContent(Pages.Home);
   },
   [Pages.Home],
   { revalidate: 432000, tags: [Pages.Home] }
@@ -46,8 +46,8 @@ export default async function Home() {
   const content: HomeContent = await getCachedPageContent();
 
   return (
-    <Box className={[classes.home_grid, "content_grid"].join(" ")}>
-      <Paper className={[classes.tagline, mainSection].join(" ")} withBorder>
+    <Box className={`${classes.home_grid} content_grid`}>
+      <Paper className={`${classes.tagline} ${mainSection}`} withBorder>
         <Stack>
           <h1>{content.tagline.title}</h1>
           <h2>{content.tagline.subtitle}</h2>
@@ -68,7 +68,7 @@ export default async function Home() {
           />
         </Box>
       </Box>
-      <Paper className={[classes.summary, mainSection].join(" ")} withBorder>
+      <Paper className={`${classes.summary} ${mainSection}`} withBorder>
         <h2>{content.summary.title}</h2>
         <List
           icon={
@@ -83,7 +83,7 @@ export default async function Home() {
         </List>
       </Paper>
       <Paper
-        className={[classes.review_carousel_container, mainSection].join(" ")}
+        className={`${classes.review_carousel_container} ${mainSection}`}
         withBorder
       >
         <GoogleReviewContainer
@@ -91,7 +91,7 @@ export default async function Home() {
           nameFilter={content.review_name_filter}
         />
       </Paper>
-      <Paper className={[classes.map, mainSection].join(" ")} withBorder>
+      <Paper className={`${classes.map} ${mainSection}`} withBorder>
         <GoogleMap
           query={"" + process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}
         />

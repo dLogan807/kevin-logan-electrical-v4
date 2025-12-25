@@ -21,7 +21,7 @@ export default function PageSelector({
   initialPromise: Promise<PageContent | null> | null;
 }) {
   const pages = Object.values(Pages);
-  const defaultPage = pages[0];
+  const defaultPage = Pages.Home;
 
   const [selectedPage, setSelectedPage] = useState<Pages>(defaultPage);
 

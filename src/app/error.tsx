@@ -26,8 +26,8 @@ export default function NotFound() {
   const mainSection: string = "main_section";
 
   return (
-    <Box className={[classes.error_grid, "content_grid"].join(" ")}>
-      <Paper className={[classes.container, mainSection].join(" ")} withBorder>
+    <Box className={`${classes.error_grid} content_grid`}>
+      <Paper className={`${classes.container} ${mainSection}`} withBorder>
         <h1>Error</h1>
         <h2>Something unexpected happened.</h2>
         <Text className={classes.explanation}>
