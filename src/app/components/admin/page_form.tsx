@@ -6,6 +6,7 @@ import {
   Fieldset,
   Group,
   Stack,
+  Text,
   Textarea,
   TextInput,
   Tooltip,
@@ -16,9 +17,16 @@ import {
   PageContent,
 } from "@/actions/mongodb/pages/management";
 import { Pages } from "../layout/pages";
-
-import classes from "./page_form.module.css";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
+import Link from "next/link";
+import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
+import classes from "./page_form.module.css";
+
+function getPageRoute(page: Pages): string {
+  if (page === Pages.Home) return "/";
+
+  return page.replaceAll("_", "");
+}
 
 export function PageForm({
   selectedPage,
@@ -38,7 +46,6 @@ export function PageForm({
     form.setInitialValues(initialContent);
     form.reset();
     setFormMessage({});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialContent]);
 
   const objectContent = Object.entries(form.getValues());
@@ -52,7 +59,17 @@ export function PageForm({
       form.getValues()
     );
     const submitMessage: FormMessage = submitSuccess
-      ? { message: "Success! " + selectedPage + " has been updated" }
+      ? {
+          message: (
+            <Text>
+              {"Success! "}
+              <Link href={`${getPageRoute(selectedPage)}`}>
+                {snakeCaseToTitleCase(selectedPage)}
+              </Link>
+              {" has been updated"}
+            </Text>
+          ),
+        }
       : { message: "Failed to update " + selectedPage, isError: true };
     setFormMessage(submitMessage);
 
@@ -116,7 +133,7 @@ function FormFields(
     //If the value has child entries (recursive case). Add button if parent is a list
     if (isParent(value)) {
       return (
-        <Fieldset legend={<b>{key}</b>} key={formKey}>
+        <Fieldset legend={<b>{snakeCaseToTitleCase(key)}</b>} key={formKey}>
           {FormFields(Object.entries(value), currentPath, form)}
           {Array.isArray(value) ? (
             <AddEntryButton form={form} currentPath={currentPath} />
@@ -153,7 +170,7 @@ function FormFields(
       <Textarea
         key={formKey}
         {...form.getInputProps(currentPath)}
-        label={key}
+        label={snakeCaseToTitleCase(key)}
         rows={1}
         autosize={true}
       />

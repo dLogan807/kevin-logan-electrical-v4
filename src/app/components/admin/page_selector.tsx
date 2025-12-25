@@ -1,6 +1,14 @@
 "use client";
 
-import { Alert, Box, Button, Group, Select, Text } from "@mantine/core";
+import {
+  Alert,
+  Box,
+  Button,
+  Group,
+  Select,
+  Text,
+  Tooltip,
+} from "@mantine/core";
 import { Pages } from "../layout/pages";
 import React, { use, useEffect, useState } from "react";
 import {
@@ -10,17 +18,24 @@ import {
 import { PageContentProvider, usePageContext } from "./page_context";
 import { PageForm } from "./page_form";
 import { IconInfoCircle, IconLogout, IconRefresh } from "@tabler/icons-react";
-import ConfirmationPopover from "./confirmation_popover";
-
 import classes from "./page_selector.module.css";
 import { logout } from "@/actions/mongodb/sessions/management";
+import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
+
+interface SelectData {
+  value: string;
+  label: string;
+}
 
 export default function PageSelector({
   initialPromise,
 }: {
   initialPromise: Promise<PageContent | null> | null;
 }) {
-  const pages = Object.values(Pages);
+  const pages: SelectData[] = Object.values(Pages).map((page) => ({
+    value: page,
+    label: snakeCaseToTitleCase(page),
+  }));
   const defaultPage = Pages.Home;
 
   const [selectedPage, setSelectedPage] = useState<Pages>(defaultPage);
@@ -63,19 +78,19 @@ export default function PageSelector({
             allowDeselect={false}
             classNames={classes}
           />
-
-          <ConfirmationPopover
-            dialogue="Reset the form and fetch the latest content?"
-            buttonText="Refresh"
-            buttonTooltip="Update initial values with the latest content"
-            buttonColour="red"
-            buttonVariant="light"
-            clickAction={() => {
-              setContentPromise(getStoredPageContent(selectedPage));
-            }}
-          >
-            <IconRefresh aria-label="Refresh" />
-          </ConfirmationPopover>
+          <Tooltip label="Reset the form and fetch the latest content">
+            <Button
+              color="red"
+              variant="light"
+              onClick={() =>
+                setContentPromise(getStoredPageContent(selectedPage))
+              }
+            >
+              <Group>
+                Refresh <IconRefresh aria-label="Refresh" />
+              </Group>
+            </Button>
+          </Tooltip>
         </Group>
       </Group>
 

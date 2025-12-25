@@ -18,10 +18,7 @@ import GoogleMap from "./components/google_map/google_map";
 import GoogleReviewContainer from "./components/google_reviews/google_review_container";
 import { Pages } from "./components/layout/pages";
 import { unstable_cache } from "next/cache";
-import {
-  HomeFallback,
-  HomeContent,
-} from "@/actions/mongodb/pages/fallback_content";
+import { HomeContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "./actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
@@ -87,13 +84,13 @@ export default async function Home() {
         withBorder
       >
         <GoogleReviewContainer
-          query={"" + process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}
+          query={`${process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}`}
           nameFilter={content.review_name_filter}
         />
       </Paper>
       <Paper className={`${classes.map} ${mainSection}`} withBorder>
         <GoogleMap
-          query={"" + process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}
+          query={`${process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}`}
         />
       </Paper>
     </Box>
