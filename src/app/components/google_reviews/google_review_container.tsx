@@ -32,7 +32,7 @@ function NoReviewsPrompt() {
   return (
     <Group className={classes.no_reviews_prompt}>
       <Text>Had work done? Consider leaving a review!</Text>
-      {ReviewButton()}
+      <ReviewButton />
     </Group>
   );
 }
@@ -48,12 +48,7 @@ export default async function GoogleReviewContainer({
     ? await getGoogleReviews(query, nameFilter)
     : null;
 
-  if (
-    !googleReviews ||
-    !googleReviews.reviews ||
-    googleReviews.reviews.length === 0 ||
-    googleReviews.totalReviewCount === 0
-  ) {
+  if (!googleReviews?.reviews || googleReviews.totalReviewCount === 0) {
     return <NoReviewsPrompt />;
   }
 
@@ -88,7 +83,7 @@ export default async function GoogleReviewContainer({
             {googleReviews.totalReviewCount === 1 ? "" : "s"}
           </Text>
         </Group>
-        {ReviewButton()}
+        <ReviewButton />
       </Box>
       <GoogleReviewCarousel googleReviews={googleReviews.reviews} />
     </Group>

@@ -40,11 +40,8 @@ export default function Licenses() {
   const licenses = licensesJSON as LicenseFormat[];
 
   return (
-    <Box className={[classes.about_grid, "content_grid"].join(" ")}>
-      <Paper
-        className={[classes.about_text_1, "main_section"].join(" ")}
-        withBorder
-      >
+    <Box className={`${classes.about_grid} content_grid`}>
+      <Paper className={`${classes.about_text_1} main_section`} withBorder>
         <Stack className={classes.heading}>
           <h1>Open Source Licenses</h1>
           <Text>
@@ -66,9 +63,7 @@ export default function Licenses() {
                 <Box className={classes.info_container}>
                   <p>{p.name + " " + p.installedVersion}</p>
                   <p>{"License: " + p.licenseType}</p>
-                  <ThemeIcon
-                    className={["checkmark", classes.link_icon].join(" ")}
-                  >
+                  <ThemeIcon className={`checkmark ${classes.link_icon}`}>
                     <IconExternalLink aria-label="External website link" />
                   </ThemeIcon>
                 </Box>

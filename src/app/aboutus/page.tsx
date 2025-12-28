@@ -7,10 +7,7 @@ import { Metadata } from "next";
 import { theme } from "@/components/theme";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
-import {
-  AboutUsFallback,
-  AboutUsContent,
-} from "@/actions/mongodb/pages/fallback_content";
+import { AboutUsContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
@@ -23,23 +20,20 @@ export const metadata: Metadata = {
 //Cache page content for 5 days
 const getCachedPageContent = unstable_cache(
   async (): Promise<AboutUsContent> => {
-    return await getPageContent(Pages.AboutUs, AboutUsFallback);
+    return await getPageContent(Pages.AboutUs);
   },
   [Pages.AboutUs],
   { revalidate: 432000, tags: [Pages.AboutUs] }
 );
 
 export default async function AboutUs() {
-  const mainSection: string = "main_section";
+  const mainSection = "main_section";
 
   const content: AboutUsContent = await getCachedPageContent();
 
   return (
-    <Box className={[classes.about_grid, "content_grid"].join(" ")}>
-      <Paper
-        className={[classes.about_text_1, mainSection].join(" ")}
-        withBorder
-      >
+    <Box className={`${classes.about_grid} content_grid`}>
+      <Paper className={`${classes.about_text_1} ${mainSection}`} withBorder>
         <Stack>
           <Text>{content.top_section.text}</Text>
           <Link
@@ -52,10 +46,7 @@ export default async function AboutUs() {
           </Link>
         </Stack>
       </Paper>
-      <Paper
-        className={[classes.about_torbay, mainSection].join(" ")}
-        withBorder
-      >
+      <Paper className={`${classes.about_torbay} ${mainSection}`} withBorder>
         <Box>
           <Image
             src={waiake}
@@ -65,10 +56,7 @@ export default async function AboutUs() {
           />
         </Box>
       </Paper>
-      <Paper
-        className={[classes.about_text_2, mainSection].join(" ")}
-        withBorder
-      >
+      <Paper className={`${classes.about_text_2} ${mainSection}`} withBorder>
         <Text>{content.bottom_section.text}</Text>
       </Paper>
     </Box>

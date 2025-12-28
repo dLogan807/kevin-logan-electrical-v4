@@ -4,10 +4,7 @@ import { Metadata } from "next";
 import { ServicesCard } from "@/components/services_card/services_card";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
-import {
-  RateAndServicesFallback,
-  RateAndServicesContent,
-} from "@/actions/mongodb/pages/fallback_content";
+import { RateAndServicesContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
@@ -20,22 +17,22 @@ export const metadata: Metadata = {
 //Cache page content for 5 days
 const getCachedPageContent = unstable_cache(
   async (): Promise<RateAndServicesContent> => {
-    return await getPageContent(Pages.RateAndServices, RateAndServicesFallback);
+    return await getPageContent(Pages.RateAndServices);
   },
   [Pages.RateAndServices],
   { revalidate: 432000, tags: [Pages.RateAndServices] }
 );
 
 export default async function RateAndServices() {
-  const mainSection: string = "main_section";
+  const mainSection = "main_section";
 
   const content: RateAndServicesContent = await getCachedPageContent();
 
   return (
-    <Box className={[classes.rateservice_grid, "content_grid"].join(" ")}>
+    <Box className={`${classes.rateservice_grid} content_grid`}>
       <Paper
         withBorder
-        className={[classes.rateservice_rate, mainSection].join(" ")}
+        classNames={{ root: `${classes.rateservice_rate} ${mainSection}` }}
       >
         <div>
           <h4>{content.rate.title}</h4>
@@ -47,13 +44,13 @@ export default async function RateAndServices() {
         </div>
       </Paper>
       <Paper
-        className={[classes.rateservice_services, mainSection].join(" ")}
+        classNames={{ root: `${classes.rateservice_services} ${mainSection}` }}
         withBorder
       >
         <Stack>
           <h4>{content.services.title}</h4>
           <Text>{content.services.description}</Text>
-          <Group className={classes.services_cards}>
+          <Group classNames={{ root: classes.services_cards }}>
             <ServicesCard
               headerIcon={<IconBulb />}
               headerText={"Interior"}

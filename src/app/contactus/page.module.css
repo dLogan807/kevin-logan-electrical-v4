@@ -16,17 +16,21 @@
 .contact_details {
   grid-area: details;
   height: min-content;
+}
 
-  li {
-    word-break: break-word;
+.contact_details_list {
+  word-break: break-word;
+  margin-bottom: 1rem;
+  --list-marker-gap: var(--mantine-spacing-sm);
 
-    &:last-child {
-      margin-bottom: 1rem;
-    }
+  @media (max-width: $mantine-breakpoint-sm) {
+    --list-marker-gap: 0;
+  }
+}
 
-    a {
-      color: var(--mantine-color-text);
-    }
+.contact_details_list_label {
+  a {
+    color: var(--mantine-color-text);
   }
 }
 

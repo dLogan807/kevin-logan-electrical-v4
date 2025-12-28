@@ -22,9 +22,8 @@ export type GoogleReview = {
 };
 
 //Cap the comment's length
-function getTrimmedComment(comment: string, maxLength?: number): string {
+function getTrimmedComment(comment: string, maxLength: number = 180): string {
   if (!comment) return "(No comment left by reviewer.)";
-  maxLength = maxLength || 180;
 
   comment.trim();
 
@@ -49,7 +48,7 @@ function getFormattedDate(utcDateString: string): string {
     }).format(new Date(utcDateString));
   } catch {
     formattedDate = "Unknown date";
-    console.log("Warning: Unable to convert review date to local time.");
+    console.warn("Unable to convert review date to local time.");
   }
 
   return formattedDate;
