@@ -27,7 +27,7 @@ const getCachedPageContent = unstable_cache(
 );
 
 export default async function AboutUs() {
-  const mainSection: string = "main_section";
+  const mainSection = "main_section";
 
   const content: AboutUsContent = await getCachedPageContent();
 

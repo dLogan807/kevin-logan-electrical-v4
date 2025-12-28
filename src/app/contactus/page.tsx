@@ -60,7 +60,7 @@ function TelLink({
 }
 
 export default async function ContactUs() {
-  const mainSection: string = "main_section";
+  const mainSection = "main_section";
 
   const nonce: string = await headers()
     .then((headers) => headers.get("x-nonce"))

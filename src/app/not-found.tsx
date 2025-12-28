@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default function NotFound() {
-  const mainSection: string = "main_section";
+  const mainSection = "main_section";
 
   return (
     <Box className={`${classes.notfound_grid} content_grid`}>

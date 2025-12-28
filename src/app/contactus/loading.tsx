@@ -2,7 +2,7 @@ import { Box, Skeleton } from "@mantine/core";
 import classes from "./loading.module.css";
 
 export default async function Loading() {
-  const mainSection: string = "main_section";
+  const mainSection = "main_section";
 
   return (
     <Box className={`${classes.contactus_grid} content_grid`}>
