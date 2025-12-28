@@ -20,6 +20,8 @@ import { Pages } from "./components/layout/pages";
 import { unstable_cache } from "next/cache";
 import { HomeContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "./actions/mongodb/pages/management";
+import { Suspense } from "react";
+import HomeLoading from "./components/home_loading/home_loading";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -38,61 +40,63 @@ const getCachedPageContent = unstable_cache(
 );
 
 export default async function Home() {
-  const mainSection: string = "main_section";
+  const mainSection = "main_section";
 
   const content: HomeContent = await getCachedPageContent();
 
   return (
-    <Box className={`${classes.home_grid} content_grid`}>
-      <Paper className={`${classes.tagline} ${mainSection}`} withBorder>
-        <Stack>
-          <h1>{content.tagline.title}</h1>
-          <h2>{content.tagline.subtitle}</h2>
-          <Text>{content.tagline.description}</Text>
-          <Link href="/contactus" className={classes.contact_button}>
-            <Button>{content.tagline.button_text}</Button>
-          </Link>
-        </Stack>
-      </Paper>
-      <Box className={classes.tagline_image_container}>
-        <Box>
-          <Image
-            alt="House interior with lamp"
-            src={tagline_image}
-            fill
-            sizes={`(max-width: ${theme.breakpoints.sm}) 80vw, (max-width: ${theme.breakpoints.md}) 50vw, (max-width: ${theme.breakpoints.xl}) 40vw`}
-            priority
-          />
+    <Suspense fallback={<HomeLoading />}>
+      <Box className={`${classes.home_grid} content_grid`}>
+        <Paper className={`${classes.tagline} ${mainSection}`} withBorder>
+          <Stack>
+            <h1>{content.tagline.title}</h1>
+            <h2>{content.tagline.subtitle}</h2>
+            <Text>{content.tagline.description}</Text>
+            <Link href="/contactus" className={classes.contact_button}>
+              <Button>{content.tagline.button_text}</Button>
+            </Link>
+          </Stack>
+        </Paper>
+        <Box className={classes.tagline_image_container}>
+          <Box>
+            <Image
+              alt="House interior with lamp"
+              src={tagline_image}
+              fill
+              sizes={`(max-width: ${theme.breakpoints.sm}) 80vw, (max-width: ${theme.breakpoints.md}) 50vw, (max-width: ${theme.breakpoints.xl}) 40vw`}
+              priority
+            />
+          </Box>
         </Box>
-      </Box>
-      <Paper className={`${classes.summary} ${mainSection}`} withBorder>
-        <h2>{content.summary.title}</h2>
-        <List
-          icon={
-            <ThemeIcon className={"checkmark"}>
-              <IconCircleCheck />
-            </ThemeIcon>
-          }
+        <Paper className={`${classes.summary} ${mainSection}`} withBorder>
+          <h2>{content.summary.title}</h2>
+          <List
+            icon={
+              <ThemeIcon className={"checkmark"}>
+                <IconCircleCheck />
+              </ThemeIcon>
+            }
+          >
+            {content.summary.items.map((item) => (
+              <ListItem key={item}>{item}</ListItem>
+            ))}
+          </List>
+        </Paper>
+        <Paper
+          className={`${classes.review_carousel_container} ${mainSection}`}
+          withBorder
         >
-          {content.summary.items.map((item) => (
-            <ListItem key={item}>{item}</ListItem>
-          ))}
-        </List>
-      </Paper>
-      <Paper
-        className={`${classes.review_carousel_container} ${mainSection}`}
-        withBorder
-      >
-        <GoogleReviewContainer
-          query={`${process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}`}
-          nameFilter={content.review_name_filter}
-        />
-      </Paper>
-      <Paper className={`${classes.map} ${mainSection}`} withBorder>
-        <GoogleMap
-          query={`${process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}`}
-        />
-      </Paper>
-    </Box>
+          <GoogleReviewContainer
+            query={`${process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}`}
+            nameFilter={content.review_name_filter}
+          />
+        </Paper>
+        <Paper className={`${classes.map} ${mainSection}`} withBorder>
+          <GoogleMap
+            query={`${process.env.NEXT_PUBLIC_GOOGLE_MAPS_SEARCH_QUERY}`}
+          />
+        </Paper>
+      </Box>
+    </Suspense>
   );
 }
