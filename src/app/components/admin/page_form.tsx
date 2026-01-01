@@ -54,10 +54,7 @@ export function PageForm({
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    const submitSuccess: boolean = await addPageDocument(
-      selectedPage,
-      form.getValues()
-    );
+    const submitSuccess = await addPageDocument(selectedPage, form.getValues());
     const submitMessage: FormMessage = submitSuccess
       ? {
           message: (

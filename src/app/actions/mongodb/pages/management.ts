@@ -96,7 +96,7 @@ export async function getStoredPageContent<T extends PageContent>(
 }
 
 class PageManager {
-  private pageCollectionsInit: boolean = false;
+  private pageCollectionsInit = false;
 
   private async insertFallbackContent<T extends PageContent>(
     page: Pages

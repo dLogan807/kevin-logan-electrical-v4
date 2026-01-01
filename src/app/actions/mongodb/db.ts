@@ -42,11 +42,11 @@ class MongoDatabase {
 
   //------ Helper Functions ------
 
-  private isValidString(input: string): boolean {
+  private isValidString(input: string) {
     return typeof input === "string" && input.length > 0;
   }
 
-  private isInArray(stringArray: string[], searchValue: string): boolean {
+  private isInArray(stringArray: string[], searchValue: string) {
     if (
       !this.isValidString(searchValue) ||
       stringArray == null ||
@@ -62,12 +62,12 @@ class MongoDatabase {
   }
 
   //Check if docs in collection can be updated/deleted
-  private isNoUpdateCollection(collectionName: string): boolean {
+  private isNoUpdateCollection(collectionName: string) {
     return this.isInArray(this.noDocUpdatesCollections, collectionName);
   }
 
   //Check if collection can have any docs added/updated/deleted
-  private isImmutableCollection(collectionName: string): boolean {
+  private isImmutableCollection(collectionName: string) {
     return this.isInArray(this.immutableCollections, collectionName);
   }
 
