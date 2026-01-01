@@ -1,7 +1,6 @@
 .review_card_blockquote {
   display: flex;
   flex-direction: column;
-  margin: 1.5rem;
   height: 100%;
   --bq-radius: var(--mantine-radius-md) !important;
   gap: 0.5rem;
