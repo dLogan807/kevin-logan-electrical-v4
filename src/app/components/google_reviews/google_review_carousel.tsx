@@ -3,8 +3,8 @@
 import { Carousel } from "@mantine/carousel";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { GoogleReview } from "@/actions/google_reviews/get_reviews";
-import ReviewCard from "./review_card";
-import classes from "./carousel.module.css";
+import ReviewCard from "./google_review_card";
+import classes from "./google_review_carousel.module.css";
 
 export default function GoogleReviewCarousel({
   googleReviews,

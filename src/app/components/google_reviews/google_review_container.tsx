@@ -9,7 +9,7 @@ import {
   getGoogleReviews,
   GoogleReviews,
 } from "@/actions/google_reviews/get_reviews";
-import GoogleReviewCarousel from "./carousel";
+import GoogleReviewCarousel from "./google_review_carousel";
 import classes from "./google_review_container.module.css";
 
 function ReviewButton() {

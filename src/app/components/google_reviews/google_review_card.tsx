@@ -1,14 +1,10 @@
 import { Blockquote, Group, Rating, Text } from "@mantine/core";
-import {
-  IconMessage2,
-  IconStarFilled,
-  IconUserCircle,
-} from "@tabler/icons-react";
+import { IconStarFilled, IconUserCircle } from "@tabler/icons-react";
 import { GoogleReview } from "@/actions/google_reviews/get_reviews";
 import Link from "next/link";
 import Image from "next/image";
 import { theme } from "@/components/theme";
-import classes from "./review_card.module.css";
+import classes from "./google_review_card.module.css";
 
 function UserImage({ uri }: { uri: string }) {
   if (!uri) {
