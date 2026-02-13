@@ -43,14 +43,8 @@ class MongoDatabase {
   //------ Helper Functions ------
 
   private isInArray(stringArray: string[], searchValue: string): boolean {
-    if (!searchValue || stringArray == null || stringArray.length == 0)
-      return false;
-
-    stringArray.forEach((collection) => {
-      if (collection === searchValue) return true;
-    });
-
-    return false;
+    if (!searchValue || !stringArray || stringArray.length === 0) return false;
+    return stringArray.includes(searchValue);
   }
 
   //Check if docs in collection can be updated/deleted
