@@ -42,16 +42,8 @@ class MongoDatabase {
 
   //------ Helper Functions ------
 
-  private isValidString(input: string): boolean {
-    return typeof input === "string" && input.length > 0;
-  }
-
   private isInArray(stringArray: string[], searchValue: string): boolean {
-    if (
-      !this.isValidString(searchValue) ||
-      stringArray == null ||
-      stringArray.length == 0
-    )
+    if (!searchValue || stringArray == null || stringArray.length == 0)
       return false;
 
     stringArray.forEach((collection) => {
@@ -72,7 +64,7 @@ class MongoDatabase {
   }
 
   async collectionExists(collectionName: string): Promise<boolean> {
-    if (!this.isValidString(collectionName)) return false;
+    if (!collectionName) return false;
 
     try {
       return await this._db.listCollections({ name: collectionName }).hasNext();
@@ -93,7 +85,7 @@ class MongoDatabase {
   //Create collection with document validation schema
   async createCollection(
     collectionName: string,
-    schema: Document
+    schema: Document,
   ): Promise<boolean> {
     if (await this.collectionExists(collectionName)) return true;
     if (schema == null) return false;
@@ -121,7 +113,7 @@ class MongoDatabase {
 
   async getDocument<T extends Document>(
     collectionName: string,
-    query: Filter<T>
+    query: Filter<T>,
   ): Promise<WithId<T> | null> {
     if (!(await this.collectionExists(collectionName))) return null;
 
@@ -142,7 +134,7 @@ class MongoDatabase {
 
   //Retrieve the most recent document from the collection
   async getLatestDocument<T extends Document>(
-    collectionName: string
+    collectionName: string,
   ): Promise<WithId<T> | null> {
     if (!(await this.collectionExists(collectionName))) return null;
 
@@ -152,7 +144,7 @@ class MongoDatabase {
         {},
         {
           sort: { $natural: -1 },
-        }
+        },
       );
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
@@ -170,7 +162,7 @@ class MongoDatabase {
   async getInnerJoinedDocument(
     collectionName: string,
     match: Document,
-    lookup: Document
+    lookup: Document,
   ): Promise<Document | null> {
     if (
       !this.collectionExists(collectionName) ||
@@ -213,14 +205,14 @@ class MongoDatabase {
   //Add document to existing collection. Validated via schema
   async addDocument<T extends Document>(
     collectionName: string,
-    document: OptionalId<T>
+    document: OptionalId<T>,
   ): Promise<boolean> {
     if (!(await this.collectionExists(collectionName)) || document == null)
       return false;
 
     if (this.isImmutableCollection(collectionName)) {
       throw new Error(
-        "Cannot add document. " + collectionName + " is immutable."
+        "Cannot add document. " + collectionName + " is immutable.",
       );
     }
 
@@ -246,7 +238,7 @@ class MongoDatabase {
   async updateDocument(
     collectionName: string,
     query: Filter<Document>,
-    document: UpdateFilter<Document>
+    document: UpdateFilter<Document>,
   ): Promise<boolean> {
     if (
       !this.collectionExists(collectionName) ||
@@ -263,7 +255,7 @@ class MongoDatabase {
     try {
       const updateResult: UpdateResult = await collection.updateOne(
         query,
-        document
+        document,
       );
 
       return updateResult.modifiedCount > 0;
@@ -285,7 +277,7 @@ class MongoDatabase {
   async deleteDocument(
     collectionName: string,
     query: Filter<Document>,
-    deleteAllMatches?: boolean
+    deleteAllMatches?: boolean,
   ): Promise<boolean> {
     if (!this.collectionExists(collectionName) || query == null) return false;
 
