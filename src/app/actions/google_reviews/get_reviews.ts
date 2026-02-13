@@ -57,7 +57,7 @@ function getFormattedDate(utcDateString: string): string {
 //Parse reviews to Type and clean data
 function parseReviews(
   reviews: any[],
-  nameFilter: string[] = []
+  nameFilter: string[] = [],
 ): GoogleReview[] {
   if (!reviews) return [];
 
@@ -94,8 +94,9 @@ function parseReviews(
 export const getGoogleReviews = cache(
   async (
     searchQuery: string,
-    nameFilter?: string[]
+    nameFilter?: string[],
   ): Promise<GoogleReviews | null> => {
+    if (process.env.NODE_ENV === "development") return null;
     if (!searchQuery) return null;
     if (await rateLimitReached("google_reviews")) return null;
 
@@ -106,7 +107,7 @@ export const getGoogleReviews = cache(
     headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_MAPS_API_KEY}`);
     headers.set(
       "X-Goog-FieldMask",
-      "places.rating,places.userRatingCount,places.reviews"
+      "places.rating,places.userRatingCount,places.reviews",
     );
 
     const reviews: GoogleReviews | null = await fetch(
@@ -117,7 +118,7 @@ export const getGoogleReviews = cache(
         body: JSON.stringify({
           textQuery: searchQuery,
         }),
-      }
+      },
     )
       .then((res) => res.json())
       .then((data) => {
@@ -130,5 +131,5 @@ export const getGoogleReviews = cache(
       .catch(() => null);
 
     return reviews;
-  }
+  },
 );

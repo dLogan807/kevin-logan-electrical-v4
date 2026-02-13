@@ -5,12 +5,9 @@ import { GoogleMapsEmbed } from "@next/third-parties/google";
 import classes from "./google_map.module.css";
 
 export default async function GoogleMap({ query }: { query: string }) {
-  const mapApiKey: string =
-    process.env.GOOGLE_MAPS_API_KEY == undefined
-      ? ""
-      : process.env.GOOGLE_MAPS_API_KEY;
+  const mapApiKey = `${process.env.GOOGLE_MAPS_API_KEY}`;
 
-  if (!query || !mapApiKey) {
+  if (!query || !mapApiKey || process.env.NODE_ENV === "development") {
     return <Box className={classes.map}>Could not load map.</Box>;
   }
 

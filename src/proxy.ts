@@ -23,7 +23,7 @@ export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const cspHeader = `
     default-src 'self';
-    script-src https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-inline' ${
+    script-src https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ 'self' 'nonce-${nonce}' 'strict-dynamic' ${
       process.env.NODE_ENV === "production" ? "" : `'unsafe-eval'`
     };
     connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/;
@@ -35,7 +35,6 @@ export function proxy(request: NextRequest) {
     form-action 'self';
     frame-src https://www.google.com https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/;
     frame-ancestors 'none';
-    block-all-mixed-content;
     upgrade-insecure-requests;
 `;
   //Replace newline characters and spaces
@@ -44,10 +43,25 @@ export function proxy(request: NextRequest) {
     .trim();
 
   const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-nonce", nonce);
+
+  requestHeaders.set(
+    "Content-Security-Policy",
+    contentSecurityPolicyHeaderValue,
+  );
+
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+  response.headers.set(
+    "Content-Security-Policy",
+    contentSecurityPolicyHeaderValue,
+  );
 
   //Session cookie extension
   if (request.method === "GET") {
-    const response = NextResponse.next();
     const token = request.cookies.get("session")?.value ?? null;
     if (token !== null) {
       // Only extend cookie expiration on GET requests since we can be sure
@@ -66,44 +80,30 @@ export function proxy(request: NextRequest) {
   //CSRF protection
   if (request.method !== "GET") {
     const originHeader = requestHeaders.get("Origin");
-    // NOTE: May need to use `X-Forwarded-Host` instead
     const hostHeader = requestHeaders.get("Host");
+    const forbiddenResponse = new NextResponse(null, {
+      status: 403,
+    });
+    forbiddenResponse.headers.set(
+      "Content-Security-Policy",
+      contentSecurityPolicyHeaderValue,
+    );
+
     if (originHeader === null || hostHeader === null) {
-      return new NextResponse(null, {
-        status: 403,
-      });
+      return forbiddenResponse;
     }
+
     let origin: URL;
     try {
       origin = new URL(originHeader);
     } catch {
-      return new NextResponse(null, {
-        status: 403,
-      });
+      return forbiddenResponse;
     }
+
     if (origin.host !== hostHeader) {
-      return new NextResponse(null, {
-        status: 403,
-      });
+      return forbiddenResponse;
     }
   }
-
-  requestHeaders.set("x-nonce", nonce);
-
-  requestHeaders.set(
-    "Content-Security-Policy",
-    contentSecurityPolicyHeaderValue
-  );
-
-  const response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
-  response.headers.set(
-    "Content-Security-Policy",
-    contentSecurityPolicyHeaderValue
-  );
 
   return response;
 }

@@ -31,9 +31,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const nonce: string = await headers()
-    .then((headers) => headers.get("x-nonce"))
-    .then((rawNonce) => rawNonce ?? "");
+  const nonce = (await headers()).get("x-nonce") || "";
 
   return (
     <html lang="en" {...mantineHtmlProps}>

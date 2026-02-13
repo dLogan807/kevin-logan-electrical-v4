@@ -8,7 +8,7 @@ A full-stack small business website developed for `Kevin Logan Electrical`.
 
 ## Technologies
 
-At its core, this website uses the [Next.js 15](https://nextjs.org/) React Framework and the [Mantine 7](https://mantine.dev/) UI library. You can find all packages used in the production build [here](https://github.com/dLogan807/kevin-logan-electrical-v4/blob/main/licenses.json).
+At its core, this website uses the [Next.js 16](https://nextjs.org/) React Framework and the [Mantine 8](https://mantine.dev/) UI library. You can find all packages used in the production build [here](https://github.com/dLogan807/kevin-logan-electrical-v4/blob/main/licenses.json).
 
 The website interfaces with:
 
