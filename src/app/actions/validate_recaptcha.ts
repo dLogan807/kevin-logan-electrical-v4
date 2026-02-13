@@ -11,16 +11,18 @@ export type RecaptchaResponse = {
 
 export async function verifyRecaptcha(
   token: string,
-  action: string
+  action: string,
 ): Promise<boolean> {
-  const secretKey: string = "" + process.env.RECAPTCHA_SECRET_KEY;
+  if (process.env.NODE_ENV === "development") return true;
+
+  const secretKey = `${process.env.RECAPTCHA_SECRET_KEY}`;
 
   //Token may have failed retrieval, but others are expected
   if (token === "") return true;
   if (!action || !secretKey) return false;
 
   const response: RecaptchaResponse = await fetch(
-    `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`
+    `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`,
   )
     .then((res) => res.json())
     .catch(() => ({

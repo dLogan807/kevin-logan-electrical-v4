@@ -81,7 +81,7 @@ function parseReviews(reviews: any[]): GoogleReview[] {
 
 function invalidFilterInput(
   reviews: GoogleReview[],
-  nameFilter: string[]
+  nameFilter: string[],
 ): boolean {
   return (
     !reviews || !nameFilter || nameFilter.length === 0 || reviews.length === 0
@@ -91,7 +91,7 @@ function invalidFilterInput(
 //Remove reviews on a per-name basis
 function filterReviews(
   reviews: GoogleReview[],
-  nameFilter: string[]
+  nameFilter: string[],
 ): GoogleReview[] {
   if (invalidFilterInput(reviews, nameFilter)) return reviews;
 
@@ -100,7 +100,7 @@ function filterReviews(
   for (let i = reviews.length - 1; i >= 0; i--) {
     if (
       nameFilter.includes(
-        reviews[i].authorAttribution.displayName.toLowerCase()
+        reviews[i].authorAttribution.displayName.toLowerCase(),
       )
     ) {
       reviews.splice(i, 1);
@@ -119,8 +119,9 @@ function formatNameFilter(nameFilter: string[]): string[] {
 export const getGoogleReviews = cache(
   async (
     searchQuery: string,
-    nameFilter?: string[]
+    nameFilter?: string[],
   ): Promise<GoogleReviews | null> => {
+    if (process.env.NODE_ENV === "development") return null;
     if (!searchQuery) return null;
     if (await rateLimitReached("google_reviews")) return null;
 
@@ -131,7 +132,7 @@ export const getGoogleReviews = cache(
     headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_MAPS_API_KEY}`);
     headers.set(
       "X-Goog-FieldMask",
-      "places.rating,places.userRatingCount,places.reviews"
+      "places.rating,places.userRatingCount,places.reviews",
     );
 
     const reviews: GoogleReviews | null = await fetch(
@@ -142,7 +143,7 @@ export const getGoogleReviews = cache(
         body: JSON.stringify({
           textQuery: searchQuery,
         }),
-      }
+      },
     )
       .then((res) => res.json())
       .then((data) => ({
@@ -157,7 +158,7 @@ export const getGoogleReviews = cache(
 
           parsedReviews.reviews = filterReviews(
             parsedReviews.reviews,
-            nameFilter
+            nameFilter,
           );
         }
 
@@ -166,5 +167,5 @@ export const getGoogleReviews = cache(
       .catch(() => null);
 
     return reviews;
-  }
+  },
 );
