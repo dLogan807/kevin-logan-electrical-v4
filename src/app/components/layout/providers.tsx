@@ -10,7 +10,7 @@ export function Providers({
   children,
   nonce,
 }: {
-  children: any;
+  children: React.ReactNode;
   nonce: string;
 }) {
   //Set theme in local store
