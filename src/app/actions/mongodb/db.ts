@@ -43,7 +43,7 @@ class MongoDatabase {
   //------ Helper Functions ------
 
   private isInArray(stringArray: string[], searchValue: string): boolean {
-    if (!searchValue || !stringArray || stringArray.length === 0) return false;
+    if (!searchValue || !stringArray) return false;
     return stringArray.includes(searchValue);
   }
 
