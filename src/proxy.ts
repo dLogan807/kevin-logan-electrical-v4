@@ -19,6 +19,10 @@ export const config = {
   ],
 };
 
+function normalizePathname(pathname: string): string {
+  return pathname.replace(/\/+/g, "/") || "/";
+}
+
 export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const cspHeader = `
@@ -42,9 +46,22 @@ export function proxy(request: NextRequest) {
     .replace(/\s{2,}/g, " ")
     .trim();
 
+  // Redirect URLs with multiple slashes to fix browser replaceState SecurityError when deployed
+  const pathname = request.nextUrl.pathname;
+  const normalizedPath = normalizePathname(pathname);
+  if (pathname !== normalizedPath) {
+    const url = request.nextUrl.clone();
+    url.pathname = normalizedPath;
+    const redirectResponse = NextResponse.redirect(url, 308);
+    redirectResponse.headers.set(
+      "Content-Security-Policy",
+      contentSecurityPolicyHeaderValue,
+    );
+    return redirectResponse;
+  }
+
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
-
   requestHeaders.set(
     "Content-Security-Policy",
     contentSecurityPolicyHeaderValue,
