@@ -55,14 +55,25 @@ function getFormattedDate(utcDateString: string): string {
 }
 
 //Parse reviews to Type and clean data
-function parseReviews(reviews: any[]): GoogleReview[] {
-  if (!reviews || reviews.length === 0) return [];
+function parseReviews(
+  reviews: any[],
+  nameFilter: string[] = [],
+): GoogleReview[] {
+  if (!reviews) return [];
+
+  nameFilter = nameFilter.map((name) => name.trim().toLowerCase());
 
   const parsedReviews: GoogleReview[] = [];
 
   let id: number = 0;
   for (const review of reviews) {
     id++;
+    if (
+      nameFilter.includes(review.authorAttribution.displayName.toLowerCase())
+    ) {
+      continue;
+    }
+
     parsedReviews.push({
       id: id,
       authorAttribution: {
@@ -77,42 +88,6 @@ function parseReviews(reviews: any[]): GoogleReview[] {
   }
 
   return parsedReviews;
-}
-
-function invalidFilterInput(
-  reviews: GoogleReview[],
-  nameFilter: string[],
-): boolean {
-  return (
-    !reviews || !nameFilter || nameFilter.length === 0 || reviews.length === 0
-  );
-}
-
-//Remove reviews on a per-name basis
-function filterReviews(
-  reviews: GoogleReview[],
-  nameFilter: string[],
-): GoogleReview[] {
-  if (invalidFilterInput(reviews, nameFilter)) return reviews;
-
-  nameFilter = nameFilter.map((name) => name.toLowerCase());
-
-  for (let i = reviews.length - 1; i >= 0; i--) {
-    if (
-      nameFilter.includes(
-        reviews[i].authorAttribution.displayName.toLowerCase(),
-      )
-    ) {
-      reviews.splice(i, 1);
-    }
-  }
-
-  return reviews;
-}
-
-//Ensure no spaces and is lowercase
-function formatNameFilter(nameFilter: string[]): string[] {
-  return nameFilter.map((name) => name.toLowerCase().trim());
 }
 
 //Get reviews from Google Places API
@@ -146,23 +121,12 @@ export const getGoogleReviews = cache(
       },
     )
       .then((res) => res.json())
-      .then((data) => ({
-        reviews: parseReviews(data.places[0].reviews),
-        averageRating: data.places[0].rating,
-        totalReviewCount: data.places[0].userRatingCount,
-      }))
-      .then((parsedReviews) => {
-        nameFilter ||= [];
-        if (nameFilter.length > 0) {
-          nameFilter = formatNameFilter(nameFilter);
-
-          parsedReviews.reviews = filterReviews(
-            parsedReviews.reviews,
-            nameFilter,
-          );
-        }
-
-        return parsedReviews;
+      .then((data) => {
+        return {
+          reviews: parseReviews(data.places[0].reviews, nameFilter),
+          averageRating: data.places[0].rating,
+          totalReviewCount: data.places[0].userRatingCount,
+        };
       })
       .catch(() => null);
 

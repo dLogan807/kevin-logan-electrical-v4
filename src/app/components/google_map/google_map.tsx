@@ -13,14 +13,7 @@ export default async function GoogleMap({ query }: { query: string }) {
 
   return (
     <Box className={classes.map}>
-      {
-        <GoogleMapsEmbed
-          apiKey={mapApiKey}
-          mode="place"
-          q={query}
-          zoom={"15"}
-        />
-      }
+      <GoogleMapsEmbed apiKey={mapApiKey} mode="place" q={query} zoom={"15"} />
     </Box>
   );
 }

@@ -43,17 +43,17 @@ class MongoDatabase {
   //------ Helper Functions ------
 
   private isInArray(stringArray: string[], searchValue: string): boolean {
-    if (!searchValue || !stringArray || stringArray.length === 0) return false;
+    if (!searchValue || !stringArray) return false;
     return stringArray.includes(searchValue);
   }
 
   //Check if docs in collection can be updated/deleted
-  private isNoUpdateCollection(collectionName: string): boolean {
+  private isNoUpdateCollection(collectionName: string) {
     return this.isInArray(this.noDocUpdatesCollections, collectionName);
   }
 
   //Check if collection can have any docs added/updated/deleted
-  private isImmutableCollection(collectionName: string): boolean {
+  private isImmutableCollection(collectionName: string) {
     return this.isInArray(this.immutableCollections, collectionName);
   }
 

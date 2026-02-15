@@ -43,7 +43,7 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
     ));
     return createFailed;
   } else if (rateDocument.count === null || rateDocument.resetDate === null) {
-    const resetFailed: boolean = !(await reset(requestType));
+    const resetFailed = !(await reset(requestType));
     return resetFailed;
   }
 
@@ -61,7 +61,7 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
   }
 
   //If increment failed, prevent usage
-  const incrementFailed: boolean = !(await increment(requestType));
+  const incrementFailed = !(await increment(requestType));
   return incrementFailed;
 }
 

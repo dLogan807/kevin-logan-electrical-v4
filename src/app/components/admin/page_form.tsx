@@ -54,10 +54,7 @@ export function PageForm({
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    const submitSuccess: boolean = await addPageDocument(
-      selectedPage,
-      form.getValues()
-    );
+    const submitSuccess = await addPageDocument(selectedPage, form.getValues());
     const submitMessage: FormMessage = submitSuccess
       ? {
           message: (
@@ -124,7 +121,7 @@ function AddEntryButton({
 function FormFields(
   contentObject: [string, any][],
   path: string,
-  form: UseFormReturnType<PageContent>
+  form: UseFormReturnType<PageContent>,
 ): React.ReactNode {
   return contentObject.map(([key, value]) => {
     const currentPath: string = path === "" ? key : path + "." + key;

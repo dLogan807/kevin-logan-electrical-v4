@@ -7,7 +7,7 @@ import React, { createContext, Suspense, useContext } from "react";
 import classes from "./page_context.module.css";
 
 export const PageContext = createContext<Promise<PageContent | null> | null>(
-  null
+  null,
 );
 
 export function PageContentProvider({
@@ -25,9 +25,7 @@ export function PageContentProvider({
 
   return (
     <Suspense fallback={fallbackLoader}>
-      <PageContext.Provider value={pageContentPromise}>
-        {children}
-      </PageContext.Provider>
+      <PageContext value={pageContentPromise}>{children}</PageContext>
     </Suspense>
   );
 }
