@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode, useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import {
@@ -28,21 +30,23 @@ function getPageRoute(page: Pages): string {
   return page.replaceAll("_", "");
 }
 
-export function PageForm({
+export default function PageForm({
   selectedPage,
-  initialContent,
+  content,
 }: {
   selectedPage: Pages;
-  initialContent: PageContent;
+  content: PageContent;
 }) {
   const form = useForm<PageContent>({
     mode: "uncontrolled",
-    initialValues: initialContent,
+    initialValues: content,
   });
   const [formMessage, setFormMessage] = useState<FormMessage>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const objectContent = Object.entries(form.getValues());
+
+  const formattedPageTitle = snakeCaseToTitleCase(selectedPage);
 
   async function onSubmit() {
     if (isSubmitting) return;
@@ -53,7 +57,7 @@ export function PageForm({
       ? {
           message: (
             <Text>
-              {`'${snakeCaseToTitleCase(selectedPage)}' has been updated. See your changes `}
+              {`'${formattedPageTitle}' has been updated. See your changes `}
               <Link href={`${getPageRoute(selectedPage)}`}>here</Link>
             </Text>
           ),
@@ -73,7 +77,7 @@ export function PageForm({
           <Tooltip label="Submit and update website content">
             <Button type="submit" loading={isSubmitting}>
               <Group>
-                Submit
+                Update {formattedPageTitle}
                 <IconWorldUp aria-label="Internet submission" />
               </Group>
             </Button>
@@ -88,7 +92,7 @@ function isNumber(value: string): boolean {
   return value != null && !isNaN(Number(value)) && value.trim() !== "";
 }
 
-function isParent(value: any) {
+function isParent(value: unknown) {
   return typeof value === "object" && value !== null;
 }
 
@@ -110,7 +114,7 @@ function AddEntryButton({
 
 //Recursively generate form fields from entries
 function FormFields(
-  contentObject: [string, any][],
+  contentObject: [string, unknown][],
   path: string,
   form: UseFormReturnType<PageContent>,
 ): ReactNode {
