@@ -17,9 +17,6 @@ const compat = new FlatCompat({
 export default defineConfig([
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
-    plugins: {
-      "@next/next": nextPlugin,
-    },
     rules: {
       ...nextPlugin.configs.recommended.rules,
     },
