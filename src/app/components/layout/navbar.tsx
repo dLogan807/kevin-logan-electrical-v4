@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Group, Stack, Burger, ActionIcon, Overlay } from "@mantine/core";
 import { useDisclosure, useMediaQuery, useWindowEvent } from "@mantine/hooks";
 import logo from "@/assets/logo.webp";
@@ -44,7 +43,7 @@ interface ILink {
 }
 
 //Load theme icon lazily
-var DynamicThemeSelector = dynamic(
+const DynamicThemeSelector = dynamic(
   () =>
     import("../theme_selector/theme_selector").then((mod) => mod.ThemeSelector),
   {
@@ -57,7 +56,7 @@ var DynamicThemeSelector = dynamic(
         <IconLoader2 />
       </ActionIcon>
     ),
-  }
+  },
 );
 
 const linkData: ILink[] = [
@@ -86,14 +85,7 @@ const linkData: ILink[] = [
 export function Navbar() {
   //Maintain path hydration
   const pathname = usePathname();
-
-  //Update route on manual path change
-  const [active, setActive] = useState<Pages | undefined>(getRoute(pathname));
-
-  //Update route when path changes
-  useEffect(() => {
-    setActive(getRoute(pathname));
-  }, [pathname]);
+  const activePageFromPath = getRoute(pathname);
 
   const [mobileNavOpened, { toggle, close }] = useDisclosure(false);
   const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
@@ -117,9 +109,8 @@ export function Navbar() {
       key={link.label}
       href={link.link}
       className={classes.link}
-      data-active={active === link.value || undefined}
+      data-active={activePageFromPath === link.value || undefined}
       onClick={() => {
-        setActive(link.value);
         close();
       }}
     >
