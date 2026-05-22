@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Alert,
-  Box,
-  Button,
-  Group,
-  Select,
-  Text,
-  Tooltip,
-} from "@mantine/core";
+import { Box, Button, Group, Select, Text, Tooltip } from "@mantine/core";
 import { Pages } from "../layout/pages";
 import React, { use, useState } from "react";
 import {
@@ -17,7 +9,7 @@ import {
 } from "@/actions/mongodb/pages/management";
 import { PageContentProvider, usePageContext } from "./page_context";
 import { PageForm } from "./page_form";
-import { IconInfoCircle, IconLogout, IconRefresh } from "@tabler/icons-react";
+import { IconLogout, IconRefresh } from "@tabler/icons-react";
 import classes from "./page_selector.module.css";
 import { logout } from "@/actions/mongodb/sessions/management";
 import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
@@ -68,7 +60,6 @@ export default function PageSelector({
         <LogoutButton />
         <h1>Content Mangement</h1>
       </Box>
-      <ContentAlert />
       <Group className={classes.content_control_group}>
         <Group className={classes.inner_content_control_group}>
           <Select
@@ -119,27 +110,6 @@ function LogoutButton() {
         <IconLogout aria-label="Logout" />
       </Group>
     </Button>
-  );
-}
-
-function ContentAlert() {
-  const [alertClosed, setAlertClosed] = useState<boolean>(false);
-  const infoIcon = <IconInfoCircle />;
-
-  return (
-    <Alert
-      variant="light"
-      title="Submission"
-      icon={infoIcon}
-      withCloseButton={true}
-      onClose={() => {
-        setAlertClosed(true);
-      }}
-      hidden={alertClosed}
-    >
-      After submission, it may take up to 5 days to become live on the website.
-      However, the latest content will always be retrieved here.
-    </Alert>
   );
 }
 
