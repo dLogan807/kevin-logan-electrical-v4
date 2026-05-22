@@ -2,7 +2,7 @@
 
 import { Box, Button, Group, Select, Text, Tooltip } from "@mantine/core";
 import { Pages } from "../layout/pages";
-import React, { use, useState } from "react";
+import React, { ReactElement, ReactNode, use, useState } from "react";
 import {
   getStoredPageContent,
   PageContent,
@@ -43,7 +43,7 @@ export default function PageSelector({
     setContentVersion((version) => version + 1);
   }
 
-  const pageContentForm: React.ReactElement = contentPromise ? (
+  const pageContentForm: ReactElement = contentPromise ? (
     <PageContentProvider pageContentPromise={contentPromise}>
       <EditablePageContent
         selectedPage={selectedPage}
@@ -119,7 +119,7 @@ function EditablePageContent({
 }: {
   selectedPage: Pages;
   contentVersion: number;
-}): React.ReactNode {
+}): ReactNode {
   const pageContentPromise = usePageContext();
   const contentSections: PageContent | null = use(pageContentPromise);
 

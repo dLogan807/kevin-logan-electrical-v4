@@ -2,7 +2,13 @@
 
 import { PageContent } from "@/actions/mongodb/pages/management";
 import { Box, Loader } from "@mantine/core";
-import React, { createContext, Suspense, useContext } from "react";
+import {
+  createContext,
+  ReactElement,
+  ReactNode,
+  Suspense,
+  useContext,
+} from "react";
 
 import classes from "./page_context.module.css";
 
@@ -14,10 +20,10 @@ export function PageContentProvider({
   children,
   pageContentPromise,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   pageContentPromise: Promise<PageContent | null>;
 }) {
-  const fallbackLoader: React.ReactElement = (
+  const fallbackLoader: ReactElement = (
     <Box className={classes.loader_container}>
       <Loader type="bars" />
     </Box>

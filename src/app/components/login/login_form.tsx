@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactElement } from "react";
 import {
   Box,
   Button,
@@ -105,7 +105,7 @@ export default function LoginForm() {
     const response: LoginFormResponse = await validateLoginForm(
       formValues,
       token,
-      action
+      action,
     ).catch(() => ({
       validated: false,
       formErrors: {},
@@ -128,10 +128,10 @@ export default function LoginForm() {
     }
   }
 
-  const userIcon: React.ReactElement = (
+  const userIcon: ReactElement = (
     <IconUserCircle className={classes.input_icon} aria-label="Username" />
   );
-  const passwordIcon: React.ReactElement = (
+  const passwordIcon: ReactElement = (
     <IconLock className={classes.input_icon} aria-label="Password" />
   );
 

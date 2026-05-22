@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import {
   ActionIcon,
@@ -113,7 +113,7 @@ function FormFields(
   contentObject: [string, any][],
   path: string,
   form: UseFormReturnType<PageContent>,
-): React.ReactNode {
+): ReactNode {
   return contentObject.map(([key, value]) => {
     const currentPath: string = path === "" ? key : path + "." + key;
     const formKey: string = form.key(currentPath);
