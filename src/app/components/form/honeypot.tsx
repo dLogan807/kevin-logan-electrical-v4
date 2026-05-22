@@ -1,15 +1,17 @@
 import { TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 
-export default function Honeypot({
+type HoneypotProps<T> = {
+  form: UseFormReturnType<T>;
+  label: string;
+  fieldKey: string;
+};
+
+export default function Honeypot<T>({
   form,
   label,
   fieldKey,
-}: {
-  form: UseFormReturnType<any>;
-  label: string;
-  fieldKey: string;
-}) {
+}: HoneypotProps<T>) {
   return (
     <TextInput
       label={label}
