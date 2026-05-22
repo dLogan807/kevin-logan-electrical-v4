@@ -40,7 +40,7 @@ export function PageForm({
     initialValues: initialContent,
   });
   const [formMessage, setFormMessage] = useState<FormMessage>({});
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const objectContent = Object.entries(form.getValues());
 
@@ -53,11 +53,8 @@ export function PageForm({
       ? {
           message: (
             <Text>
-              {"Success! "}
-              <Link href={`${getPageRoute(selectedPage)}`}>
-                {snakeCaseToTitleCase(selectedPage)}
-              </Link>
-              {" has been updated"}
+              {`'${snakeCaseToTitleCase(selectedPage)}' has been updated. See your changes `}
+              <Link href={`${getPageRoute(selectedPage)}`}>here</Link>
             </Text>
           ),
         }
@@ -91,7 +88,7 @@ function isNumber(value: string): boolean {
   return value != null && !isNaN(Number(value)) && value.trim() !== "";
 }
 
-function isParent(value: any): boolean {
+function isParent(value: any) {
   return typeof value === "object" && value !== null;
 }
 
@@ -125,10 +122,12 @@ function FormFields(
     if (isParent(value)) {
       return (
         <Fieldset legend={<b>{snakeCaseToTitleCase(key)}</b>} key={formKey}>
-          {FormFields(Object.entries(value), currentPath, form)}
-          {Array.isArray(value) ? (
-            <AddEntryButton form={form} currentPath={currentPath} />
-          ) : null}
+          <Stack>
+            {FormFields(Object.entries(value), currentPath, form)}
+            {Array.isArray(value) ? (
+              <AddEntryButton form={form} currentPath={currentPath} />
+            ) : null}
+          </Stack>
         </Fieldset>
       );
     }

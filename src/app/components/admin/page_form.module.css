@@ -1,6 +1,5 @@
 .text_input_container {
   align-items: center;
-  margin-bottom: 1rem;
 
   @media (max-width: $mantine-breakpoint-sm) {
     display: flex;
