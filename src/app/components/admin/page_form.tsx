@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import {
   ActionIcon,
@@ -37,16 +37,10 @@ export function PageForm({
 }) {
   const form = useForm<PageContent>({
     mode: "uncontrolled",
+    initialValues: initialContent,
   });
   const [formMessage, setFormMessage] = useState<FormMessage>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  //Rerender form with new fetched content
-  useEffect(() => {
-    form.setInitialValues(initialContent);
-    form.reset();
-    setFormMessage({});
-  }, [initialContent]);
 
   const objectContent = Object.entries(form.getValues());
 
@@ -141,7 +135,7 @@ function FormFields(
 
     //If value is part of a list
     if (isNumber(key)) {
-      const listNum: Number = Number(key) + 1;
+      const listNum = Number(key) + 1;
 
       return (
         <Group key={key} className={classes.text_input_container}>

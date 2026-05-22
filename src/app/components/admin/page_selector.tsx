@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { Pages } from "../layout/pages";
-import React, { use, useEffect, useState } from "react";
+import React, { use, useState } from "react";
 import {
   getStoredPageContent,
   PageContent,
@@ -44,15 +44,19 @@ export default function PageSelector({
   if (!initialPromise) initialPromise = null;
   const [contentPromise, setContentPromise] =
     useState<Promise<PageContent | null> | null>(initialPromise);
+  const [contentVersion, setContentVersion] = useState(0);
 
-  //Get page content from database when selection changes
-  useEffect(() => {
-    setContentPromise(getStoredPageContent(selectedPage));
-  }, [selectedPage]);
+  function loadPageContent(page: Pages) {
+    setContentPromise(getStoredPageContent(page));
+    setContentVersion((version) => version + 1);
+  }
 
   const pageContentForm: React.ReactElement = contentPromise ? (
     <PageContentProvider pageContentPromise={contentPromise}>
-      <EditablePageContent selectedPage={selectedPage} />
+      <EditablePageContent
+        selectedPage={selectedPage}
+        contentVersion={contentVersion}
+      />
     </PageContentProvider>
   ) : (
     <Text>Please select a page to edit.</Text>
@@ -72,9 +76,11 @@ export default function PageSelector({
             defaultValue={defaultPage}
             data={pages}
             value={selectedPage ? selectedPage : defaultPage}
-            onChange={(_value, option) =>
-              setSelectedPage(option.value as Pages)
-            }
+            onChange={(_value, option) => {
+              const page = option.value as Pages;
+              setSelectedPage(page);
+              loadPageContent(page);
+            }}
             allowDeselect={false}
             classNames={classes}
           />
@@ -82,9 +88,7 @@ export default function PageSelector({
             <Button
               color="red"
               variant="light"
-              onClick={() =>
-                setContentPromise(getStoredPageContent(selectedPage))
-              }
+              onClick={() => loadPageContent(selectedPage)}
             >
               <Group>
                 Refresh <IconRefresh aria-label="Refresh" />
@@ -141,8 +145,10 @@ function ContentAlert() {
 
 function EditablePageContent({
   selectedPage,
+  contentVersion,
 }: {
   selectedPage: Pages;
+  contentVersion: number;
 }): React.ReactNode {
   const pageContentPromise = usePageContext();
   const contentSections: PageContent | null = use(pageContentPromise);
@@ -151,6 +157,10 @@ function EditablePageContent({
     return <p>No content could be fetched for this page. Please try again.</p>;
 
   return (
-    <PageForm selectedPage={selectedPage} initialContent={contentSections} />
+    <PageForm
+      key={`${selectedPage}-${contentVersion}`}
+      selectedPage={selectedPage}
+      initialContent={contentSections}
+    />
   );
 }
