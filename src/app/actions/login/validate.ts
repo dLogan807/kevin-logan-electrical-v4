@@ -22,7 +22,7 @@ export type LoginFormResponse = FormResponse & {
 };
 
 async function validateUser(
-  formValues: LoginFormData
+  formValues: LoginFormData,
 ): Promise<SessionInfo | null> {
   const query = {
     username: formValues.username,
@@ -50,16 +50,16 @@ async function validateUser(
 export async function validateLoginForm(
   formValues: LoginFormData,
   token: string,
-  action: string
+  action: string,
 ): Promise<LoginFormResponse> {
   const validationResult: FormResponse = await validateForm(
     FormType.LOGIN,
     formValues,
     token,
-    action
+    action,
   );
 
-  var response: LoginFormResponse = {
+  const response: LoginFormResponse = {
     ...validationResult,
     sessionCreated: false,
   };

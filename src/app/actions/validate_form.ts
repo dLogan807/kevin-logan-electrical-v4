@@ -20,7 +20,7 @@ export async function validateForm(
   formType: FormType,
   formValues: FormValues,
   token: string,
-  action: string
+  action: string,
 ): Promise<FormResponse> {
   const schema: FormSchema = getFormSchema(formType);
 
@@ -29,10 +29,10 @@ export async function validateForm(
   //Map zod errors to form errors
   const formParseErrors = Object.fromEntries(
     parseResult.error?.issues?.map((issue) => [issue.path[0], issue.message]) ||
-      []
+      [],
   );
 
-  var response: FormResponse = {
+  const response: FormResponse = {
     validated: parseResult.success,
     formErrors: formParseErrors,
     recaptchaVerified: false,

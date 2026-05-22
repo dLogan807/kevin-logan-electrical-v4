@@ -21,6 +21,10 @@ export type GoogleReview = {
   text: string;
 };
 
+type GooglePlacesApiReview = Omit<GoogleReview, "id" | "text"> & {
+  text: { text: string };
+};
+
 //Cap the comment's length
 function getTrimmedComment(comment: string, maxLength: number = 180): string {
   if (!comment) return "(No comment left by reviewer.)";
@@ -56,7 +60,7 @@ function getFormattedDate(utcDateString: string): string {
 
 //Parse reviews to Type and clean data
 function parseReviews(
-  reviews: any[],
+  reviews: GooglePlacesApiReview[],
   nameFilter: string[] = [],
 ): GoogleReview[] {
   if (!reviews) return [];
@@ -65,7 +69,7 @@ function parseReviews(
 
   const parsedReviews: GoogleReview[] = [];
 
-  let id: number = 0;
+  let id = 0;
   for (const review of reviews) {
     id++;
     if (
