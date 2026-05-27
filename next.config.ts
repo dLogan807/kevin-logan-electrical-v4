@@ -1,8 +1,7 @@
-/** @type {import('next').NextConfig} */
+import type { NextConfig } from "next";
 
-module.exports = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // Policies:
   async headers() {
     return [
       {
@@ -64,3 +63,5 @@ module.exports = {
   },
   experimental: { optimizePackageImports: ["@mantine/core", "@mantine/hooks"] },
 };
+
+export default nextConfig;
