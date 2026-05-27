@@ -1,15 +1,13 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import type { Metadata } from "next";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "./components/layout/footer";
-import { ColorSchemeScript, Box, Paper, mantineHtmlProps } from "@mantine/core";
-import { Providers } from "@/components/layout/providers";
-import { headers } from "next/headers";
+
+import { mantineHtmlProps } from "@mantine/core";
 
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import classes from "./layout.module.css";
 import "./globals.css";
+import { Shell } from "./components/layout/shell";
 
 export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
@@ -31,28 +29,13 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const nonce = (await headers()).get("x-nonce") || "";
-
   return (
     <html lang="en" {...mantineHtmlProps}>
-      <head>
-        <ColorSchemeScript defaultColorScheme="auto" nonce={nonce} />
-      </head>
+      <head />
       <body className={classes.body}>
-        <Providers nonce={nonce}>
-          <Box className={classes.grid}>
-            <Box></Box>
-            <Paper className={classes.nav_container}>
-              <Navbar />
-            </Paper>
-            <Box></Box>
-            <Box></Box>
-            <Box className={classes.content_container}>
-              {children}
-              <Footer />
-            </Box>
-          </Box>
-        </Providers>
+        <Suspense>
+          <Shell>{children}</Shell>
+        </Suspense>
       </body>
     </html>
   );
