@@ -6,9 +6,11 @@ import PageForm from "./page_form";
 
 export default function PageFormLoader({
   selectedPage,
+
   contentPromise,
 }: {
   selectedPage: Pages;
+
   contentPromise: Promise<PageContent | null>;
 }) {
   const content = use(contentPromise);

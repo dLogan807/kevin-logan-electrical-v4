@@ -18,6 +18,11 @@ interface SelectData {
   label: string;
 }
 
+const pages: SelectData[] = Object.values(Pages).map((page) => ({
+  value: page,
+  label: snakeCaseToTitleCase(page),
+}));
+
 export default function PageFormSelector({
   initialPage,
   initialContentPromise,
@@ -27,11 +32,6 @@ export default function PageFormSelector({
 }) {
   const [selectedPage, setSelectedPage] = useState(initialPage);
   const [contentPromise, setContentPromise] = useState(initialContentPromise);
-
-  const pages: SelectData[] = Object.values(Pages).map((page) => ({
-    value: page,
-    label: snakeCaseToTitleCase(page),
-  }));
 
   return (
     <Box>
@@ -43,12 +43,13 @@ export default function PageFormSelector({
         <Group className={classes.inner_content_control_group}>
           <Select
             label="Selected page"
-            defaultValue={initialPage}
+            defaultValue={selectedPage}
             data={pages}
-            value={selectedPage ? selectedPage : initialPage}
+            value={selectedPage}
             onChange={(_value, option) => {
-              setSelectedPage(option.value as Pages);
-              setContentPromise(getStoredPageContent(selectedPage));
+              const newPage = option.value as Pages;
+              setSelectedPage(newPage);
+              setContentPromise(getStoredPageContent(newPage));
             }}
             allowDeselect={false}
             classNames={classes}
@@ -77,6 +78,7 @@ export default function PageFormSelector({
         }
       >
         <PageFormLoader
+          key={selectedPage}
           selectedPage={selectedPage}
           contentPromise={contentPromise}
         />
