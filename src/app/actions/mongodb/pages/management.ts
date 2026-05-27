@@ -64,13 +64,13 @@ export const getPageContent = cache(
     const fallbackContent = getPageFallbackContent<T>(page);
 
     return contentDocument?.page_content ?? fallbackContent;
-  }
+  },
 );
 
 //Update (add) latest page content
 export async function addPageDocument(
   collectionName: Pages,
-  pageContent: PageContent
+  pageContent: PageContent,
 ): Promise<boolean> {
   //auth
   const { session } = await getCurrentSession();
@@ -78,13 +78,13 @@ export async function addPageDocument(
 
   return await new PageManager().addPageDocumentByUser(
     collectionName,
-    pageContent
+    pageContent,
   );
 }
 
 //Latest page content retrieval
 export async function getStoredPageContent<T extends PageContent>(
-  collectionName: Pages
+  collectionName: Pages,
 ): Promise<T | null> {
   const { session } = await getCurrentSession();
   if (session === null) return null;
@@ -99,7 +99,7 @@ class PageManager {
   private pageCollectionsInit = false;
 
   private async insertFallbackContent<T extends PageContent>(
-    page: Pages
+    page: Pages,
   ): Promise<boolean> {
     if (!page) return false;
     if (await MongoDatabase.collectionExists(page)) return true;
@@ -138,7 +138,7 @@ class PageManager {
 
   //Retrieve the most recent document from the page's collection
   async getPageDocument<T extends PageContent>(
-    page: Pages
+    page: Pages,
   ): Promise<PageDocument<T> | null> {
     //Attempt to create collections in case they don't exist
     if (!this.pageCollectionsInit) await this.initPageCollections();
@@ -148,7 +148,7 @@ class PageManager {
 
     if (!pageDocument) return null;
 
-    const { _id, ...document } = pageDocument;
+    const { ...document } = pageDocument;
 
     return document;
   }
@@ -156,7 +156,7 @@ class PageManager {
   //Add a document (latest doc will display on website)
   async addPageDocumentByUser<T extends PageContent>(
     collectionName: Pages,
-    pageContent: T
+    pageContent: T,
   ): Promise<boolean> {
     if (!collectionName || !pageContent) return false;
 
@@ -171,7 +171,7 @@ class PageManager {
 
     return await MongoDatabase.addDocument<PageDocument<T>>(
       collectionName,
-      document
+      document,
     );
   }
 }

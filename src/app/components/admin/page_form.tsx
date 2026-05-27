@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import { ReactNode, useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import {
   ActionIcon,
@@ -28,27 +30,23 @@ function getPageRoute(page: Pages): string {
   return page.replaceAll("_", "");
 }
 
-export function PageForm({
+export default function PageForm({
   selectedPage,
-  initialContent,
+  content,
 }: {
   selectedPage: Pages;
-  initialContent: PageContent;
+  content: PageContent;
 }) {
   const form = useForm<PageContent>({
     mode: "uncontrolled",
+    initialValues: content,
   });
   const [formMessage, setFormMessage] = useState<FormMessage>({});
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  //Rerender form with new fetched content
-  useEffect(() => {
-    form.setInitialValues(initialContent);
-    form.reset();
-    setFormMessage({});
-  }, [initialContent]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const objectContent = Object.entries(form.getValues());
+
+  const formattedPageTitle = snakeCaseToTitleCase(selectedPage);
 
   async function onSubmit() {
     if (isSubmitting) return;
@@ -59,11 +57,8 @@ export function PageForm({
       ? {
           message: (
             <Text>
-              {"Success! "}
-              <Link href={`${getPageRoute(selectedPage)}`}>
-                {snakeCaseToTitleCase(selectedPage)}
-              </Link>
-              {" has been updated"}
+              {`'${formattedPageTitle}' has been updated. See your changes `}
+              <Link href={`${getPageRoute(selectedPage)}`}>here</Link>
             </Text>
           ),
         }
@@ -82,7 +77,7 @@ export function PageForm({
           <Tooltip label="Submit and update website content">
             <Button type="submit" loading={isSubmitting}>
               <Group>
-                Submit
+                Update {formattedPageTitle}
                 <IconWorldUp aria-label="Internet submission" />
               </Group>
             </Button>
@@ -97,7 +92,7 @@ function isNumber(value: string): boolean {
   return value != null && !isNaN(Number(value)) && value.trim() !== "";
 }
 
-function isParent(value: any): boolean {
+function isParent(value: unknown) {
   return typeof value === "object" && value !== null;
 }
 
@@ -119,10 +114,10 @@ function AddEntryButton({
 
 //Recursively generate form fields from entries
 function FormFields(
-  contentObject: [string, any][],
+  contentObject: [string, unknown][],
   path: string,
   form: UseFormReturnType<PageContent>,
-): React.ReactNode {
+): ReactNode {
   return contentObject.map(([key, value]) => {
     const currentPath: string = path === "" ? key : path + "." + key;
     const formKey: string = form.key(currentPath);
@@ -131,17 +126,19 @@ function FormFields(
     if (isParent(value)) {
       return (
         <Fieldset legend={<b>{snakeCaseToTitleCase(key)}</b>} key={formKey}>
-          {FormFields(Object.entries(value), currentPath, form)}
-          {Array.isArray(value) ? (
-            <AddEntryButton form={form} currentPath={currentPath} />
-          ) : null}
+          <Stack>
+            {FormFields(Object.entries(value), currentPath, form)}
+            {Array.isArray(value) ? (
+              <AddEntryButton form={form} currentPath={currentPath} />
+            ) : null}
+          </Stack>
         </Fieldset>
       );
     }
 
     //If value is part of a list
     if (isNumber(key)) {
-      const listNum: Number = Number(key) + 1;
+      const listNum = Number(key) + 1;
 
       return (
         <Group key={key} className={classes.text_input_container}>

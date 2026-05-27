@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactElement } from "react";
 import {
   Anchor,
   Box,
@@ -21,10 +21,7 @@ import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
 import { Pages } from "@/components/layout/pages";
 import { unstable_cache } from "next/cache";
-import {
-  ContactUsFallback,
-  ContactUsContent,
-} from "@/actions/mongodb/pages/fallback_content";
+import { ContactUsContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
@@ -40,10 +37,10 @@ const getCachedPageContent = unstable_cache(
     return await getPageContent(Pages.ContactUs);
   },
   [Pages.ContactUs],
-  { revalidate: 432000, tags: [Pages.ContactUs] }
+  { revalidate: 432000, tags: [Pages.ContactUs] },
 );
 
-function ListIcon({ icon }: { icon: React.ReactElement }) {
+function ListIcon({ icon }: { icon: ReactElement }) {
   return <ThemeIcon classNames={{ root: "list_icon" }}>{icon}</ThemeIcon>;
 }
 
@@ -68,19 +65,19 @@ export default async function ContactUs() {
 
   const content: ContactUsContent = await getCachedPageContent();
 
-  const mapIcon: React.ReactElement = (
+  const mapIcon: ReactElement = (
     <ListIcon icon={<IconMapPin aria-label="Location marker" />} />
   );
-  const phoneIcon: React.ReactElement = (
+  const phoneIcon: ReactElement = (
     <ListIcon icon={<IconPhone aria-label="Phone" />} />
   );
-  const mobilePhoneIcon: React.ReactElement = (
+  const mobilePhoneIcon: ReactElement = (
     <ListIcon icon={<IconDeviceMobile aria-label="Mobile phone" />} />
   );
-  const emailIcon: React.ReactElement = (
+  const emailIcon: ReactElement = (
     <ListIcon icon={<IconMail aria-label="Email" />} />
   );
-  const serviceHoursIcon: React.ReactElement = (
+  const serviceHoursIcon: ReactElement = (
     <ListIcon icon={<IconClockHour2 aria-label="Service hours" />} />
   );
 

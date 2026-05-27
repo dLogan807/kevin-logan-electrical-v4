@@ -1,15 +1,15 @@
-import React from "react";
+import { ReactElement, ReactNode } from "react";
 import { Alert } from "@mantine/core";
 import { IconExclamationCircle, IconCircleCheck } from "@tabler/icons-react";
 import classes from "./form_alert.module.css";
 
 export type FormMessage = {
-  message?: React.ReactNode;
+  message?: ReactNode;
   isError?: boolean;
 };
 
 export function FormAlert({ formMessage }: { formMessage: FormMessage }) {
-  const errorIcon: React.ReactElement = formMessage.isError ? (
+  const errorIcon: ReactElement = formMessage.isError ? (
     <IconExclamationCircle
       className={classes.input_icon}
       aria-label="Failure"

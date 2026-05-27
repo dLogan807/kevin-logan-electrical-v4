@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "./components/layout/footer";
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const nonce = (await headers()).get("x-nonce") || "";
 

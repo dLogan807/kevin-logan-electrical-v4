@@ -14,16 +14,16 @@ export type ContactFormResponse = FormResponse & {
 export async function validateContactEmail(
   formValues: ContactFormData,
   token: string,
-  action: string
+  action: string,
 ): Promise<ContactFormResponse> {
   const validationResult = await validateForm(
     FormType.CONTACT_US,
     formValues,
     token,
-    action
+    action,
   );
 
-  var response: ContactFormResponse = {
+  const response: ContactFormResponse = {
     ...validationResult,
     sendSuccess: false,
   };

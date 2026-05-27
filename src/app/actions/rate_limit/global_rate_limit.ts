@@ -2,7 +2,7 @@
 
 import MongoDatabase from "@/actions/mongodb/db";
 import { RateLimitSchema } from "./schema";
-import { Document, Filter, UpdateFilter, WithId } from "mongodb";
+import { Document, Filter, UpdateFilter } from "mongodb";
 
 interface RateLimitDocument {
   requestType: string;
@@ -26,7 +26,7 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
 
   const rateDocument = await MongoDatabase.getDocument<RateLimitDocument>(
     COLLECTION,
-    query
+    query,
   );
 
   //No document exists or is missing fields
@@ -39,7 +39,7 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
 
     const createFailed = !(await MongoDatabase.addDocument<RateLimitDocument>(
       COLLECTION,
-      document
+      document,
     ));
     return createFailed;
   } else if (rateDocument.count === null || rateDocument.resetDate === null) {
