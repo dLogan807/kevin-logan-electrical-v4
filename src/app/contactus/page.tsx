@@ -20,7 +20,6 @@ import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { ContactForm } from "@/components/contact_form/contact_form";
 import { headers } from "next/headers";
 import { Pages } from "@/components/layout/pages";
-import { unstable_cache } from "next/cache";
 import { ContactUsContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
@@ -30,15 +29,6 @@ export const metadata: Metadata = {
   description:
     "Contact Kevin Logan Electrical. Open Monday to Friday, don't hesitate to give me call for a reliable service of the highest calibre.",
 };
-
-//Cache page content for 5 days
-const getCachedPageContent = unstable_cache(
-  async (): Promise<ContactUsContent> => {
-    return await getPageContent(Pages.ContactUs);
-  },
-  [Pages.ContactUs],
-  { revalidate: 432000, tags: [Pages.ContactUs] },
-);
 
 function ListIcon({ icon }: { icon: ReactElement }) {
   return <ThemeIcon classNames={{ root: "list_icon" }}>{icon}</ThemeIcon>;
@@ -63,7 +53,7 @@ export default async function ContactUs() {
     .then((headers) => headers.get("x-nonce"))
     .then((rawNonce) => rawNonce ?? "");
 
-  const content: ContactUsContent = await getCachedPageContent();
+  const content = await getPageContent<ContactUsContent>(Pages.ContactUs);
 
   const mapIcon: ReactElement = (
     <ListIcon icon={<IconMapPin aria-label="Location marker" />} />
