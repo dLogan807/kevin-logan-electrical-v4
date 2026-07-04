@@ -108,7 +108,7 @@ export const getGoogleReviews = cache(
     headers.set("Accept", "application/json");
     headers.set("Referer", "https://kevinloganelectrical.co.nz/");
     headers.set("Content-Type", "application/json");
-    headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_MAPS_API_KEY}`);
+    headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_PLACES_API_KEY}`);
     headers.set(
       "X-Goog-FieldMask",
       "places.rating,places.userRatingCount,places.reviews",
