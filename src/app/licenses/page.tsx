@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import { IconExternalLink } from "@tabler/icons-react";
 import { Box, Button, Paper, Stack, Text, ThemeIcon } from "@mantine/core";
