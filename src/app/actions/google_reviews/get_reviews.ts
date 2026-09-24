@@ -1,7 +1,7 @@
 "use server";
 
-import { cache } from "react";
 import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
+import { connection } from "next/server";
 
 export type GoogleReviews = {
   reviews: GoogleReview[];
@@ -95,45 +95,44 @@ function parseReviews(
 }
 
 //Get reviews from Google Places API
-export const getGoogleReviews = cache(
-  async (
-    searchQuery: string,
-    nameFilter?: string[],
-  ): Promise<GoogleReviews | null> => {
-    if (process.env.NODE_ENV === "development") return null;
-    if (!searchQuery) return null;
-    if (await rateLimitReached("google_reviews")) return null;
+export async function getGoogleReviews(
+  searchQuery: string,
+  nameFilter?: string[],
+): Promise<GoogleReviews | null> {
+  await connection();
+  if (!searchQuery) return null;
+  if (await rateLimitReached("google_reviews")) return null;
+  if (process.env.NODE_ENV === "development") return null;
 
-    const headers: Headers = new Headers();
-    headers.set("Accept", "application/json");
-    headers.set("Referer", "https://kevinloganelectrical.co.nz/");
-    headers.set("Content-Type", "application/json");
-    headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_MAPS_API_KEY}`);
-    headers.set(
-      "X-Goog-FieldMask",
-      "places.rating,places.userRatingCount,places.reviews",
-    );
+  const headers: Headers = new Headers();
+  headers.set("Accept", "application/json");
+  headers.set("Referer", "https://kevinloganelectrical.co.nz/");
+  headers.set("Content-Type", "application/json");
+  headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_MAPS_API_KEY}`);
+  headers.set(
+    "X-Goog-FieldMask",
+    "places.rating,places.userRatingCount,places.reviews",
+  );
 
-    const reviews: GoogleReviews | null = await fetch(
-      "https://places.googleapis.com/v1/places:searchText",
-      {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify({
-          textQuery: searchQuery,
-        }),
-      },
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        return {
-          reviews: parseReviews(data.places[0].reviews, nameFilter),
-          averageRating: data.places[0].rating,
-          totalReviewCount: data.places[0].userRatingCount,
-        };
-      })
-      .catch(() => null);
+  const reviews: GoogleReviews | null = await fetch(
+    "https://places.googleapis.com/v1/places:searchText",
+    {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        textQuery: searchQuery,
+      }),
+    },
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      return {
+        reviews: parseReviews(data.places[0].reviews, nameFilter),
+        averageRating: data.places[0].rating,
+        totalReviewCount: data.places[0].userRatingCount,
+      };
+    })
+    .catch(() => null);
 
-    return reviews;
-  },
-);
+  return reviews;
+}
