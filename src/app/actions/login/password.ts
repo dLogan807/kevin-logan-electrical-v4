@@ -14,8 +14,8 @@ export async function generateHashedPassword(
 }
 
 export async function verifyPasswordHash(
-  hash: string,
+  hashedPassword: string,
   password: string
 ): Promise<boolean> {
-  return await verify(hash, password);
+  return await verify(hashedPassword, password);
 }
