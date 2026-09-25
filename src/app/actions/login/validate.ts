@@ -9,7 +9,7 @@ import {
   UserDocument,
 } from "@/actions/mongodb/sessions/management";
 import { FormResponse, validateForm } from "@/actions/validate_form";
-import { FormType } from "@/utils/form_schemas/schemas";
+import { FormType } from "@/utils/schemas/form_schemas/schemas";
 import { setSessionTokenCookie } from "@/actions/mongodb/sessions/cookie";
 
 type SessionInfo = {

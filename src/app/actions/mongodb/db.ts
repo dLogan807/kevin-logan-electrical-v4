@@ -1,3 +1,4 @@
+import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 import {
   DeleteResult,
   Document,
@@ -14,7 +15,7 @@ import {
 class MongoDatabase {
   private static _instance: MongoDatabase;
 
-  private readonly _uri: string = `${process.env.MONGO_DB_URI}`;
+  private readonly _uri = getServerOnlyEnv().MONGO_DB_URI;
   private readonly _client: MongoClient = new MongoClient(this._uri, {
     serverApi: {
       version: ServerApiVersion.v1,

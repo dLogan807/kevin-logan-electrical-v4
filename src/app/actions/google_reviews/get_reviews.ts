@@ -1,6 +1,7 @@
 "use server";
 
 import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
+import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 
 export type GoogleReviews = {
   reviews: GoogleReview[];
@@ -106,7 +107,7 @@ export async function getGoogleReviews(
   headers.set("Accept", "application/json");
   headers.set("Referer", "https://kevinloganelectrical.co.nz/");
   headers.set("Content-Type", "application/json");
-  headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_PLACES_API_KEY}`);
+  headers.set("X-Goog-Api-Key", getServerOnlyEnv().GOOGLE_PLACES_API_KEY);
   headers.set(
     "X-Goog-FieldMask",
     "places.rating,places.userRatingCount,places.reviews",

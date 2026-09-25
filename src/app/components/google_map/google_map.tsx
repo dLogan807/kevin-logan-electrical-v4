@@ -3,11 +3,12 @@
 import { Box } from "@mantine/core";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 import classes from "./google_map.module.css";
+import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 
 export default async function GoogleMap({ query }: { query: string }) {
-  const mapApiKey = `${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
+  const mapApiKey = getServerOnlyEnv().GOOGLE_MAPS_API_KEY;
 
-  if (!query || !mapApiKey || process.env.NODE_ENV === "development") {
+  if (!query || process.env.NODE_ENV === "development") {
     return <Box className={classes.map}>Could not load map.</Box>;
   }
 

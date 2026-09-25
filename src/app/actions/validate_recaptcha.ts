@@ -1,5 +1,7 @@
 "use server";
 
+import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
+
 export type RecaptchaResponse = {
   success: boolean;
   score: number;
@@ -15,7 +17,7 @@ export async function verifyRecaptcha(
 ): Promise<boolean> {
   if (process.env.NODE_ENV === "development") return true;
 
-  const secretKey = `${process.env.RECAPTCHA_SECRET_KEY}`;
+  const secretKey = getServerOnlyEnv().RECAPTCHA_SECRET_KEY;
 
   //Token may have failed retrieval, but others are expected
   if (token === "") return true;
