@@ -1,7 +1,6 @@
 "use server";
 
 import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
-import { connection } from "next/server";
 
 export type GoogleReviews = {
   reviews: GoogleReview[];
@@ -99,7 +98,6 @@ export async function getGoogleReviews(
   searchQuery: string,
   nameFilter?: string[],
 ): Promise<GoogleReviews | null> {
-  await connection();
   if (!searchQuery) return null;
   if (process.env.NODE_ENV === "development") return null;
   if (await rateLimitReached("google_reviews")) return null;
