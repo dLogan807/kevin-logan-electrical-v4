@@ -1,2 +1,2 @@
 [build.environment]
-SECRETS_SCAN_OMIT_PATHS = ".next/cache/**"
+  SECRETS_SCAN_OMIT_PATHS = ".next/cache/**"
