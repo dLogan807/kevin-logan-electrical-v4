@@ -3,7 +3,6 @@
 import MongoDatabase from "@/actions/mongodb/db";
 import { RateLimitSchema } from "./schema";
 import { Document, Filter, UpdateFilter } from "mongodb";
-import { connection } from "next/server";
 
 interface RateLimitDocument {
   requestType: string;
@@ -15,8 +14,6 @@ const COLLECTION: string = "global_rate_limit";
 
 //Check and increment rate limit
 export async function rateLimitReached(requestType: string): Promise<boolean> {
-  await connection();
-
   const MAX_MONTLY_REQUESTS: number = 930;
   const DAYS_IN_MONTH: number = 31;
   const MAX_DAILY_REQUESTS: number = MAX_MONTLY_REQUESTS / DAYS_IN_MONTH;
