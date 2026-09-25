@@ -5,12 +5,10 @@ import {
 } from "@tabler/icons-react";
 import { Box, Button, Group, Rating, Text, ThemeIcon } from "@mantine/core";
 import Link from "next/link";
-import {
-  getGoogleReviews,
-  GoogleReviews,
-} from "@/actions/google_reviews/get_reviews";
+import { getGoogleReviews } from "@/actions/google_reviews/get_reviews";
 import GoogleReviewCarousel from "./google_review_carousel";
 import classes from "./google_review_container.module.css";
+import { connection } from "next/server";
 
 function ReviewButton() {
   return (
@@ -28,15 +26,6 @@ function ReviewButton() {
   );
 }
 
-function NoReviewsPrompt() {
-  return (
-    <Group className={classes.no_reviews_prompt}>
-      <Text>Had work done? Consider leaving a review!</Text>
-      <ReviewButton />
-    </Group>
-  );
-}
-
 export default async function GoogleReviewContainer({
   query,
   nameFilter,
@@ -44,12 +33,18 @@ export default async function GoogleReviewContainer({
   query: string;
   nameFilter: string[];
 }) {
-  const googleReviews: GoogleReviews | null = query
+  await connection();
+  const googleReviews = query
     ? await getGoogleReviews(query, nameFilter)
     : null;
 
   if (!googleReviews?.reviews || googleReviews.totalReviewCount === 0) {
-    return <NoReviewsPrompt />;
+    return (
+      <Group className={classes.no_reviews_prompt}>
+        <Text>Had work done? Consider leaving a review!</Text>
+        <ReviewButton />
+      </Group>
+    );
   }
 
   return (

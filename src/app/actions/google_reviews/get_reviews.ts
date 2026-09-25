@@ -1,7 +1,7 @@
 "use server";
 
-import { cache } from "react";
 import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
+import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 
 export type GoogleReviews = {
   reviews: GoogleReview[];
@@ -95,45 +95,46 @@ function parseReviews(
 }
 
 //Get reviews from Google Places API
-export const getGoogleReviews = cache(
-  async (
-    searchQuery: string,
-    nameFilter?: string[],
-  ): Promise<GoogleReviews | null> => {
-    if (process.env.NODE_ENV === "development") return null;
-    if (!searchQuery) return null;
-    if (await rateLimitReached("google_reviews")) return null;
+export async function getGoogleReviews(
+  searchQuery: string,
+  nameFilter?: string[],
+): Promise<GoogleReviews | null> {
+  if (!searchQuery) return null;
+  if (process.env.NODE_ENV === "development") return null;
+  if (await rateLimitReached("google_reviews")) return null;
 
-    const headers: Headers = new Headers();
-    headers.set("Accept", "application/json");
-    headers.set("Referer", "https://kevinloganelectrical.co.nz/");
-    headers.set("Content-Type", "application/json");
-    headers.set("X-Goog-Api-Key", `${process.env.GOOGLE_PLACES_API_KEY}`);
-    headers.set(
-      "X-Goog-FieldMask",
-      "places.rating,places.userRatingCount,places.reviews",
-    );
+  const placesApiKey = getServerOnlyEnv().GOOGLE_PLACES_API_KEY;
+  if (!placesApiKey) return null;
 
-    const reviews: GoogleReviews | null = await fetch(
-      "https://places.googleapis.com/v1/places:searchText",
-      {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify({
-          textQuery: searchQuery,
-        }),
-      },
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        return {
-          reviews: parseReviews(data.places[0].reviews, nameFilter),
-          averageRating: data.places[0].rating,
-          totalReviewCount: data.places[0].userRatingCount,
-        };
-      })
-      .catch(() => null);
+  const headers: Headers = new Headers();
+  headers.set("Accept", "application/json");
+  headers.set("Referer", "https://kevinloganelectrical.co.nz/");
+  headers.set("Content-Type", "application/json");
+  headers.set("X-Goog-Api-Key", placesApiKey);
+  headers.set(
+    "X-Goog-FieldMask",
+    "places.rating,places.userRatingCount,places.reviews",
+  );
 
-    return reviews;
-  },
-);
+  const reviews: GoogleReviews | null = await fetch(
+    "https://places.googleapis.com/v1/places:searchText",
+    {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        textQuery: searchQuery,
+      }),
+    },
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      return {
+        reviews: parseReviews(data.places[0].reviews, nameFilter),
+        averageRating: data.places[0].rating,
+        totalReviewCount: data.places[0].userRatingCount,
+      };
+    })
+    .catch(() => null);
+
+  return reviews;
+}

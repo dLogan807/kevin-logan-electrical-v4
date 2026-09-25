@@ -1,39 +1,40 @@
-"use client";
-
-import { ActionIcon, Tooltip, useMantineColorScheme } from "@mantine/core";
-import { useColorScheme } from "@mantine/hooks";
+import {
+  ActionIcon,
+  Tooltip,
+  useComputedColorScheme,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
 import classes from "./theme_selector.module.css";
 
-//Icon for switching between light or dark theme
 export function ThemeSelector() {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-  const autoCurrentColorScheme: boolean = useColorScheme() === "dark";
-  const currentColorScheme: boolean = colorScheme === "dark";
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme("dark", {
+    getInitialValueInEffect: true,
+  });
+  const toggleColorScheme = () => {
+    setColorScheme(computedColorScheme === "dark" ? "light" : "dark");
+  };
 
-  const isDark =
-    colorScheme === "auto" ? autoCurrentColorScheme : currentColorScheme;
-
-  const tooltipText = isDark ? "Light theme" : "Dark theme";
+  const isDarkTheme = computedColorScheme === "dark";
+  const tooltipText = `Switch to ${isDarkTheme ? "light" : "dark"} theme`;
 
   return (
-    <Tooltip label={tooltipText}>
+    <Tooltip
+      label={tooltipText}
+      events={{ hover: true, focus: true, touch: false }}
+    >
       <ActionIcon
         className={classes.icon_container}
-        onClick={() => toggleColorScheme()}
-        aria-label="Toggle color theme"
+        onClick={toggleColorScheme}
+        aria-label={tooltipText}
       >
-        <ThemeIcon isDark={isDark} />
+        {isDarkTheme ? (
+          <IconSun aria-hidden="true" className={classes.icon} />
+        ) : (
+          <IconMoonStars aria-hidden="true" className={classes.icon} />
+        )}
       </ActionIcon>
     </Tooltip>
-  );
-}
-
-//Return a sun or moon icon depending on scheme
-function ThemeIcon({ isDark = true }: { isDark: boolean }) {
-  return isDark ? (
-    <IconSun aria-label="Sun" className={classes.icon} />
-  ) : (
-    <IconMoonStars aria-label="Moon and stars" className={classes.icon} />
   );
 }

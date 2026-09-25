@@ -6,7 +6,6 @@ import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
 import { theme } from "@/components/theme";
 import { Pages } from "@/components/layout/pages";
-import { unstable_cache } from "next/cache";
 import { AboutUsContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
@@ -17,19 +16,10 @@ export const metadata: Metadata = {
     "Find out more about Kevin Logan Electrical. Serving the North Shore community since 1992 and proud to be your local electrician of choice.",
 };
 
-//Cache page content for 5 days
-const getCachedPageContent = unstable_cache(
-  async (): Promise<AboutUsContent> => {
-    return await getPageContent(Pages.AboutUs);
-  },
-  [Pages.AboutUs],
-  { revalidate: 432000, tags: [Pages.AboutUs] }
-);
-
 export default async function AboutUs() {
   const mainSection = "main_section";
 
-  const content: AboutUsContent = await getCachedPageContent();
+  const content = await getPageContent<AboutUsContent>(Pages.AboutUs);
 
   return (
     <Box className={`${classes.about_grid} content_grid`}>

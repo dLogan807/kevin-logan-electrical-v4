@@ -1,23 +1,22 @@
 "use client";
 
-import { Group, Stack, Burger, ActionIcon, Overlay } from "@mantine/core";
+import { Group, Stack, Burger, Overlay } from "@mantine/core";
 import { useDisclosure, useMediaQuery, useWindowEvent } from "@mantine/hooks";
 import logo from "@/assets/logo.webp";
 import Image from "next/image";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import {
   Icon,
   IconHome,
   IconInfoSquare,
-  IconLoader2,
   IconPhoneCall,
   IconPlugConnected,
 } from "@tabler/icons-react";
 import { Pages } from "@/components/layout/pages";
 import classes from "./navbar.module.css";
 import { theme } from "@/components/theme";
+import { ThemeSelector } from "../theme_selector/theme_selector";
 
 //Return the index of the currently navigated route
 function getRoute(path: string): Pages | undefined {
@@ -41,23 +40,6 @@ interface ILink {
   icon: Icon;
   value: Pages;
 }
-
-//Load theme icon lazily
-const DynamicThemeSelector = dynamic(
-  () =>
-    import("../theme_selector/theme_selector").then((mod) => mod.ThemeSelector),
-  {
-    ssr: false,
-    loading: () => (
-      <ActionIcon
-        className={classes.theme_icon_loading}
-        aria-label="Toggle color theme"
-      >
-        <IconLoader2 />
-      </ActionIcon>
-    ),
-  },
-);
 
 const linkData: ILink[] = [
   { link: "/", label: "Home", icon: IconHome, value: Pages.Home },
@@ -137,7 +119,7 @@ export function Navbar() {
           <div
             className={`
               ${classes.navbar}
-              ${mobileNavOpened ? classes.navbar_open : ""}`}
+              ${mobileNavOpened ? classes.navbar_open : undefined}`}
           >
             <Group>{links}</Group>
             <Stack>{links}</Stack>
@@ -146,7 +128,7 @@ export function Navbar() {
         </nav>
 
         <div className={classes.inner_end}>
-          <DynamicThemeSelector />
+          <ThemeSelector />
           <Burger
             opened={mobileNavOpened}
             onClick={toggle}

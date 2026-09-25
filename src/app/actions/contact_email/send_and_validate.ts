@@ -1,10 +1,11 @@
 "use server";
 
 import { FormResponse, validateForm } from "@/actions/validate_form";
-import { FormType } from "@/utils/form_schemas/schemas";
+import { FormType } from "@/utils/schemas/form_schemas/schemas";
 import { ContactFormData } from "@/components/contact_form/contact_form";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
+import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 
 export type ContactFormResponse = FormResponse & {
   sendSuccess: boolean;
@@ -50,12 +51,12 @@ async function sendContactEmail(fields: ContactFormData): Promise<boolean> {
 
   //Specify transport options
   const transport = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
+    host: getServerOnlyEnv().EMAIL_HOST,
     port: 587,
     secure: false,
     auth: {
-      user: process.env.EMAIL_ADDRESS,
-      pass: process.env.EMAIL_PASSWORD,
+      user: getServerOnlyEnv().EMAIL_ADDRESS,
+      pass: getServerOnlyEnv().EMAIL_PASSWORD,
     },
     requireTLS: true,
   });

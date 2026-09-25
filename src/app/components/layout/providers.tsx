@@ -1,12 +1,13 @@
 "use client";
 
 import { ReactNode } from "react";
-import { MantineProvider } from "@mantine/core";
-import { ColorScheme, ColorSchemeProvider } from "@mantine/styles";
-import { useLocalStorage } from "@mantine/hooks";
+import {
+  ColorSchemeScript,
+  localStorageColorSchemeManager,
+  MantineProvider,
+} from "@mantine/core";
 import { theme } from "@/components/theme";
 
-//Overarching Mantine providers
 export function Providers({
   children,
   nonce,
@@ -14,28 +15,21 @@ export function Providers({
   children: ReactNode;
   nonce: string;
 }) {
-  //Set theme in local store
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+  const colorSchemeManager = localStorageColorSchemeManager({
     key: "kle-colour-scheme",
-    defaultValue: "dark",
-    getInitialValueInEffect: true,
   });
 
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
-
   return (
-    <ColorSchemeProvider
-      colorScheme={colorScheme}
-      toggleColorScheme={toggleColorScheme}
-    >
+    <>
+      <ColorSchemeScript defaultColorScheme="auto" nonce={nonce} />
       <MantineProvider
         theme={theme}
         defaultColorScheme="auto"
+        colorSchemeManager={colorSchemeManager}
         getStyleNonce={() => nonce}
       >
         {children}
       </MantineProvider>
-    </ColorSchemeProvider>
+    </>
   );
 }

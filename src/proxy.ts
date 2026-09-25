@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 export const config = {
   matcher: [
     /*
@@ -27,9 +29,13 @@ export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const cspHeader = `
     default-src 'self';
-    script-src https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ 'self' 'nonce-${nonce}' 'strict-dynamic' ${
-      process.env.NODE_ENV === "production" ? "" : `'unsafe-eval'`
-    };
+    script-src 
+      'self'
+      'nonce-${nonce}'
+      'strict-dynamic'
+      ${isDevelopment ? "'unsafe-eval'" : ''}
+      https://www.google.com/recaptcha/
+      https://www.gstatic.com/recaptcha/;
     connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data:;

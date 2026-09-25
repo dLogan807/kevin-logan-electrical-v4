@@ -19,8 +19,8 @@ import {
   ContactUsFallback,
   ContactUsContent,
 } from "@/actions/mongodb/pages/fallback_content";
-import { cache } from "react";
 import { getCurrentSession } from "../sessions/cookie";
+import { cacheTag } from "next/cache";
 
 interface PageDocument<T extends PageContent> {
   page_content: T;
@@ -57,15 +57,18 @@ function getPageFallbackContent<T extends PageContent>(page: Pages): T {
 }
 
 //Cached page content retrieval
-export const getPageContent = cache(
-  async <T extends PageContent>(page: Pages): Promise<T> => {
-    const contentDocument = await new PageManager().getPageDocument<T>(page);
+export async function getPageContent<T extends PageContent>(
+  page: Pages,
+): Promise<T> {
+  "use cache";
+  cacheTag(page);
 
-    const fallbackContent = getPageFallbackContent<T>(page);
+  const contentDocument = await new PageManager().getPageDocument<T>(page);
 
-    return contentDocument?.page_content ?? fallbackContent;
-  },
-);
+  const fallbackContent = getPageFallbackContent<T>(page);
+
+  return contentDocument?.page_content ?? fallbackContent;
+}
 
 //Update (add) latest page content
 export async function addPageDocument(

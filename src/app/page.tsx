@@ -17,7 +17,6 @@ import { theme } from "@/components/theme";
 import GoogleMap from "./components/google_map/google_map";
 import GoogleReviewContainer from "./components/google_reviews/google_review_container";
 import { Pages } from "./components/layout/pages";
-import { unstable_cache } from "next/cache";
 import { HomeContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "./actions/mongodb/pages/management";
 import { Suspense } from "react";
@@ -30,19 +29,10 @@ export const metadata: Metadata = {
     "Kevin Logan Electrical — providing the North Shore with a quality electrical service for over 30 years.",
 };
 
-//Cache page content for 5 days
-const getCachedPageContent = unstable_cache(
-  async (): Promise<HomeContent> => {
-    return await getPageContent(Pages.Home);
-  },
-  [Pages.Home],
-  { revalidate: 432000, tags: [Pages.Home] }
-);
-
 export default async function Home() {
   const mainSection = "main_section";
 
-  const content: HomeContent = await getCachedPageContent();
+  const content = await getPageContent<HomeContent>(Pages.Home);
 
   return (
     <Suspense fallback={<HomeLoading />}>
