@@ -8,7 +8,7 @@ import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 export default async function GoogleMap({ query }: { query: string }) {
   const mapApiKey = getServerOnlyEnv().GOOGLE_MAPS_API_KEY;
 
-  if (!query || process.env.NODE_ENV === "development") {
+  if (!query || !mapApiKey || process.env.NODE_ENV === "development") {
     return <Box className={classes.map}>Could not load map.</Box>;
   }
 

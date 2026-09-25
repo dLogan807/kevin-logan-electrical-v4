@@ -17,8 +17,8 @@ export type ServerOnlyEnv = {
   EMAIL_ADDRESS: string;
   EMAIL_PASSWORD: string;
   RECAPTCHA_SECRET_KEY: string;
-  GOOGLE_PLACES_API_KEY: string;
-  GOOGLE_MAPS_API_KEY: string;
+  GOOGLE_PLACES_API_KEY?: string;
+  GOOGLE_MAPS_API_KEY?: string;
   MONGO_DB_URI: string;
 };
 

@@ -103,11 +103,14 @@ export async function getGoogleReviews(
   if (process.env.NODE_ENV === "development") return null;
   if (await rateLimitReached("google_reviews")) return null;
 
+  const placesApiKey = getServerOnlyEnv().GOOGLE_PLACES_API_KEY;
+  if (!placesApiKey) return null;
+
   const headers: Headers = new Headers();
   headers.set("Accept", "application/json");
   headers.set("Referer", "https://kevinloganelectrical.co.nz/");
   headers.set("Content-Type", "application/json");
-  headers.set("X-Goog-Api-Key", getServerOnlyEnv().GOOGLE_PLACES_API_KEY);
+  headers.set("X-Goog-Api-Key", placesApiKey);
   headers.set(
     "X-Goog-FieldMask",
     "places.rating,places.userRatingCount,places.reviews",
