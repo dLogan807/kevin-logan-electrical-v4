@@ -1,38 +1,32 @@
 import "server-only";
 
+import { z } from "zod";
 import { serverOnlyEnvSchema } from "./schemas/server_only_env_schema";
 
-const ENV_KEYS = [
-  "EMAIL_HOST",
-  "EMAIL_ADDRESS",
-  "EMAIL_PASSWORD",
-  "RECAPTCHA_SECRET_KEY",
-  "GOOGLE_PLACES_API_KEY",
-  "GOOGLE_MAPS_API_KEY",
-  "MONGO_DB_URI",
-];
+enum ServerOnlyEnv {
+  EMAIL_HOST = "EMAIL_HOST",
+  EMAIL_ADDRESS = "EMAIL_ADDRESS",
+  EMAIL_PASSWORD = "EMAIL_PASSWORD",
+  RECAPTCHA_SECRET_KEY = "RECAPTCHA_SECRET_KEY",
+  GOOGLE_PLACES_API_KEY = "GOOGLE_PLACES_API_KEY",
+  MONGO_DB_URI = "MONGO_DB_URI",
+}
 
-export type ServerOnlyEnv = {
-  EMAIL_HOST: string;
-  EMAIL_ADDRESS: string;
-  EMAIL_PASSWORD: string;
-  RECAPTCHA_SECRET_KEY: string;
-  GOOGLE_PLACES_API_KEY?: string;
-  GOOGLE_MAPS_API_KEY?: string;
-  MONGO_DB_URI: string;
-};
+let cached: z.infer<typeof serverOnlyEnvSchema> | undefined;
 
-let cached: ServerOnlyEnv | undefined;
-
-export function getServerOnlyEnv(): ServerOnlyEnv {
-  if (cached) {
-    return cached;
+export function getServerOnlyEnv() {
+  if (!cached) {
+    cached = serverOnlyEnvSchema.parse({
+      EMAIL_HOST: globalThis.process.env[ServerOnlyEnv.EMAIL_HOST],
+      EMAIL_ADDRESS: globalThis.process.env[ServerOnlyEnv.EMAIL_ADDRESS],
+      EMAIL_PASSWORD: globalThis.process.env[ServerOnlyEnv.EMAIL_PASSWORD],
+      RECAPTCHA_SECRET_KEY:
+        globalThis.process.env[ServerOnlyEnv.RECAPTCHA_SECRET_KEY],
+      GOOGLE_PLACES_API_KEY:
+        globalThis.process.env[ServerOnlyEnv.GOOGLE_PLACES_API_KEY],
+      MONGO_DB_URI: globalThis.process.env[ServerOnlyEnv.MONGO_DB_URI],
+    });
   }
 
-  const source = Object.fromEntries(
-    ENV_KEYS.map((key) => [key, globalThis.process.env[key]]),
-  );
-
-  cached = serverOnlyEnvSchema.parse(source);
   return cached;
 }

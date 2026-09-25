@@ -1,3 +1,5 @@
+"server-only";
+
 import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 import {
   DeleteResult,

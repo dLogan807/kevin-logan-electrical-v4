@@ -11,6 +11,5 @@ export const serverOnlyEnvSchema = z.object({
   EMAIL_PASSWORD: z.string().min(1),
   RECAPTCHA_SECRET_KEY: z.string().min(1),
   GOOGLE_PLACES_API_KEY: optionalEnvString,
-  GOOGLE_MAPS_API_KEY: optionalEnvString,
   MONGO_DB_URI: z.string().min(1),
 });
