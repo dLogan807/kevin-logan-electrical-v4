@@ -101,8 +101,8 @@ export async function getGoogleReviews(
 ): Promise<GoogleReviews | null> {
   await connection();
   if (!searchQuery) return null;
-  if (await rateLimitReached("google_reviews")) return null;
   if (process.env.NODE_ENV === "development") return null;
+  if (await rateLimitReached("google_reviews")) return null;
 
   const headers: Headers = new Headers();
   headers.set("Accept", "application/json");
