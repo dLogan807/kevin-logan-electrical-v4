@@ -1,4 +1,6 @@
-import { Box } from "@mantine/core";
+"use client";
+
+import { Box, Center } from "@mantine/core";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 import classes from "./google_map.module.css";
 
@@ -6,7 +8,7 @@ export default function GoogleMap({ query }: { query: string }) {
   const mapApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   if (!query || !mapApiKey || process.env.NODE_ENV === "development") {
-    return <Box className={classes.map}>Could not load map.</Box>;
+    return <Center className={classes.map}>Could not load map.</Center>;
   }
 
   return (
