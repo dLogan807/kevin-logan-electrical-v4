@@ -20,7 +20,7 @@ import {
   ContactUsContent,
 } from "@/actions/mongodb/pages/fallback_content";
 import { getCurrentSession } from "../sessions/cookie";
-import { cacheTag } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 interface PageDocument<T extends PageContent> {
   page_content: T;
@@ -62,6 +62,7 @@ export async function getPageContent<T extends PageContent>(
 ): Promise<T> {
   "use cache";
   cacheTag(page);
+  cacheLife("weeks");
 
   const contentDocument = await new PageManager().getPageDocument<T>(page);
 
