@@ -53,7 +53,9 @@ function getFormattedDate(utcDateString: string): string {
     }).format(new Date(utcDateString));
   } catch {
     formattedDate = "Unknown date";
-    console.warn("Unable to convert review date to local time.");
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Unable to convert review date to local time.");
+    }
   }
 
   return formattedDate;
