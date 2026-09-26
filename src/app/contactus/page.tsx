@@ -55,19 +55,15 @@ export default async function ContactUs() {
 
   const content = await getPageContent<ContactUsContent>(Pages.ContactUs);
 
-  const mapIcon: ReactElement = (
+  const mapIcon = (
     <ListIcon icon={<IconMapPin aria-label="Location marker" />} />
   );
-  const phoneIcon: ReactElement = (
-    <ListIcon icon={<IconPhone aria-label="Phone" />} />
-  );
-  const mobilePhoneIcon: ReactElement = (
+  const phoneIcon = <ListIcon icon={<IconPhone aria-label="Phone" />} />;
+  const mobilePhoneIcon = (
     <ListIcon icon={<IconDeviceMobile aria-label="Mobile phone" />} />
   );
-  const emailIcon: ReactElement = (
-    <ListIcon icon={<IconMail aria-label="Email" />} />
-  );
-  const serviceHoursIcon: ReactElement = (
+  const emailIcon = <ListIcon icon={<IconMail aria-label="Email" />} />;
+  const serviceHoursIcon = (
     <ListIcon icon={<IconClockHour2 aria-label="Service hours" />} />
   );
 
