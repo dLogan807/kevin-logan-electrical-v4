@@ -1,11 +1,10 @@
-import { ReactNode, Suspense } from "react";
+import { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Box, mantineHtmlProps, Paper } from "@mantine/core";
+import { Box, ColorSchemeScript, mantineHtmlProps, Paper } from "@mantine/core";
 import { headers } from "next/headers";
 import { Providers } from "./components/layout/providers";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
-import { connection } from "next/server";
 import classes from "./layout.module.css";
 import "./globals.css";
 import { Footer } from "./components/layout/footer";
@@ -33,29 +32,28 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  await connection();
   const nonce = (await headers()).get("x-nonce") || "";
 
   return (
     <html lang="en" {...mantineHtmlProps}>
-      <head />
+      <head>
+        <ColorSchemeScript defaultColorScheme="auto" nonce={nonce} />
+      </head>
       <body className={classes.body}>
-        <Suspense>
-          <Providers nonce={nonce}>
-            <Box className={classes.grid}>
-              <Box></Box>
-              <Paper className={classes.nav_container}>
-                <Navbar />
-              </Paper>
-              <Box></Box>
-              <Box></Box>
-              <Box className={classes.content_container}>
-                {children}
-                <Footer />
-              </Box>
+        <Providers nonce={nonce}>
+          <Box className={classes.grid}>
+            <Box></Box>
+            <Paper className={classes.nav_container}>
+              <Navbar />
+            </Paper>
+            <Box></Box>
+            <Box></Box>
+            <Box className={classes.content_container}>
+              {children}
+              <Footer />
             </Box>
-          </Providers>
-        </Suspense>
+          </Box>
+        </Providers>
       </body>
     </html>
   );
