@@ -1,7 +1,7 @@
 "use server";
 
 import MongoDatabase from "../db";
-import { Pages } from "@/components/layout/pages";
+import { Pages } from "@/enums/pages";
 import {
   HomeMongoSchema,
   AboutUsMongoSchema,

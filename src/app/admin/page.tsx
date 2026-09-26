@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Box, Paper } from "@mantine/core";
-import { Pages } from "@/components/layout/pages";
+import { Pages } from "@/enums/pages";
 import { getCurrentSession } from "@/actions/mongodb/sessions/cookie";
 import { getStoredPageContent } from "@/actions/mongodb/pages/management";
 import PageFormSelector from "@/components/admin/page_form_selector";

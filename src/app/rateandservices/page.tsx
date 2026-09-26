@@ -2,7 +2,7 @@ import { Box, Group, Paper, Stack, Text } from "@mantine/core";
 import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
 import { ServicesCard } from "@/components/services_card/services_card";
-import { Pages } from "@/components/layout/pages";
+import { Pages } from "@/enums/pages";
 import { RateAndServicesContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
