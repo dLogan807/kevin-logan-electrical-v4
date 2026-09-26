@@ -2,6 +2,7 @@
 
 import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
 import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
+import { cacheLife, cacheTag } from "next/cache";
 
 export type GoogleReviews = {
   reviews: GoogleReview[];
@@ -99,6 +100,10 @@ export async function getGoogleReviews(
   searchQuery: string,
   nameFilter?: string[],
 ): Promise<GoogleReviews | null> {
+  "use cache";
+  cacheTag("google_reviews");
+  cacheLife("hours");
+
   if (!searchQuery) return null;
   if (process.env.NODE_ENV === "development") return null;
   if (await rateLimitReached("google_reviews")) return null;

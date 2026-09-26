@@ -8,7 +8,6 @@ import Link from "next/link";
 import { getGoogleReviews } from "@/actions/google_reviews/get_reviews";
 import GoogleReviewCarousel from "./google_review_carousel";
 import classes from "./google_review_container.module.css";
-import { connection } from "next/server";
 
 function ReviewButton() {
   return (
@@ -33,7 +32,6 @@ export default async function GoogleReviewContainer({
   query: string;
   nameFilter: string[];
 }) {
-  await connection();
   const googleReviews = query
     ? await getGoogleReviews(query, nameFilter)
     : null;
