@@ -26,9 +26,7 @@ export default async function Login() {
   const { session } = await getCurrentSession();
   if (session !== null) return redirect("/admin");
 
-  const nonce: string = await headers()
-    .then((headers) => headers.get("x-nonce"))
-    .then((rawNonce) => rawNonce ?? "");
+  const nonce = (await headers()).get("x-nonce") || "";
 
   return (
     <ReCaptchaProvider
