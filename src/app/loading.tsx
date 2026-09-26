@@ -1,7 +1,7 @@
 import { Box, Skeleton } from "@mantine/core";
-import classes from "./home_loading.module.css";
+import classes from "./loading.module.css";
 
-export default function HomeLoading() {
+export default async function Loading() {
   const mainSection = "main_section";
 
   return (
