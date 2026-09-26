@@ -47,19 +47,19 @@ export default async function RateAndServices() {
               headerIcon={<IconBulb />}
               headerText={"Interior"}
               listItems={content.services.categories.interior}
-            ></ServicesCard>
+            />
             <ServicesCard
               headerIcon={<IconSun />}
               headerText={"Exterior"}
               listItems={content.services.categories.exterior}
-            ></ServicesCard>
+            />
             <ServicesCard
               headerIcon={<IconTool />}
               headerText={"Renovations & Maintenance"}
               listItems={
                 content.services.categories.renovations_and_maintenance
               }
-            ></ServicesCard>
+            />
           </Group>
         </Stack>
       </Paper>
