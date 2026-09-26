@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
+const isDevelopment = process.env.NODE_ENV !== "production";
+const isProduction = process.env.NODE_ENV === "production";
 
 export const config = {
   matcher: [
@@ -33,7 +34,7 @@ export function proxy(request: NextRequest) {
       'self'
       'nonce-${nonce}'
       'strict-dynamic'
-      ${isDevelopment ? "'unsafe-eval'" : ''}
+      ${isDevelopment ? "'unsafe-eval'" : ""}
       https://www.google.com/recaptcha/
       https://www.gstatic.com/recaptcha/;
     connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/;
@@ -48,55 +49,24 @@ export function proxy(request: NextRequest) {
     upgrade-insecure-requests;
 `;
   //Replace newline characters and spaces
-  const contentSecurityPolicyHeaderValue = cspHeader
-    .replace(/\s{2,}/g, " ")
-    .trim();
+  const cspHeaderValue = cspHeader.replace(/\s{2,}/g, " ").trim();
 
-  // Redirect URLs with multiple slashes to fix browser replaceState SecurityError when deployed
-  const pathname = request.nextUrl.pathname;
-  const normalizedPath = normalizePathname(pathname);
-  if (pathname !== normalizedPath) {
-    const url = request.nextUrl.clone();
-    url.pathname = normalizedPath;
-    const redirectResponse = NextResponse.redirect(url, 308);
-    redirectResponse.headers.set(
-      "Content-Security-Policy",
-      contentSecurityPolicyHeaderValue,
-    );
-    return redirectResponse;
-  }
+  sanitiseUrlPath(request, cspHeaderValue);
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
-  requestHeaders.set(
-    "Content-Security-Policy",
-    contentSecurityPolicyHeaderValue,
-  );
+  requestHeaders.set("Content-Security-Policy", cspHeaderValue);
 
   const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
-  response.headers.set(
-    "Content-Security-Policy",
-    contentSecurityPolicyHeaderValue,
-  );
+  response.headers.set("Content-Security-Policy", cspHeaderValue);
 
-  //Session cookie extension
   if (request.method === "GET") {
-    const token = request.cookies.get("session")?.value ?? null;
-    if (token !== null) {
-      // Only extend cookie expiration on GET requests since we can be sure
-      // a new session wasn't set when handling the request.
-      response.cookies.set("session", token, {
-        path: "/",
-        maxAge: 60 * 60 * 24 * 30,
-        sameSite: "lax",
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-      });
-    }
+    extendSessionCookie(request, response);
+
     return response;
   }
 
@@ -107,10 +77,7 @@ export function proxy(request: NextRequest) {
     const forbiddenResponse = new NextResponse(null, {
       status: 403,
     });
-    forbiddenResponse.headers.set(
-      "Content-Security-Policy",
-      contentSecurityPolicyHeaderValue,
-    );
+    forbiddenResponse.headers.set("Content-Security-Policy", cspHeaderValue);
 
     if (originHeader === null || hostHeader === null) {
       return forbiddenResponse;
@@ -129,4 +96,36 @@ export function proxy(request: NextRequest) {
   }
 
   return response;
+}
+
+// Redirect URLs with multiple slashes to fix browser replaceState SecurityError when deployed
+function sanitiseUrlPath(request: NextRequest, cspHeaderValue: string) {
+  const pathname = request.nextUrl.pathname;
+  const normalizedPath = normalizePathname(pathname);
+
+  if (pathname !== normalizedPath) {
+    const url = request.nextUrl.clone();
+    url.pathname = normalizedPath;
+    const redirectResponse = NextResponse.redirect(url, 308);
+    redirectResponse.headers.set("Content-Security-Policy", cspHeaderValue);
+    return redirectResponse;
+  }
+}
+
+function extendSessionCookie(
+  request: NextRequest,
+  response: NextResponse<unknown>,
+) {
+  const token = request.cookies.get("session")?.value ?? null;
+  if (token !== null) {
+    // Only extend cookie expiration on GET requests since we can be sure
+    // a new session wasn't set when handling the request.
+    response.cookies.set("session", token, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+      sameSite: "lax",
+      httpOnly: true,
+      secure: isProduction,
+    });
+  }
 }
