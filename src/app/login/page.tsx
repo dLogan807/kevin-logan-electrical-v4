@@ -1,4 +1,3 @@
-import React from "react";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import { Box, Paper } from "@mantine/core";
