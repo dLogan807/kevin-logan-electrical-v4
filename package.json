@@ -1,6 +1,6 @@
 {
   "name": "kevin-logan-electrial-v4",
-  "version": "1.4.3",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -51,5 +51,8 @@
   },
   "engines": {
     "node": ">=26.10.0"
+  },
+  "allowScripts": {
+    "unrs-resolver@1.12.2": true
   }
 }
