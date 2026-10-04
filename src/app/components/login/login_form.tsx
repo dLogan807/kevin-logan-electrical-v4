@@ -84,6 +84,13 @@ export default function LoginForm({ loggedOut }: LoginFormProps) {
     e.preventDefault();
     if (isSubmitting) return;
 
+    // Fix Firefox autofill
+    const data = new FormData(e.currentTarget);
+    form.setValues({
+      username: String(data.get("username") ?? ""),
+      password: String(data.get("password") ?? ""),
+    });
+
     const { hasErrors } = form.validate();
     if (hasErrors) return;
 
