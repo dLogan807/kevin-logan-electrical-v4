@@ -1,11 +1,8 @@
 import { Metadata } from "next";
 import { headers } from "next/headers";
-import { Box, Paper } from "@mantine/core";
-import { ReCaptchaProvider } from "next-recaptcha-v3";
-import LoginForm from "../components/login/login_form";
 import { getCurrentSession } from "@/actions/mongodb/sessions/cookie";
-import classes from "./page.module.css";
 import { redirect } from "next/navigation";
+import LoginClient from "@/components/routeClients/LoginClient/LoginClient";
 
 export const metadata: Metadata = {
   title: "Login | Kevin Logan Electrical - Your Trusted Electrician",
@@ -22,24 +19,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Login() {
+export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const { session } = await getCurrentSession();
   if (session !== null) return redirect("/admin");
 
-  const nonce = (await headers()).get("x-nonce") || "";
+  const [{ logout }, requestHeaders] = await Promise.all([
+    searchParams,
+    headers(),
+  ]);
+  const nonce = requestHeaders.get("x-nonce") || "";
 
-  return (
-    <ReCaptchaProvider
-      className={classes.recaptcha}
-      nonce={nonce}
-      strategy="lazyOnload"
-    >
-      <Box className={"content_grid"}>
-        <Paper className={"main_section"} withBorder>
-          <h1 className={classes.heading}>Login</h1>
-          <LoginForm />
-        </Paper>
-      </Box>
-    </ReCaptchaProvider>
-  );
+  return <LoginClient nonce={nonce} loggedOut={logout !== undefined} />;
 }
