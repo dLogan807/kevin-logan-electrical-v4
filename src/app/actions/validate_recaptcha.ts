@@ -8,7 +8,7 @@ export type RecaptchaResponse = {
   action: string;
   challenge_ts: string;
   hostname: string;
-  errorCodes: string[];
+  "error-codes"?: string[];
 };
 
 export async function verifyRecaptcha(
@@ -19,24 +19,22 @@ export async function verifyRecaptcha(
 
   const secretKey = getServerOnlyEnv().RECAPTCHA_SECRET_KEY;
 
-  //Token may have failed retrieval, but others are expected
-  if (token === "") return true;
-  if (!action || !secretKey) return false;
+  if (!token || !action || !secretKey) return false;
 
-  const response: RecaptchaResponse = await fetch(
-    `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`,
-  )
-    .then((res) => res.json())
-    .catch(() => ({
-      success: true,
-      score: 0.9,
-      action: action,
-      challenge_ts: "",
-      hostname: "",
-      errorCodes: [],
-    }));
+  let data: RecaptchaResponse;
+  try {
+    const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      cache: "no-store",
+      body: new URLSearchParams({ secret: secretKey, response: token }),
+    });
 
-  return (
-    response?.success && response.score > 0.5 && response.action === action
-  );
+    if (!res.ok) return false;
+
+    data = await res.json();
+  } catch {
+    return false;
+  }
+
+  return data.success && data.score > 0.5 && data.action === action;
 }
