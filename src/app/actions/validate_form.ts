@@ -6,7 +6,7 @@ import {
   FormType,
   FormValues,
   getFormSchema,
-} from "@/utils/form_schemas/schemas";
+} from "@/utils/schemas/form_schemas/schemas";
 
 export type FormResponse = {
   validated: boolean;

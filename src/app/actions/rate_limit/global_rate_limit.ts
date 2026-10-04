@@ -48,7 +48,7 @@ export async function rateLimitReached(requestType: string): Promise<boolean> {
   }
 
   //Reset is due
-  const currentDate = new Date(Date.now());
+  const currentDate = new Date();
   if (currentDate > rateDocument.resetDate) {
     await reset(requestType);
 
@@ -98,7 +98,7 @@ async function reset(requestType: string): Promise<boolean> {
 
 //Returns the date-time a day from now
 function getDateInOneDay(): Date {
-  const date: Date = new Date(Date.now());
+  const date = new Date();
   date.setDate(date.getDate() + 1);
 
   return date;

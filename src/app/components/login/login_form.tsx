@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, ReactElement } from "react";
+import { useState, SubmitEvent } from "react";
 import {
   Box,
   Button,
@@ -16,20 +16,16 @@ import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
 import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import classes from "./login_form.module.css";
-import {
-  ReadonlyURLSearchParams,
-  useSearchParams,
-  useRouter,
-} from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "@/components/form/honeypot";
-import { FormType, getFormSchema } from "@/utils/form_schemas/schemas";
+import { FormType, getFormSchema } from "@/utils/schemas/form_schemas/schemas";
 import { useDisclosure } from "@mantine/hooks";
 
 export type LoginFormData = {
   username: string;
   password: string;
-  email?: string;
+  website?: string;
 };
 
 function getFormMessage(response: LoginFormResponse): FormMessage {
@@ -55,7 +51,11 @@ function getFormMessage(response: LoginFormResponse): FormMessage {
   }
 }
 
-export default function LoginForm() {
+type LoginFormProps = {
+  loggedOut: boolean;
+};
+
+export default function LoginForm({ loggedOut }: LoginFormProps) {
   //Form
   const { executeRecaptcha, loaded, error } = useReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -66,31 +66,38 @@ export default function LoginForm() {
     initialValues: {
       username: "",
       password: "",
-      email: "",
+      website: "",
     },
     validate: zod4Resolver(schema),
     validateInputOnBlur: true,
   });
 
   //Form message
-  const searchParams: ReadonlyURLSearchParams = useSearchParams();
-  const loggedOut: string | null = searchParams.get("logout");
-  const defaultMessage: FormMessage = loggedOut
-    ? {
-        message: "Successfully logged out",
-      }
-    : {};
 
-  const [formMessage, setFormMessage] = useState<FormMessage>(defaultMessage);
-
-  //Clear logout URI params
+  const [formMessage, setFormMessage] = useState<FormMessage>(
+    loggedOut ? { message: "Successfully logged out" } : {},
+  );
   const router = useRouter();
-  useEffect(() => {
-    router.replace("/login", { scroll: false });
-  }, [router]);
 
   //Handle submit
-  async function onSubmit(formValues: LoginFormData) {
+  async function onSubmit(e: SubmitEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    // Fix Firefox autofill
+    const data = new FormData(e.currentTarget);
+    form.setValues({
+      username: String(data.get("username") ?? ""),
+      password: String(data.get("password") ?? ""),
+    });
+
+    const { hasErrors } = form.validate();
+    if (hasErrors) return;
+
+    await handleSubmit(form.getValues());
+  }
+
+  async function handleSubmit(formValues: LoginFormData) {
     if (isSubmitting) return;
 
     setIsSubmitting(true);
@@ -128,32 +135,31 @@ export default function LoginForm() {
     }
   }
 
-  const userIcon: ReactElement = (
-    <IconUserCircle className={classes.input_icon} aria-label="Username" />
-  );
-  const passwordIcon: ReactElement = (
-    <IconLock className={classes.input_icon} aria-label="Password" />
-  );
-
   return (
-    <form
-      onSubmit={form.onSubmit((values) => onSubmit(values))}
-      className={classes.form}
-    >
+    <form onSubmit={onSubmit} className={classes.form}>
       <Stack className={classes.form_stack}>
         <Fieldset legend="Please log in to continue">
           <Stack>
-            <Honeypot form={form} label="Email" fieldKey="email" />
+            <Honeypot form={form} label="Website" fieldKey="website" />
             <TextInput
+              name="username"
               label="Username"
-              leftSection={userIcon}
+              leftSection={
+                <IconUserCircle
+                  className={classes.input_icon}
+                  aria-hidden="true"
+                />
+              }
               key={form.key("username")}
               {...form.getInputProps("username")}
               disabled={isSubmitting}
             />
             <PasswordInput
+              name="password"
               label="Password"
-              leftSection={passwordIcon}
+              leftSection={
+                <IconLock className={classes.input_icon} aria-hidden="true" />
+              }
               key={form.key("password")}
               {...form.getInputProps("password")}
               onVisibilityChange={toggle}

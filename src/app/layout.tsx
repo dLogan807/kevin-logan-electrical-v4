@@ -1,15 +1,14 @@
 import { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "./components/layout/footer";
-import { ColorSchemeScript, Box, Paper, mantineHtmlProps } from "@mantine/core";
-import { Providers } from "@/components/layout/providers";
+import { Box, ColorSchemeScript, mantineHtmlProps, Paper } from "@mantine/core";
 import { headers } from "next/headers";
-
+import { Providers } from "./components/layout/providers";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import classes from "./layout.module.css";
 import "./globals.css";
+import { Footer } from "./components/layout/footer";
+import { Navbar } from "./components/layout/navbar";
 
 export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
@@ -25,6 +24,8 @@ export const metadata: Metadata = {
     siteName: "Kevin Logan Electrical",
   },
 };
+
+export const instant = false;
 
 export default async function RootLayout({
   children,
