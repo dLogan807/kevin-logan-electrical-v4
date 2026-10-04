@@ -12,9 +12,8 @@ export function ThemeSelector() {
   const computedColorScheme = useComputedColorScheme("dark", {
     getInitialValueInEffect: true,
   });
-  const toggleColorScheme = () => {
+  const toggleColorScheme = () =>
     setColorScheme(computedColorScheme === "dark" ? "light" : "dark");
-  };
 
   const isDarkTheme = computedColorScheme === "dark";
   const tooltipText = `Switch to ${isDarkTheme ? "light" : "dark"} theme`;
