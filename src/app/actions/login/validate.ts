@@ -69,7 +69,7 @@ export async function validateLoginForm(
   }
 
   //Likely bot if filled
-  if (formValues.email) {
+  if (formValues.website) {
     response.recaptchaVerified = false;
     return response;
   }

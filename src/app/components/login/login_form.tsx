@@ -29,7 +29,7 @@ import { useDisclosure } from "@mantine/hooks";
 export type LoginFormData = {
   username: string;
   password: string;
-  email?: string;
+  website?: string;
 };
 
 function getFormMessage(response: LoginFormResponse): FormMessage {
@@ -66,7 +66,7 @@ export default function LoginForm() {
     initialValues: {
       username: "",
       password: "",
-      email: "",
+      website: "",
     },
     validate: zod4Resolver(schema),
     validateInputOnBlur: true,
@@ -143,7 +143,7 @@ export default function LoginForm() {
       <Stack className={classes.form_stack}>
         <Fieldset legend="Please log in to continue">
           <Stack>
-            <Honeypot form={form} label="Email" fieldKey="email" />
+            <Honeypot form={form} label="Website" fieldKey="website" />
             <TextInput
               label="Username"
               leftSection={userIcon}
