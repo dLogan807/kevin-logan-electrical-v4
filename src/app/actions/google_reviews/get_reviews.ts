@@ -4,6 +4,8 @@ import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
 import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 import { cacheLife, cacheTag } from "next/cache";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 export type GoogleReviews = {
   reviews: GoogleReview[];
   averageRating: number;
@@ -106,9 +108,13 @@ export async function getGoogleReviews(
   cacheTag("google_reviews");
   cacheLife("hours");
 
-  if (!searchQuery) return null;
-  if (process.env.NODE_ENV === "development") return null;
-  if (await rateLimitReached("google_reviews")) return null;
+  if (
+    !searchQuery ||
+    isDevelopment ||
+    (await rateLimitReached("google_reviews"))
+  ) {
+    return null;
+  }
 
   const placesApiKey = getServerOnlyEnv().GOOGLE_PLACES_API_KEY;
   if (!placesApiKey) return null;
