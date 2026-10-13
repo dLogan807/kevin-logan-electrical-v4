@@ -21,8 +21,11 @@ export default function GoogleReviewCarousel({
       }}
       nextControlIcon={<IconChevronRight aria-label="Right arrow" />}
       previousControlIcon={<IconChevronLeft aria-label="Left arrow" />}
-      classNames={classes}
-      className={classes.carousel}
+      classNames={{
+        root: classes.carousel,
+        controls: classes.controls,
+        viewport: classes.viewport,
+      }}
       withControls={multipleReviews}
       slideGap="md"
     >

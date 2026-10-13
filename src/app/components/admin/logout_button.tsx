@@ -1,26 +1,28 @@
 "use client";
 
 import { logout } from "@/actions/mongodb/sessions/management";
-import { Button, Group, Text } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { IconLogout } from "@tabler/icons-react";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 export default function LogoutButton() {
-  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  useLayoutEffect(() => setIsLoggingOut(false), []);
+
+  function handleLogout() {
+    setIsLoggingOut(true);
+    logout();
+  }
 
   return (
     <Button
       variant="default"
       loading={isLoggingOut}
-      onClick={() => {
-        setIsLoggingOut(true);
-        logout();
-      }}
+      onClick={handleLogout}
+      rightSection={<IconLogout aria-hidden="true" />}
     >
-      <Group>
-        <Text>Logout</Text>
-        <IconLogout aria-label="Logout" />
-      </Group>
+      Logout
     </Button>
   );
 }

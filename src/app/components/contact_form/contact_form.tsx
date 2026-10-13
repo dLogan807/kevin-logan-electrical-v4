@@ -13,7 +13,7 @@ import classes from "./contact_form.module.css";
 import RecaptchaDisclaimer from "../recaptcha/disclaimer";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "../form/honeypot";
-import { FormType, getFormSchema } from "@/utils/form_schemas/schemas";
+import { FormType, getFormSchema } from "@/utils/schemas/form_schemas/schemas";
 
 export type ContactFormData = {
   name: string;
@@ -77,7 +77,7 @@ export function ContactForm() {
     const response: ContactFormResponse = await validateContactEmail(
       fields,
       token,
-      action
+      action,
     ).catch(() => ({
       validated: false,
       formErrors: {},
