@@ -39,11 +39,11 @@
   align-items: flex-end;
 }
 
-.root {
+.page_form_selector_root {
   width: 15rem;
 }
 
-.option {
+.classes.page_form_selector_option {
   svg {
     opacity: 0.9;
     color: var(--mantine-color-pleasant-blue-light-color);

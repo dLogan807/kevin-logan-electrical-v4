@@ -52,7 +52,10 @@ export default function PageFormSelector({
               setContentPromise(getStoredPageContent(newPage));
             }}
             allowDeselect={false}
-            classNames={classes}
+            classNames={{
+              root: classes.page_form_selector_root,
+              option: classes.page_form_selector_option,
+            }}
           />
           <Tooltip label="Reset the form and fetch the latest content">
             <Button
