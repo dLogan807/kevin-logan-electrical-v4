@@ -5,7 +5,7 @@ import {
   getStoredPageContent,
 } from "@/actions/mongodb/pages/management";
 import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
-import { Box, Group, Select, Tooltip, Button, Loader } from "@mantine/core";
+import { Box, Group, Select, Button, Loader } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 import { useState, Suspense } from "react";
 import { Pages } from "../../enums/pages";
@@ -23,13 +23,15 @@ const pages: SelectData[] = Object.values(Pages).map((page) => ({
   label: snakeCaseToTitleCase(page),
 }));
 
+type PageFormSelectorProps = {
+  initialPage: Pages;
+  initialContentPromise: Promise<PageContent | null>;
+};
+
 export default function PageFormSelector({
   initialPage,
   initialContentPromise,
-}: {
-  initialPage: Pages;
-  initialContentPromise: Promise<PageContent | null>;
-}) {
+}: PageFormSelectorProps) {
   const [selectedPage, setSelectedPage] = useState(initialPage);
   const [contentPromise, setContentPromise] = useState(initialContentPromise);
 
@@ -57,19 +59,18 @@ export default function PageFormSelector({
               option: classes.page_form_selector_option,
             }}
           />
-          <Tooltip label="Reset the form and fetch the latest content">
-            <Button
-              color="red"
-              variant="light"
-              onClick={() => {
-                setContentPromise(getStoredPageContent(selectedPage));
-              }}
-            >
-              <Group>
-                Refresh <IconRefresh aria-label="Refresh" />
-              </Group>
-            </Button>
-          </Tooltip>
+
+          <Button
+            color="red"
+            variant="light"
+            onClick={() =>
+              setContentPromise(getStoredPageContent(selectedPage))
+            }
+          >
+            <Group>
+              Refresh <IconRefresh aria-label="Refresh" />
+            </Group>
+          </Button>
         </Group>
       </Group>
 
