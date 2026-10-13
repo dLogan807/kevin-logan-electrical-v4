@@ -4,15 +4,15 @@ import { use } from "react";
 import { Text } from "@mantine/core";
 import PageForm from "./page_form";
 
+type PageFormLoaderProps = {
+  selectedPage: Pages;
+  contentPromise: Promise<PageContent | null>;
+};
+
 export default function PageFormLoader({
   selectedPage,
-
   contentPromise,
-}: {
-  selectedPage: Pages;
-
-  contentPromise: Promise<PageContent | null>;
-}) {
+}: PageFormLoaderProps) {
   const content = use(contentPromise);
 
   if (!content)
