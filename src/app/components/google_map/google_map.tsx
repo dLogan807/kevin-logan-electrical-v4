@@ -4,7 +4,9 @@ import { Box, Center } from "@mantine/core";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 import classes from "./google_map.module.css";
 
-export default function GoogleMap({ query }: { query: string }) {
+type GoogleMapsProps = { query: string };
+
+export default function GoogleMap({ query }: GoogleMapsProps) {
   const mapApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   if (!query || !mapApiKey || process.env.NODE_ENV === "development") {

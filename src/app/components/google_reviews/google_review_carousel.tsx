@@ -6,11 +6,13 @@ import { GoogleReview } from "@/actions/google_reviews/get_reviews";
 import ReviewCard from "./google_review_card";
 import classes from "./google_review_carousel.module.css";
 
+type GoogleReviewCarouselProps = {
+  googleReviews: GoogleReview[];
+};
+
 export default function GoogleReviewCarousel({
   googleReviews,
-}: {
-  googleReviews: GoogleReview[];
-}) {
+}: GoogleReviewCarouselProps) {
   const multipleReviews = googleReviews.length > 1;
 
   return (
@@ -31,7 +33,7 @@ export default function GoogleReviewCarousel({
     >
       {googleReviews.map((review: GoogleReview) => (
         <Carousel.Slide className={classes.carousel_slide} key={review.id}>
-          <ReviewCard {...review} />
+          <ReviewCard review={{ ...review }} />
         </Carousel.Slide>
       ))}
     </Carousel>

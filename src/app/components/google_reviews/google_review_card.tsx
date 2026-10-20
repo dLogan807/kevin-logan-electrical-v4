@@ -6,7 +6,9 @@ import Image from "next/image";
 import { theme } from "@/components/theme";
 import classes from "./google_review_card.module.css";
 
-function UserImage({ uri }: { uri: string }) {
+type UserImageProps = { uri: string };
+
+function UserImage({ uri }: UserImageProps) {
   if (!uri) {
     return <IconUserCircle aria-label="User" width={30} height={30} />;
   }
@@ -23,7 +25,9 @@ function UserImage({ uri }: { uri: string }) {
   );
 }
 
-export default function ReviewCard(review: GoogleReview) {
+type ReviewCardProps = { review: GoogleReview };
+
+export default function ReviewCard({ review }: ReviewCardProps) {
   if (!review) return <Text>Failed to load this review.</Text>;
 
   return (
