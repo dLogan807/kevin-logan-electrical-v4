@@ -7,10 +7,9 @@ import LoginForm from "@/components/login/login_form";
 
 type LoginClientProps = {
   nonce: string;
-  loggedOut: boolean;
 };
 
-export default function LoginClient({ nonce, loggedOut }: LoginClientProps) {
+export default function LoginClient({ nonce }: LoginClientProps) {
   return (
     <ReCaptchaProvider
       className={classes.recaptcha}
@@ -20,7 +19,7 @@ export default function LoginClient({ nonce, loggedOut }: LoginClientProps) {
       <Box className={"content_grid"}>
         <Paper className={"main_section"} withBorder>
           <h1 className={classes.heading}>Login</h1>
-          <LoginForm key={nonce} loggedOut={loggedOut} />
+          <LoginForm key={nonce} />
         </Paper>
       </Box>
     </ReCaptchaProvider>

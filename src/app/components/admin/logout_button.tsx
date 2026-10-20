@@ -3,22 +3,21 @@
 import { logout } from "@/actions/mongodb/sessions/management";
 import { Button } from "@mantine/core";
 import { IconLogout } from "@tabler/icons-react";
-import { useLayoutEffect, useState } from "react";
+import { useTransition } from "react";
 
 export default function LogoutButton() {
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-
-  useLayoutEffect(() => setIsLoggingOut(false), []);
+  const [isPending, startTransition] = useTransition();
 
   function handleLogout() {
-    setIsLoggingOut(true);
-    logout();
+    startTransition(async () => {
+      await logout();
+    });
   }
 
   return (
     <Button
       variant="default"
-      loading={isLoggingOut}
+      loading={isPending}
       onClick={handleLogout}
       rightSection={<IconLogout aria-hidden="true" />}
     >

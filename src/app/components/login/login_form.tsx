@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, SubmitEvent } from "react";
+import { useState, SubmitEvent, useEffect } from "react";
 import {
   Box,
   Button,
@@ -16,7 +16,7 @@ import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
 import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import classes from "./login_form.module.css";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "@/components/form/honeypot";
 import { FormType, getFormSchema } from "@/utils/schemas/form_schemas/schemas";
@@ -51,11 +51,16 @@ function getFormMessage(response: LoginFormResponse): FormMessage {
   }
 }
 
-type LoginFormProps = {
-  loggedOut: boolean;
-};
+export default function LoginForm() {
+  const searchParams = useSearchParams();
+  const loggedOut = searchParams.get("logout") != null;
 
-export default function LoginForm({ loggedOut }: LoginFormProps) {
+  useEffect(() => {
+    if (loggedOut) {
+      window.history.replaceState(null, "", "/login");
+    }
+  }, [loggedOut]);
+
   //Form
   const { executeRecaptcha, loaded, error } = useReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
