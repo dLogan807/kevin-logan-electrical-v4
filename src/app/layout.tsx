@@ -27,11 +27,11 @@ export const metadata: Metadata = {
 
 export const instant = false;
 
-export default async function RootLayout({
-  children,
-}: {
+type RootLayoutProps = {
   children: ReactNode;
-}) {
+};
+
+export default async function RootLayout({ children }: RootLayoutProps) {
   const nonce = (await headers()).get("x-nonce") || "";
 
   return (

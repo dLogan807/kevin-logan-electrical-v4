@@ -9,29 +9,15 @@ import { getGoogleReviews } from "@/actions/google_reviews/get_reviews";
 import GoogleReviewCarousel from "./google_review_carousel";
 import classes from "./google_review_container.module.css";
 
-function ReviewButton() {
-  return (
-    <Link
-      href="https://www.google.com/search?q=kevin+logan+electrical"
-      className={classes.review_button}
-    >
-      <Button variant="light">
-        <Group>
-          <Text>Review</Text>
-          <IconArrowRight aria-label="Right arrow" />
-        </Group>
-      </Button>
-    </Link>
-  );
-}
+type GoogleReviewContainerProps = {
+  query: string;
+  nameFilter: string[];
+};
 
 export default async function GoogleReviewContainer({
   query,
   nameFilter,
-}: {
-  query: string;
-  nameFilter: string[];
-}) {
+}: GoogleReviewContainerProps) {
   const googleReviews = query
     ? await getGoogleReviews(query, nameFilter)
     : null;
@@ -80,5 +66,21 @@ export default async function GoogleReviewContainer({
       </Box>
       <GoogleReviewCarousel googleReviews={googleReviews.reviews} />
     </Group>
+  );
+}
+
+function ReviewButton() {
+  return (
+    <Link
+      href="https://www.google.com/search?q=kevin+logan+electrical"
+      className={classes.review_button}
+    >
+      <Button variant="light">
+        <Group>
+          <Text>Review</Text>
+          <IconArrowRight aria-label="Right arrow" />
+        </Group>
+      </Button>
+    </Link>
   );
 }

@@ -22,13 +22,15 @@ import { ContactForm } from "@/components/contact_form/contact_form";
 import { ContactUsContent } from "@/actions/mongodb/pages/fallback_content";
 import classes from "./ContactUsClient.module.css";
 
+type ContactUsClientProps = {
+  content: ContactUsContent;
+  nonce: string;
+};
+
 export default function ContactUsClient({
   content,
   nonce,
-}: {
-  content: ContactUsContent;
-  nonce: string;
-}) {
+}: ContactUsClientProps) {
   const mainSection = "main_section";
 
   const mapIcon = (
@@ -107,17 +109,18 @@ export default function ContactUsClient({
   );
 }
 
-function ListIcon({ icon }: { icon: ReactElement }) {
+type ListIconProps = { icon: ReactElement };
+
+function ListIcon({ icon }: ListIconProps) {
   return <ThemeIcon classNames={{ root: "list_icon" }}>{icon}</ThemeIcon>;
 }
 
-function TelLink({
-  phoneNumber,
-  isMobile,
-}: {
+type TelLinkProps = {
   phoneNumber: string;
   isMobile: boolean;
-}) {
+};
+
+function TelLink({ phoneNumber, isMobile }: TelLinkProps) {
   const telHref = `tel:${isMobile ? "+64" : ""}${phoneNumber.split(" ").join("")}`;
 
   return <Anchor href={telHref}>{phoneNumber}</Anchor>;

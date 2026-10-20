@@ -2,11 +2,13 @@ import { Box, Text } from "@mantine/core";
 import Link from "next/link";
 import classes from "./disclaimer.module.css";
 
+type RecaptchaDisclaimerProps = {
+  className?: string;
+};
+
 export default function RecaptchaDisclaimer({
   className,
-}: {
-  className?: string;
-}) {
+}: RecaptchaDisclaimerProps) {
   return (
     <Box className={className}>
       {/* prettier-ignore */}

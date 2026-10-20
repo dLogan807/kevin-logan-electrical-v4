@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import {
   ActionIcon,
@@ -24,19 +24,12 @@ import Link from "next/link";
 import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
 import classes from "./page_form.module.css";
 
-function getPageRoute(page: Pages): string {
-  if (page === Pages.Home) return "/";
-
-  return page.replaceAll("_", "");
-}
-
-export default function PageForm({
-  selectedPage,
-  content,
-}: {
+type PageFormProps = {
   selectedPage: Pages;
   content: PageContent;
-}) {
+};
+
+export default function PageForm({ selectedPage, content }: PageFormProps) {
   const form = useForm<PageContent>({
     mode: "uncontrolled",
     initialValues: content,
@@ -71,7 +64,7 @@ export default function PageForm({
   return (
     <form onSubmit={form.onSubmit(() => onSubmit())}>
       <Stack>
-        {FormFields(objectContent, "", form)}
+        <FormFields contentObject={objectContent} form={form} />
         <FormAlert formMessage={formMessage} />
         <Group className={classes.submit_button_group}>
           <Tooltip label="Submit and update website content">
@@ -88,36 +81,20 @@ export default function PageForm({
   );
 }
 
-function isNumber(value: string): boolean {
-  return value != null && !isNaN(Number(value)) && value.trim() !== "";
+function getPageRoute(page: Pages): string {
+  if (page === Pages.Home) return "/";
+
+  return page.replaceAll("_", "");
 }
 
-function isParent(value: unknown) {
-  return typeof value === "object" && value !== null;
-}
-
-function AddEntryButton({
-  form,
-  currentPath,
-}: {
+type FormFieldsProps = {
+  contentObject: [string, unknown][];
   form: UseFormReturnType<PageContent>;
-  currentPath: string;
-}) {
-  return (
-    <Group className={classes.add_entry_button}>
-      <Button onClick={() => form.insertListItem(currentPath, "")}>
-        Add entry
-      </Button>
-    </Group>
-  );
-}
+  path?: string;
+};
 
 //Recursively generate form fields from entries
-function FormFields(
-  contentObject: [string, unknown][],
-  path: string,
-  form: UseFormReturnType<PageContent>,
-): ReactNode {
+function FormFields({ contentObject, path = "", form }: FormFieldsProps) {
   return contentObject.map(([key, value]) => {
     const currentPath: string = path === "" ? key : path + "." + key;
     const formKey: string = form.key(currentPath);
@@ -127,7 +104,11 @@ function FormFields(
       return (
         <Fieldset legend={<b>{snakeCaseToTitleCase(key)}</b>} key={formKey}>
           <Stack>
-            {FormFields(Object.entries(value), currentPath, form)}
+            <FormFields
+              contentObject={Object.entries(value)}
+              form={form}
+              path={currentPath}
+            />
             {Array.isArray(value) ? (
               <AddEntryButton form={form} currentPath={currentPath} />
             ) : null}
@@ -170,4 +151,27 @@ function FormFields(
       />
     );
   });
+}
+
+function isNumber(value: string): boolean {
+  return value != null && !isNaN(Number(value)) && value.trim() !== "";
+}
+
+function isParent(value: unknown) {
+  return typeof value === "object" && value !== null;
+}
+
+type AddEntryButtonProps = {
+  form: UseFormReturnType<PageContent>;
+  currentPath: string;
+};
+
+function AddEntryButton({ form, currentPath }: AddEntryButtonProps) {
+  return (
+    <Group className={classes.add_entry_button}>
+      <Button onClick={() => form.insertListItem(currentPath, "")}>
+        Add entry
+      </Button>
+    </Group>
+  );
 }

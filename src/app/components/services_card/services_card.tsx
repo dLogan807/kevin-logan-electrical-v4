@@ -3,16 +3,18 @@ import { ReactElement } from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import classes from "./services_card.module.css";
 
+type ServicesCardProps = {
+  headerIcon: ReactElement;
+  headerText: string;
+  listItems: string[];
+};
+
 //Card for services section of rate and services page
 export function ServicesCard({
   headerIcon,
   headerText,
   listItems,
-}: {
-  headerIcon: ReactElement;
-  headerText: string;
-  listItems: string[];
-}) {
+}: ServicesCardProps) {
   return (
     <Paper
       classNames={{ root: `${classes.services_list_container} main_section` }}
