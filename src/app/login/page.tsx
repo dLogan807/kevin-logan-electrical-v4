@@ -19,15 +19,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function LoginPage({ searchParams }: PageProps<"/login">) {
+export default async function LoginPage() {
   const { session } = await getCurrentSession();
   if (session !== null) return redirect("/admin");
 
-  const [{ logout }, requestHeaders] = await Promise.all([
-    searchParams,
-    headers(),
-  ]);
-  const nonce = requestHeaders.get("x-nonce") || "";
+  const nonce = (await headers()).get("x-nonce") || "";
 
-  return <LoginClient nonce={nonce} loggedOut={logout !== undefined} />;
+  return <LoginClient nonce={nonce} />;
 }
