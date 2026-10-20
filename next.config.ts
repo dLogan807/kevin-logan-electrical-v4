@@ -1,8 +1,9 @@
-/** @type {import('next').NextConfig} */
+import type { NextConfig } from "next";
 
-module.exports = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // Policies:
+  cacheComponents: true,
+  partialPrefetching: true,
   async headers() {
     return [
       {
@@ -43,7 +44,7 @@ module.exports = {
       {
         source: "/index.php",
         destination: "/",
-        permanent: true, // Triggers 308
+        permanent: true,
       },
       {
         source: "/aboutus.php",
@@ -64,3 +65,5 @@ module.exports = {
   },
   experimental: { optimizePackageImports: ["@mantine/core", "@mantine/hooks"] },
 };
+
+export default nextConfig;

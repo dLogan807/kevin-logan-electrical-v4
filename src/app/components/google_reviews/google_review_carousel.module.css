@@ -33,18 +33,16 @@
   height: 100%;
 }
 
-.root {
-  &:hover {
-    .controls {
-      opacity: 1;
-    }
-  }
-}
-
 .carousel {
   width: 70%;
 
   @media (max-width: $mantine-breakpoint-sm) {
     width: 100%;
+  }
+
+  &:hover {
+    .controls {
+      opacity: 1;
+    }
   }
 }

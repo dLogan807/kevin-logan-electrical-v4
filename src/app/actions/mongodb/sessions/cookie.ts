@@ -11,7 +11,7 @@ import {
 
 export async function setSessionTokenCookie(
   token: string,
-  expiresAt: Date
+  expiresAt: Date,
 ): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.set("session", token, {
@@ -43,5 +43,5 @@ export const getCurrentSession = cache(
     }
     const result = await validateSessionToken(token);
     return result;
-  }
+  },
 );
