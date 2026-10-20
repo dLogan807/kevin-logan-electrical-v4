@@ -8,7 +8,9 @@ export type FormMessage = {
   isError?: boolean;
 };
 
-export function FormAlert({ formMessage }: { formMessage: FormMessage }) {
+type FormAlertProps = { formMessage: FormMessage };
+
+export function FormAlert({ formMessage }: FormAlertProps) {
   const errorIcon: ReactElement = formMessage.isError ? (
     <IconExclamationCircle
       className={classes.input_icon}
