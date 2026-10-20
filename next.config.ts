@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   cacheComponents: true,
+  partialPrefetching: true,
   async headers() {
     return [
       {
@@ -43,7 +44,7 @@ const nextConfig: NextConfig = {
       {
         source: "/index.php",
         destination: "/",
-        permanent: true, // Triggers 308
+        permanent: true,
       },
       {
         source: "/aboutus.php",

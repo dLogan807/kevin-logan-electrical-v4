@@ -13,6 +13,7 @@ import {
 import { sha256 } from "@oslojs/crypto/sha2";
 import { deleteSessionTokenCookie, getCurrentSession } from "./cookie";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 
 export interface SessionDocument {
   session_id: string;
@@ -43,7 +44,7 @@ async function hashSessionToken(token: string): Promise<string> {
 
 export async function createSession(
   token: string,
-  userId: ObjectId
+  userId: ObjectId,
 ): Promise<SessionDocument> {
   if (!token || !userId) throw new Error("token and userId must be provided");
 
@@ -63,8 +64,9 @@ export async function createSession(
 }
 
 export async function validateSessionToken(
-  token: string
+  token: string,
 ): Promise<SessionValidationResult> {
+  await connection();
   const sessionId: string = await hashSessionToken(token);
 
   const match: Document = {
@@ -85,7 +87,7 @@ export async function validateSessionToken(
   const result: Document | null = await MongoDatabase.getInnerJoinedDocument(
     "user_sessions",
     match,
-    lookup
+    lookup,
   );
   if (result === null) return { session: null, user: null };
 
