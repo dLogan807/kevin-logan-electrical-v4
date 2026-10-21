@@ -4,7 +4,7 @@ import {
   PageContent,
   getStoredPageContent,
 } from "@/app/actions/mongodb/pages/management";
-import snakeCaseToTitleCase from "@/app/utils/snake_case_to_title_case";
+import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
 import { Box, Group, Select, Button, Loader } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 import { useState, Suspense } from "react";

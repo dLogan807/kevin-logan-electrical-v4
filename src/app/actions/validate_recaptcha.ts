@@ -1,6 +1,6 @@
 "use server";
 
-import { getServerOnlyEnv } from "@/app/utils/getServerOnlyEnv";
+import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 
 export type RecaptchaResponse = {
   success: boolean;

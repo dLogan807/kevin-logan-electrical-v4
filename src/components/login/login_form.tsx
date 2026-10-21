@@ -22,10 +22,7 @@ import classes from "./login_form.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "@/components/form/honeypot";
-import {
-  FormType,
-  getFormSchema,
-} from "@/app/utils/schemas/form_schemas/schemas";
+import { FormType, getFormSchema } from "@/utils/schemas/form_schemas/schemas";
 import { useDisclosure } from "@mantine/hooks";
 
 export type LoginFormData = {

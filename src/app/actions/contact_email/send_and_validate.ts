@@ -1,11 +1,11 @@
 "use server";
 
 import { FormResponse, validateForm } from "@/app/actions/validate_form";
-import { FormType } from "@/app/utils/schemas/form_schemas/schemas";
+import { FormType } from "@/utils/schemas/form_schemas/schemas";
 import { ContactFormData } from "@/components/contact_form/contact_form";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
-import { getServerOnlyEnv } from "@/app/utils/getServerOnlyEnv";
+import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 
 export type ContactFormResponse = FormResponse & {
   sendSuccess: boolean;
