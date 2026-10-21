@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { localStorageColorSchemeManager, MantineProvider } from "@mantine/core";
-import { theme } from "@/app/components/theme";
+import { theme } from "@/theme";
 
 export function Providers({
   children,

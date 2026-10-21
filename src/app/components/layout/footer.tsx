@@ -6,7 +6,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import Image from "next/image";
-import { theme } from "@/app/components/theme";
+import { theme } from "@/theme";
 import logo from "@/assets/logo.webp";
 import classes from "./footer.module.css";
 

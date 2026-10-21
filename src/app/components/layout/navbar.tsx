@@ -15,7 +15,7 @@ import {
 } from "@tabler/icons-react";
 import { Pages } from "@/enums/pages";
 import classes from "./navbar.module.css";
-import { theme } from "@/app/components/theme";
+import { theme } from "@/theme";
 import { ThemeSelector } from "../theme_selector/theme_selector";
 
 //Return the index of the currently navigated route

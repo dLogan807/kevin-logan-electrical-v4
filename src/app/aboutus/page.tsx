@@ -4,7 +4,7 @@ import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
 import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
-import { theme } from "@/app/components/theme";
+import { theme } from "@/theme";
 import { Pages } from "@/enums/pages";
 import { AboutUsContent } from "@/app/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/app/actions/mongodb/pages/management";

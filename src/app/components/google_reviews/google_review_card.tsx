@@ -3,7 +3,7 @@ import { IconStarFilled, IconUserCircle } from "@tabler/icons-react";
 import { GoogleReview } from "@/app/actions/google_reviews/get_reviews";
 import Link from "next/link";
 import Image from "next/image";
-import { theme } from "@/app/components/theme";
+import { theme } from "@/theme";
 import classes from "./google_review_card.module.css";
 
 type UserImageProps = { uri: string };
