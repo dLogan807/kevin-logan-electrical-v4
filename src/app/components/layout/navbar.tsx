@@ -2,7 +2,7 @@
 
 import { Group, Stack, Burger, Overlay } from "@mantine/core";
 import { useDisclosure, useMediaQuery, useWindowEvent } from "@mantine/hooks";
-import logo from "@/app/assets/logo.webp";
+import logo from "@/assets/logo.webp";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

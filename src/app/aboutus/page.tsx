@@ -2,7 +2,7 @@ import { Box, Button, Paper, Stack, Text } from "@mantine/core";
 import Link from "next/link";
 import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
-import waiake from "@/app/assets/waiake.webp";
+import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
 import { theme } from "@/app/components/theme";
 import { Pages } from "@/app/enums/pages";

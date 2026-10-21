@@ -7,7 +7,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { theme } from "@/app/components/theme";
-import logo from "@/app/assets/logo.webp";
+import logo from "@/assets/logo.webp";
 import classes from "./footer.module.css";
 
 export function Footer() {
