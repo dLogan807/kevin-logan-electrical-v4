@@ -8,7 +8,7 @@ import snakeCaseToTitleCase from "@/app/utils/snake_case_to_title_case";
 import { Box, Group, Select, Button, Loader } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 import { useState, Suspense } from "react";
-import { Pages } from "../../enums/pages";
+import { Pages } from "@/enums/pages";
 import LogoutButton from "./logout_button";
 import PageFormLoader from "./page_form_loader";
 import classes from "./page_form_selector.module.css";

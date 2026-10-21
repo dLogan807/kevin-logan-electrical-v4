@@ -18,7 +18,7 @@ import {
   addPageDocument,
   PageContent,
 } from "@/app/actions/mongodb/pages/management";
-import { Pages } from "../../enums/pages";
+import { Pages } from "@/enums/pages";
 import { FormAlert, FormMessage } from "@/app/components/form/form_alert";
 import Link from "next/link";
 import snakeCaseToTitleCase from "@/app/utils/snake_case_to_title_case";

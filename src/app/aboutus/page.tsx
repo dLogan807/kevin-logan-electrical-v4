@@ -5,7 +5,7 @@ import { IconCertificate } from "@tabler/icons-react";
 import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
 import { theme } from "@/app/components/theme";
-import { Pages } from "@/app/enums/pages";
+import { Pages } from "@/enums/pages";
 import { AboutUsContent } from "@/app/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/app/actions/mongodb/pages/management";
 import classes from "./page.module.css";

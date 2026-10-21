@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { headers } from "next/headers";
-import { Pages } from "@/app/enums/pages";
+import { Pages } from "@/enums/pages";
 import { getPageContent } from "@/app/actions/mongodb/pages/management";
 import ContactUsClient from "@/app/components/routeClients/ContactUsClient/ContactUsClient";
 import { ContactUsContent } from "@/app/actions/mongodb/pages/fallback_content";
