@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { headers } from "next/headers";
 import { getCurrentSession } from "@/app/actions/mongodb/sessions/cookie";
 import { redirect } from "next/navigation";
-import LoginClient from "@/app/components/routeClients/LoginClient/LoginClient";
+import LoginClient from "@/components/routeClients/LoginClient/LoginClient";
 
 export const metadata: Metadata = {
   title: "Login | Kevin Logan Electrical - Your Trusted Electrician",

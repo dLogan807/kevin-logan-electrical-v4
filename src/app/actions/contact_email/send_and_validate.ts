@@ -2,7 +2,7 @@
 
 import { FormResponse, validateForm } from "@/app/actions/validate_form";
 import { FormType } from "@/app/utils/schemas/form_schemas/schemas";
-import { ContactFormData } from "@/app/components/contact_form/contact_form";
+import { ContactFormData } from "@/components/contact_form/contact_form";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import { getServerOnlyEnv } from "@/app/utils/getServerOnlyEnv";

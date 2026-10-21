@@ -1,7 +1,7 @@
-import { ContactFormData } from "@/app/components/contact_form/contact_form";
+import { ContactFormData } from "@/components/contact_form/contact_form";
 import { contactFormSchema } from "./contact";
 import { loginFormSchema } from "./login";
-import { LoginFormData } from "@/app/components/login/login_form";
+import { LoginFormData } from "@/components/login/login_form";
 
 export enum FormType {
   CONTACT_US = "contact_us",

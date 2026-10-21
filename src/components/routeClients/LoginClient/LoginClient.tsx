@@ -3,7 +3,7 @@
 import { Box, Paper } from "@mantine/core";
 import { ReCaptchaProvider } from "next-recaptcha-v3";
 import classes from "./LoginClient.module.css";
-import LoginForm from "@/app/components/login/login_form";
+import LoginForm from "@/components/login/login_form";
 
 type LoginClientProps = {
   nonce: string;

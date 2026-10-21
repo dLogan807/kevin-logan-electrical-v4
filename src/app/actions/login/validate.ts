@@ -1,6 +1,6 @@
 "use server";
 
-import { LoginFormData } from "@/app/components/login/login_form";
+import { LoginFormData } from "@/components/login/login_form";
 import { verifyPasswordHash } from "@/app/actions/login/password";
 import MongoDatabase from "@/app/actions/mongodb/db";
 import {

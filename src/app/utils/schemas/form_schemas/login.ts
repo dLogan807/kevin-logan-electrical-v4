@@ -1,4 +1,4 @@
-import { LoginFormData } from "@/app/components/login/login_form";
+import { LoginFormData } from "@/components/login/login_form";
 import { z, ZodType } from "zod";
 
 export const loginFormSchema: ZodType<LoginFormData> = z.object({

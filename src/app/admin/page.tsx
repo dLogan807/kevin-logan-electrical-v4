@@ -4,7 +4,7 @@ import { Box, Paper } from "@mantine/core";
 import { Pages } from "@/enums/pages";
 import { getCurrentSession } from "@/app/actions/mongodb/sessions/cookie";
 import { getStoredPageContent } from "@/app/actions/mongodb/pages/management";
-import PageFormSelector from "@/app/components/admin/page_form_selector";
+import PageFormSelector from "@/components/admin/page_form_selector";
 
 export const metadata: Metadata = {
   title: "Admin | Kevin Logan Electrical - Your Trusted Electrician",

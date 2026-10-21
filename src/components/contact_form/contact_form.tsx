@@ -11,7 +11,7 @@ import { useReCaptcha } from "next-recaptcha-v3";
 import { useState } from "react";
 import classes from "./contact_form.module.css";
 import RecaptchaDisclaimer from "../recaptcha/disclaimer";
-import { FormAlert, FormMessage } from "@/app/components/form/form_alert";
+import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "../form/honeypot";
 import {
   FormType,

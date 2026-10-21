@@ -12,7 +12,7 @@ import {
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
-import RecaptchaDisclaimer from "@/app/components/recaptcha/disclaimer";
+import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
 import {
   LoginFormResponse,
   validateLoginForm,
@@ -20,8 +20,8 @@ import {
 import { useReCaptcha } from "next-recaptcha-v3";
 import classes from "./login_form.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormAlert, FormMessage } from "@/app/components/form/form_alert";
-import Honeypot from "@/app/components/form/honeypot";
+import { FormAlert, FormMessage } from "@/components/form/form_alert";
+import Honeypot from "@/components/form/honeypot";
 import {
   FormType,
   getFormSchema,
