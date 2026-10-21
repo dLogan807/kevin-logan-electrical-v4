@@ -1,4 +1,4 @@
-import { PageContent } from "@/actions/mongodb/pages/management";
+import { PageContent } from "@/app/actions/mongodb/pages/management";
 import { Pages } from "../../enums/pages";
 import { use } from "react";
 import { Text } from "@mantine/core";

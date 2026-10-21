@@ -2,12 +2,12 @@ import { Box, Button, Paper, Stack, Text } from "@mantine/core";
 import Link from "next/link";
 import Image from "next/image";
 import { IconCertificate } from "@tabler/icons-react";
-import waiake from "@/assets/waiake.webp";
+import waiake from "@/app/assets/waiake.webp";
 import { Metadata } from "next";
-import { theme } from "@/components/theme";
-import { Pages } from "@/enums/pages";
-import { AboutUsContent } from "@/actions/mongodb/pages/fallback_content";
-import { getPageContent } from "@/actions/mongodb/pages/management";
+import { theme } from "@/app/components/theme";
+import { Pages } from "@/app/enums/pages";
+import { AboutUsContent } from "@/app/actions/mongodb/pages/fallback_content";
+import { getPageContent } from "@/app/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {

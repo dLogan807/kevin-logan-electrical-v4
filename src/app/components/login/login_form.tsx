@@ -12,14 +12,20 @@ import {
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
-import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
-import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
+import RecaptchaDisclaimer from "@/app/components/recaptcha/disclaimer";
+import {
+  LoginFormResponse,
+  validateLoginForm,
+} from "@/app/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import classes from "./login_form.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormAlert, FormMessage } from "@/components/form/form_alert";
-import Honeypot from "@/components/form/honeypot";
-import { FormType, getFormSchema } from "@/utils/schemas/form_schemas/schemas";
+import { FormAlert, FormMessage } from "@/app/components/form/form_alert";
+import Honeypot from "@/app/components/form/honeypot";
+import {
+  FormType,
+  getFormSchema,
+} from "@/app/utils/schemas/form_schemas/schemas";
 import { useDisclosure } from "@mantine/hooks";
 
 export type LoginFormData = {

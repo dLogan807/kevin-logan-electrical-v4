@@ -1,14 +1,14 @@
 "use server";
 
 import MongoDatabase from "../db";
-import { Pages } from "@/enums/pages";
+import { Pages } from "@/app/enums/pages";
 import {
   HomeMongoSchema,
   AboutUsMongoSchema,
   RateAndServicesMongoSchema,
   ContactUsMongoSchema,
   PageSchema,
-} from "@/actions/mongodb/pages/schemas";
+} from "@/app/actions/mongodb/pages/schemas";
 import {
   HomeFallback,
   HomeContent,
@@ -18,7 +18,7 @@ import {
   RateAndServicesContent,
   ContactUsFallback,
   ContactUsContent,
-} from "@/actions/mongodb/pages/fallback_content";
+} from "@/app/actions/mongodb/pages/fallback_content";
 import { getCurrentSession } from "../sessions/cookie";
 import { cacheLife, cacheTag } from "next/cache";
 
@@ -29,10 +29,7 @@ interface PageDocument<T extends PageContent> {
 }
 
 export type PageContent =
-  | HomeContent
-  | AboutUsContent
-  | RateAndServicesContent
-  | ContactUsContent;
+  HomeContent | AboutUsContent | RateAndServicesContent | ContactUsContent;
 
 const pageSchemaMap: Record<Pages, PageSchema> = {
   [Pages.Home]: HomeMongoSchema,

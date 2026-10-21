@@ -12,12 +12,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { IconCircleCheck } from "@tabler/icons-react";
-import tagline_image from "@/assets/tagline_background.webp";
-import { theme } from "@/components/theme";
+import tagline_image from "@/app/assets/tagline_background.webp";
+import { theme } from "@/app/components/theme";
 import GoogleMap from "./components/google_map/google_map";
 import GoogleReviewContainer from "./components/google_reviews/google_review_container";
 import { Pages } from "./enums/pages";
-import { HomeContent } from "@/actions/mongodb/pages/fallback_content";
+import { HomeContent } from "@/app/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "./actions/mongodb/pages/management";
 import classes from "./page.module.css";
 

@@ -1,7 +1,7 @@
 "use server";
 
-import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
-import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
+import { rateLimitReached } from "@/app/actions/rate_limit/global_rate_limit";
+import { getServerOnlyEnv } from "@/app/utils/getServerOnlyEnv";
 import { cacheLife, cacheTag } from "next/cache";
 
 const isDevelopment = process.env.NODE_ENV === "development";

@@ -1,6 +1,6 @@
 "use client";
 
-import { logout } from "@/actions/mongodb/sessions/management";
+import { logout } from "@/app/actions/mongodb/sessions/management";
 import { Button } from "@mantine/core";
 import { IconLogout } from "@tabler/icons-react";
 import { useTransition } from "react";

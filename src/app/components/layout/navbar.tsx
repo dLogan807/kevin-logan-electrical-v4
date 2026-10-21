@@ -2,7 +2,7 @@
 
 import { Group, Stack, Burger, Overlay } from "@mantine/core";
 import { useDisclosure, useMediaQuery, useWindowEvent } from "@mantine/hooks";
-import logo from "@/assets/logo.webp";
+import logo from "@/app/assets/logo.webp";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,9 +13,9 @@ import {
   IconPhoneCall,
   IconPlugConnected,
 } from "@tabler/icons-react";
-import { Pages } from "@/enums/pages";
+import { Pages } from "@/app/enums/pages";
 import classes from "./navbar.module.css";
-import { theme } from "@/components/theme";
+import { theme } from "@/app/components/theme";
 import { ThemeSelector } from "../theme_selector/theme_selector";
 
 //Return the index of the currently navigated route

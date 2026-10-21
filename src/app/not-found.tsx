@@ -2,7 +2,7 @@ import { Button, Paper, Text, Box } from "@mantine/core";
 import Link from "next/link";
 import { Metadata } from "next";
 
-import classes from "@/error.module.css";
+import classes from "@/app/error.module.css";
 
 export const metadata: Metadata = {
   title: "Page Not Found | Kevin Logan Electrical - Your Trusted Electrician",

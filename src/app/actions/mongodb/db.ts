@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
+import { getServerOnlyEnv } from "@/app/utils/getServerOnlyEnv";
 import {
   DeleteResult,
   Document,

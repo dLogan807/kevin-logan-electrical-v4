@@ -1,12 +1,12 @@
 "use server";
 
-import { verifyRecaptcha } from "@/actions/validate_recaptcha";
+import { verifyRecaptcha } from "@/app/actions/validate_recaptcha";
 import {
   FormSchema,
   FormType,
   FormValues,
   getFormSchema,
-} from "@/utils/schemas/form_schemas/schemas";
+} from "@/app/utils/schemas/form_schemas/schemas";
 
 export type FormResponse = {
   validated: boolean;
