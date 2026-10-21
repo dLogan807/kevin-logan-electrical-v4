@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "gen": "npm run dep:gen",
-    "dep:gen": "license-report --only=prod --output=json > licenses.json"
+    "typecheck": "tsc --noEmit",
+    "generate-licenses": "license-report --only=prod --output=json > licenses.json"
   },
   "dependencies": {
     "@mantine/carousel": "^8.3.18",
@@ -46,7 +46,7 @@
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.9.9",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=26.10.0"
