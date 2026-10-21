@@ -1,6 +1,6 @@
 "use server";
 
-import { rateLimitReached } from "@/app/actions/rate_limit/global_rate_limit";
+import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
 import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 import { cacheLife, cacheTag } from "next/cache";
 

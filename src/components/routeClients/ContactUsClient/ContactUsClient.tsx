@@ -19,7 +19,7 @@ import {
 } from "@tabler/icons-react";
 import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { ContactForm } from "@/components/contact_form/contact_form";
-import { ContactUsContent } from "@/app/actions/mongodb/pages/fallback_content";
+import { ContactUsContent } from "@/actions/mongodb/pages/fallback_content";
 import classes from "./ContactUsClient.module.css";
 
 type ContactUsClientProps = {

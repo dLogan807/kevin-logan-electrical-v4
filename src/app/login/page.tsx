@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { headers } from "next/headers";
-import { getCurrentSession } from "@/app/actions/mongodb/sessions/cookie";
+import { getCurrentSession } from "@/actions/mongodb/sessions/cookie";
 import { redirect } from "next/navigation";
 import LoginClient from "@/components/routeClients/LoginClient/LoginClient";
 

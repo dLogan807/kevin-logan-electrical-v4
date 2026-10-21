@@ -6,7 +6,7 @@ import { zod4Resolver } from "mantine-form-zod-resolver";
 import {
   ContactFormResponse,
   validateContactEmail,
-} from "@/app/actions/contact_email/send_and_validate";
+} from "@/actions/contact_email/send_and_validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useState } from "react";
 import classes from "./contact_form.module.css";

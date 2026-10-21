@@ -2,7 +2,7 @@
 
 import { Carousel } from "@mantine/carousel";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import { GoogleReview } from "@/app/actions/google_reviews/get_reviews";
+import { GoogleReview } from "@/actions/google_reviews/get_reviews";
 import ReviewCard from "./google_review_card";
 import classes from "./google_review_carousel.module.css";
 

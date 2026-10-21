@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import { Pages } from "@/enums/pages";
-import { getPageContent } from "@/app/actions/mongodb/pages/management";
+import { getPageContent } from "@/actions/mongodb/pages/management";
 import ContactUsClient from "@/components/routeClients/ContactUsClient/ContactUsClient";
-import { ContactUsContent } from "@/app/actions/mongodb/pages/fallback_content";
+import { ContactUsContent } from "@/actions/mongodb/pages/fallback_content";
 
 export const metadata: Metadata = {
   title: "Contact Us | Kevin Logan Electrical - Your Trusted Electrician",

@@ -6,8 +6,8 @@ import waiake from "@/assets/waiake.webp";
 import { Metadata } from "next";
 import { theme } from "@/theme";
 import { Pages } from "@/enums/pages";
-import { AboutUsContent } from "@/app/actions/mongodb/pages/fallback_content";
-import { getPageContent } from "@/app/actions/mongodb/pages/management";
+import { AboutUsContent } from "@/actions/mongodb/pages/fallback_content";
+import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {

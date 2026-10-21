@@ -8,7 +8,7 @@ import {
   RateAndServicesMongoSchema,
   ContactUsMongoSchema,
   PageSchema,
-} from "@/app/actions/mongodb/pages/schemas";
+} from "@/actions/mongodb/pages/schemas";
 import {
   HomeFallback,
   HomeContent,
@@ -18,7 +18,7 @@ import {
   RateAndServicesContent,
   ContactUsFallback,
   ContactUsContent,
-} from "@/app/actions/mongodb/pages/fallback_content";
+} from "@/actions/mongodb/pages/fallback_content";
 import { getCurrentSession } from "../sessions/cookie";
 import { cacheLife, cacheTag } from "next/cache";
 

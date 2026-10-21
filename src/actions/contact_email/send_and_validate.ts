@@ -1,6 +1,6 @@
 "use server";
 
-import { FormResponse, validateForm } from "@/app/actions/validate_form";
+import { FormResponse, validateForm } from "@/actions/validate_form";
 import { FormType } from "@/utils/schemas/form_schemas/schemas";
 import { ContactFormData } from "@/components/contact_form/contact_form";
 import nodemailer from "nodemailer";

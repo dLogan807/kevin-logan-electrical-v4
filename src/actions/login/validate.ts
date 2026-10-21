@@ -1,16 +1,16 @@
 "use server";
 
 import { LoginFormData } from "@/components/login/login_form";
-import { verifyPasswordHash } from "@/app/actions/login/password";
-import MongoDatabase from "@/app/actions/mongodb/db";
+import { verifyPasswordHash } from "@/actions/login/password";
+import MongoDatabase from "@/actions/mongodb/db";
 import {
   createSession,
   generateSessionToken,
   UserDocument,
-} from "@/app/actions/mongodb/sessions/management";
-import { FormResponse, validateForm } from "@/app/actions/validate_form";
+} from "@/actions/mongodb/sessions/management";
+import { FormResponse, validateForm } from "@/actions/validate_form";
 import { FormType } from "@/utils/schemas/form_schemas/schemas";
-import { setSessionTokenCookie } from "@/app/actions/mongodb/sessions/cookie";
+import { setSessionTokenCookie } from "@/actions/mongodb/sessions/cookie";
 
 type SessionInfo = {
   token: string;

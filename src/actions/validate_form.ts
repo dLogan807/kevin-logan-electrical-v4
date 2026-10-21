@@ -1,6 +1,6 @@
 "use server";
 
-import { verifyRecaptcha } from "@/app/actions/validate_recaptcha";
+import { verifyRecaptcha } from "@/actions/validate_recaptcha";
 import {
   FormSchema,
   FormType,

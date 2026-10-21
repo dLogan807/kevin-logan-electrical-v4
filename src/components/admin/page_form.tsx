@@ -17,7 +17,7 @@ import { IconTrash, IconWorldUp } from "@tabler/icons-react";
 import {
   addPageDocument,
   PageContent,
-} from "@/app/actions/mongodb/pages/management";
+} from "@/actions/mongodb/pages/management";
 import { Pages } from "@/enums/pages";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Link from "next/link";

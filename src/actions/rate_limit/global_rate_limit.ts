@@ -1,6 +1,6 @@
 "use server";
 
-import MongoDatabase from "@/app/actions/mongodb/db";
+import MongoDatabase from "@/actions/mongodb/db";
 import { RateLimitSchema } from "./schema";
 import { Document, Filter, UpdateFilter } from "mongodb";
 
