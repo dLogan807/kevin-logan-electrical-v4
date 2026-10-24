@@ -2,7 +2,7 @@ import { PageContent } from "@/actions/mongodb/pages/management";
 import { Pages } from "@/enums/pages";
 import { use } from "react";
 import { Text } from "@mantine/core";
-import PageForm from "./page_form";
+import PageForm from "@/components/forms/PageForm/PageForm";
 
 type PageFormLoaderProps = {
   selectedPage: Pages;
