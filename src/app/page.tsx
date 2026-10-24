@@ -15,7 +15,7 @@ import { Metadata } from "next";
 import { IconCircleCheck } from "@tabler/icons-react";
 import tagline_image from "@/assets/tagline_background.webp";
 import { theme } from "@/theme";
-import GoogleMap from "@/components/google_map/google_map";
+import GoogleMap from "@/components/google/GoogleMap/GoogleMap";
 import GoogleReviewContainer from "@/components/google_reviews/google_review_container";
 import { Pages } from "@/enums/pages";
 import { HomeContent } from "@/actions/mongodb/pages/fallback_content";

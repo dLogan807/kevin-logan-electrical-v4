@@ -2,7 +2,7 @@
 
 import { Box, Center } from "@mantine/core";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
-import classes from "./google_map.module.css";
+import classes from "./GoogleMap.module.css";
 
 type GoogleMapsProps = { query: string };
 
