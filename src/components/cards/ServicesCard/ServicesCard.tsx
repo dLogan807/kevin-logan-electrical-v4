@@ -1,17 +1,25 @@
-import { Paper, List, ListItem, ThemeIcon, Title } from "@mantine/core";
-import { ReactElement } from "react";
+import {
+  Paper,
+  List,
+  ListItem,
+  ThemeIcon,
+  Title,
+  ThemeIconProps,
+  TitleProps,
+} from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
-import classes from "./services_card.module.css";
-import TransparentThemeIcon from "../icons/TransparentThemeIcon/TransparentThemeIcon";
+import classes from "./ServicesCard.module.css";
+import TransparentThemeIcon from "@/components/icons/TransparentThemeIcon/TransparentThemeIcon";
 
 type ServicesCardProps = {
-  headerIcon: ReactElement;
+  titleOrder: TitleProps["order"];
+  headerIcon: ThemeIconProps["children"];
   headerText: string;
   listItems: string[];
 };
 
-//Card for services section of rate and services page
 export function ServicesCard({
+  titleOrder,
   headerIcon,
   headerText,
   listItems,
@@ -22,7 +30,7 @@ export function ServicesCard({
       withBorder
     >
       <TransparentThemeIcon>{headerIcon}</TransparentThemeIcon>
-      <Title order={5}>{headerText}</Title>
+      <Title order={titleOrder}>{headerText}</Title>
       <List
         classNames={{ root: classes.services_list }}
         icon={
@@ -31,8 +39,8 @@ export function ServicesCard({
           </ThemeIcon>
         }
       >
-        {listItems.map((i: string) => (
-          <ListItem key={i}>{i}</ListItem>
+        {listItems.map((listItem, idx) => (
+          <ListItem key={idx}>{listItem}</ListItem>
         ))}
       </List>
     </Paper>
