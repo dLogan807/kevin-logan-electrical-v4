@@ -2,13 +2,13 @@ import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Box, ColorSchemeScript, mantineHtmlProps, Paper } from "@mantine/core";
 import { headers } from "next/headers";
-import { Providers } from "@/components/layout/providers";
+import { Providers } from "@/components/providers/Providers/Providers";
+import { Footer } from "@/components/layout/footer";
+import { Navbar } from "@/components/layout/navbar";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import classes from "./layout.module.css";
 import "./globals.css";
-import { Footer } from "@/components/layout/footer";
-import { Navbar } from "@/components/layout/navbar";
 
 export const metadata: Metadata = {
   title: "Kevin Logan Electrical - Your Trusted Electrician",
