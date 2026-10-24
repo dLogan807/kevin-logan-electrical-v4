@@ -3,12 +3,11 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
-import { useReCaptcha } from "next-recaptcha-v3";
 import { useState } from "react";
 import { SuccessOrFailureAlert } from "@/components/alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
 import HoneypotInput from "@/components/inputs/HoneyPotInput/HoneypotInput";
 import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
-import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
+import CloudflareTurnstileWidget from "@/components/cloudflare/CloudflareTurnstileWidget/CloudflareTurnstileWidget";
 import { contactFormSchema } from "@/utils/schemas/form/contactFormSchema";
 import { ContactFormValues } from "@/types/formValues";
 import { validateContactEmail } from "@/actions/form/validateContactFormAndSend";
@@ -16,7 +15,6 @@ import { ContactFormResponse } from "@/types/formReponse";
 import classes from "./ContactForm.module.css";
 
 export function ContactForm() {
-  const { executeRecaptcha, loaded, error } = useReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
@@ -38,20 +36,11 @@ export function ContactForm() {
     setIsSubmitting(true);
     setFormAlertState({});
 
-    //Generate recaptcha token
-    const action = "contact_form_submit";
-    const token =
-      loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
-
     //Send to server action for validation and sending
-    const response = await validateContactEmail(
-      formValues,
-      token,
-      action,
-    ).catch(() => ({
+    const response = await validateContactEmail(formValues).catch(() => ({
       validated: false,
       formErrors: {},
-      recaptchaVerified: false,
+      turnstileVerfied: false,
       submitError: true,
       sendSuccess: false,
     }));
@@ -103,7 +92,7 @@ export function ContactForm() {
           {...form.getInputProps("jobDetails")}
           disabled={isSubmitting}
         />
-        <GoogleRecaptchaDisclaimer />
+        <CloudflareTurnstileWidget />
         <SuccessOrFailureAlert state={formAlertState} />
         <Group>
           <Button
@@ -132,8 +121,11 @@ function getFormMessage(
       message: "Email not sent. Check required fields for errors",
       isError: true,
     };
-  } else if (!response.recaptchaVerified) {
-    return { message: "Email not sent. reCAPTCHA failed", isError: true };
+  } else if (!response.turnstileVerfied) {
+    return {
+      message: "Email not sent. Turnstile captcha failed",
+      isError: true,
+    };
   } else if (!response.sendSuccess) {
     return {
       message: "Something went wrong. Please try again",

@@ -8,7 +8,6 @@ import {
   IconMapPin,
   IconPhone,
 } from "@tabler/icons-react";
-import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { ContactForm } from "@/components/forms/ContactForm/ContactForm";
 import { ContactUsContent } from "@/types/pageContent";
 import classes from "./ContactUsClient.module.css";
@@ -16,13 +15,9 @@ import TransparentThemeIcon from "@/components/icons/TransparentThemeIcon/Transp
 
 type ContactUsClientProps = {
   content: ContactUsContent;
-  nonce: string;
 };
 
-export default function ContactUsClient({
-  content,
-  nonce,
-}: ContactUsClientProps) {
+export default function ContactUsClient({ content }: ContactUsClientProps) {
   const mainSection = "main_section";
 
   const mapIcon = (
@@ -52,70 +47,64 @@ export default function ContactUsClient({
   );
 
   return (
-    <ReCaptchaProvider
-      className={classes.recaptcha}
-      nonce={nonce}
-      strategy="lazyOnload"
-    >
-      <Box className={`${classes.contactus_grid} content_grid`}>
-        <Paper
-          classNames={{ root: `${classes.contact_form} ${mainSection}` }}
-          withBorder
-        >
-          <Title order={2}>Send an email</Title>
-          <ContactForm />
-        </Paper>
-        <Paper
-          classNames={{ root: `${classes.contact_details} ${mainSection}` }}
-          withBorder
-        >
-          <Box className={classes.contact_details_box}>
-            <Title order={2}>{content.contact_details.title}</Title>
-            <List
-              classNames={{
-                root: classes.contact_details_list,
-                item: classes.contact_details_list_label,
-              }}
-            >
-              <ListItem icon={mapIcon}>
-                {content.contact_details.location}
-              </ListItem>
-              <ListItem icon={phoneIcon}>
-                <TelLink
-                  phoneNumber={content.contact_details.phone}
-                  isMobile={false}
-                />
-              </ListItem>
-              <ListItem icon={mobilePhoneIcon}>
-                <TelLink
-                  phoneNumber={content.contact_details.mobile}
-                  isMobile={true}
-                />
-              </ListItem>
-              <ListItem icon={emailIcon}>
-                <Anchor href={`mailto:${content.contact_details.email}`}>
-                  {content.contact_details.email}
-                </Anchor>
-              </ListItem>
-            </List>
-          </Box>
-          <Box className={classes.contact_details_box}>
-            <Title order={2}>{content.service_hours.title}</Title>
-            <List
-              classNames={{
-                root: classes.contact_details_list,
-                item: classes.contact_details_list_label,
-              }}
-            >
-              <ListItem icon={serviceHoursIcon}>
-                <Text>{content.service_hours.hours}</Text>
-                <Text>{content.service_hours.days}</Text>
-              </ListItem>
-            </List>
-          </Box>
-        </Paper>
-      </Box>
-    </ReCaptchaProvider>
+    <Box className={`${classes.contactus_grid} content_grid`}>
+      <Paper
+        classNames={{ root: `${classes.contact_form} ${mainSection}` }}
+        withBorder
+      >
+        <Title order={2}>Send an email</Title>
+        <ContactForm />
+      </Paper>
+      <Paper
+        classNames={{ root: `${classes.contact_details} ${mainSection}` }}
+        withBorder
+      >
+        <Box className={classes.contact_details_box}>
+          <Title order={2}>{content.contact_details.title}</Title>
+          <List
+            classNames={{
+              root: classes.contact_details_list,
+              item: classes.contact_details_list_label,
+            }}
+          >
+            <ListItem icon={mapIcon}>
+              {content.contact_details.location}
+            </ListItem>
+            <ListItem icon={phoneIcon}>
+              <TelLink
+                phoneNumber={content.contact_details.phone}
+                isMobile={false}
+              />
+            </ListItem>
+            <ListItem icon={mobilePhoneIcon}>
+              <TelLink
+                phoneNumber={content.contact_details.mobile}
+                isMobile={true}
+              />
+            </ListItem>
+            <ListItem icon={emailIcon}>
+              <Anchor href={`mailto:${content.contact_details.email}`}>
+                {content.contact_details.email}
+              </Anchor>
+            </ListItem>
+          </List>
+        </Box>
+        <Box className={classes.contact_details_box}>
+          <Title order={2}>{content.service_hours.title}</Title>
+          <List
+            classNames={{
+              root: classes.contact_details_list,
+              item: classes.contact_details_list_label,
+            }}
+          >
+            <ListItem icon={serviceHoursIcon}>
+              <Text>{content.service_hours.hours}</Text>
+              <Text>{content.service_hours.days}</Text>
+            </ListItem>
+          </List>
+        </Box>
+      </Paper>
+    </Box>
   );
 }
 

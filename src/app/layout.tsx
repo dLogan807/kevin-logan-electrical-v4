@@ -38,6 +38,12 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript defaultColorScheme="auto" nonce={nonce} />
+        <script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          async
+          defer
+          nonce={nonce}
+        />
       </head>
       <body className={classes.body}>
         <Providers nonce={nonce}>

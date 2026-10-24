@@ -4,10 +4,12 @@ export type ContactFormValues = {
   phone: string | null;
   jobDetails: string;
   website?: string;
+  "cf-turnstile-response"?: string;
 };
 
 export type LoginFormValues = {
   username: string;
   password: string;
   website?: string;
+  "cf-turnstile-response"?: string;
 };

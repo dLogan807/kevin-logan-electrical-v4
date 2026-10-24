@@ -19,4 +19,5 @@ export const contactFormSchema: ZodType<ContactFormValues> = z.object({
     z.string().max(2000, { message: "Sorry, maximum 2000 characters" }),
   ),
   website: z.string().optional(),
+  "cf-turnstile-response": z.string().optional(),
 });

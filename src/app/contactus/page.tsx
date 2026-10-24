@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { headers } from "next/headers";
 import { Pages } from "@/enums/pages";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import ContactUsClient from "@/app/contactus/ContactUsClient/ContactUsClient";
@@ -12,9 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactUs() {
-  const nonce = (await headers()).get("x-nonce") || "";
-
   const content = await getPageContent<ContactUsContent>(Pages.ContactUs);
 
-  return <ContactUsClient content={content} nonce={nonce} />;
+  return <ContactUsClient content={content} />;
 }

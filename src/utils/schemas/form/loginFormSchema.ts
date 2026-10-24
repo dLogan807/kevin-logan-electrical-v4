@@ -5,4 +5,5 @@ export const loginFormSchema: ZodType<LoginFormValues> = z.object({
   username: z.string().min(1, { message: "Please enter a username" }),
   password: z.string().min(1, { message: "Please enter a password" }),
   website: z.string().optional(),
+  "cf-turnstile-response": z.string().optional(),
 });

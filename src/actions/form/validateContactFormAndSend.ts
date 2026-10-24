@@ -8,14 +8,12 @@ import { ContactFormResponse } from "@/types/formReponse";
 //Validate and return whether successful and any errors
 export async function validateContactEmail(
   formValues: ContactFormValues,
-  token: string,
-  action: string,
 ): Promise<ContactFormResponse> {
+  const token = formValues["cf-turnstile-response"];
   const validationResult = await validateForm<ContactFormValues>(
     "contact",
     formValues,
     token,
-    action,
   );
 
   const response: ContactFormResponse = {
@@ -23,13 +21,13 @@ export async function validateContactEmail(
     sendSuccess: false,
   };
 
-  if (!response.validated || !response.recaptchaVerified) {
+  if (!response.validated || !response.turnstileVerfied) {
     return response;
   }
 
   //Likely bot if filled
   if (formValues.website) {
-    response.recaptchaVerified = false;
+    response.turnstileVerfied = false;
     return response;
   }
 

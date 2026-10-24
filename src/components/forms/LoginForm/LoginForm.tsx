@@ -12,8 +12,7 @@ import {
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
-import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
-import { useReCaptcha } from "next-recaptcha-v3";
+import CloudflareTurnstileWidget from "@/components/cloudflare/CloudflareTurnstileWidget/CloudflareTurnstileWidget";
 import { useRouter, useSearchParams } from "next/navigation";
 import HoneypotInput from "@/components/inputs/HoneyPotInput/HoneypotInput";
 import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
@@ -36,7 +35,6 @@ export default function LoginForm() {
   }, [loggedOut]);
 
   //Form
-  const { executeRecaptcha, loaded, error } = useReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordVisible, { toggle }] = useDisclosure(false);
   const form = useForm<LoginFormValues>({
@@ -82,19 +80,10 @@ export default function LoginForm() {
     setFormAlertState({ message: "" });
     if (passwordVisible) toggle();
 
-    //Get recaptcha token
-    const action = "login_form_submit";
-    const token =
-      loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
-
-    const response = await validateLoginForm(
-      form.getValues(),
-      token,
-      action,
-    ).catch(() => ({
+    const response = await validateLoginForm(form.getValues()).catch(() => ({
       validated: false,
       formErrors: {},
-      recaptchaVerified: false,
+      turnstileVerfied: false,
       submitError: true,
       sessionCreated: false,
     }));
@@ -104,7 +93,7 @@ export default function LoginForm() {
 
     if (
       response.validated &&
-      response.recaptchaVerified &&
+      response.turnstileVerfied &&
       response.sessionCreated
     ) {
       router.push("/admin");
@@ -144,6 +133,7 @@ export default function LoginForm() {
               visible={passwordVisible}
               disabled={isSubmitting}
             />
+            <CloudflareTurnstileWidget />
             <SuccessOrFailureAlert state={formAlertState} />
             <Box className={classes.submit_button_group}>
               <Button type="submit" variant="filled" loading={isSubmitting}>
@@ -152,7 +142,6 @@ export default function LoginForm() {
             </Box>
           </Stack>
         </Fieldset>
-        <GoogleRecaptchaDisclaimer />
       </Stack>
     </form>
   );
@@ -171,8 +160,8 @@ function getFormMessage(
       message: "Check required fields for errors",
       isError: true,
     };
-  } else if (!response.recaptchaVerified) {
-    return { message: "reCAPTCHA failed", isError: true };
+  } else if (!response.turnstileVerfied) {
+    return { message: "Turnstile captcha failed", isError: true };
   } else if (!response.sessionCreated) {
     return {
       message: "Incorrect username or password",

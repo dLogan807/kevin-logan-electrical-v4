@@ -1,7 +1,7 @@
 export type FormResponse = {
   validated: boolean;
   formErrors: { [k: string]: string };
-  recaptchaVerified: boolean;
+  turnstileVerfied: boolean;
   submitError?: boolean;
 };
 
