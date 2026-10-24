@@ -9,7 +9,7 @@ import { Box, Group, Select, Button, Loader, Title } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 import { useState, Suspense } from "react";
 import { Pages } from "@/enums/pages";
-import LogoutButton from "./logout_button";
+import LogoutButton from "@/components/buttons/LogoutButton/LogoutButton";
 import PageFormLoader from "./page_form_loader";
 import classes from "./page_form_selector.module.css";
 
