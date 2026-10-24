@@ -20,6 +20,12 @@ const themeOverride = createTheme({
   },
   autoContrast: true,
   components: {
+    ActionIcon: {
+      classNames: {
+        root: classes.action_icon,
+        icon: classes.action_icon_icon,
+      },
+    },
     ThemeIcon: {
       classNames: {
         root: classes.theme_icon,

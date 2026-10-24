@@ -24,14 +24,14 @@ export function ThemeSelectorActionIcon() {
       events={{ hover: true, focus: true, touch: false }}
     >
       <ActionIcon
-        className={classes.icon_container}
+        classNames={{ root: classes.action_icon_root }}
         onClick={toggleColorScheme}
         aria-label={tooltipText}
       >
         {isDarkTheme ? (
-          <IconSun aria-hidden="true" className={classes.icon} />
+          <IconSun aria-hidden="true" />
         ) : (
-          <IconMoonStars aria-hidden="true" className={classes.icon} />
+          <IconMoonStars aria-hidden="true" />
         )}
       </ActionIcon>
     </Tooltip>
