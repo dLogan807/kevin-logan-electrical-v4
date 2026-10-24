@@ -26,20 +26,20 @@ export default async function RateAndServices() {
         withBorder
         classNames={{ root: `${classes.rateservice_rate} ${mainSection}` }}
       >
-        <div>
+        <Box className={classes.rate_box}>
           <Title order={2}>{content.rate.title}</Title>
           <Text>{content.rate.text}</Text>
-        </div>
-        <div>
+        </Box>
+        <Box className={classes.rate_box}>
           <Title order={2}>{content.estimates.title}</Title>
           <Text>{content.estimates.text}</Text>
-        </div>
+        </Box>
       </Paper>
       <Paper
         classNames={{ root: `${classes.rateservice_services} ${mainSection}` }}
         withBorder
       >
-        <Stack>
+        <Box className={classes.services_box_stack}>
           <Title order={2}>{content.services.title}</Title>
           <Text>{content.services.description}</Text>
           <Group classNames={{ root: classes.services_cards }}>
@@ -64,7 +64,7 @@ export default async function RateAndServices() {
               }
             />
           </Group>
-        </Stack>
+        </Box>
       </Paper>
     </Box>
   );

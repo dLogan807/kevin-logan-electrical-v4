@@ -6,6 +6,7 @@ import {
   Title,
   ThemeIconProps,
   TitleProps,
+  Box,
 } from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
 import classes from "./ServicesCard.module.css";
@@ -26,11 +27,13 @@ export function ServicesCard({
 }: ServicesCardProps) {
   return (
     <Paper
-      classNames={{ root: `${classes.services_list_container} main_section` }}
+      classNames={{ root: `${classes.services_paper_root} main_section` }}
       withBorder
     >
-      <TransparentThemeIcon>{headerIcon}</TransparentThemeIcon>
-      <Title order={titleOrder}>{headerText}</Title>
+      <Box>
+        <TransparentThemeIcon>{headerIcon}</TransparentThemeIcon>
+        <Title order={titleOrder}>{headerText}</Title>
+      </Box>
       <List
         classNames={{ root: classes.services_list }}
         icon={
