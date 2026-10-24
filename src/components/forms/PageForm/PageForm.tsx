@@ -43,11 +43,11 @@ export default function PageForm({ selectedPage, content }: PageFormProps) {
 
   const formattedPageTitle = snakeCaseToTitleCase(selectedPage);
 
-  async function onSubmit() {
+  async function handleSubmit(formValues: PageContent) {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    const submitSuccess = await addPageDocument(selectedPage, form.getValues());
+    const submitSuccess = await addPageDocument(selectedPage, formValues);
     const submitMessage = submitSuccess
       ? {
           message: (
@@ -64,7 +64,7 @@ export default function PageForm({ selectedPage, content }: PageFormProps) {
   }
 
   return (
-    <form onSubmit={form.onSubmit(() => onSubmit())}>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
         <FormFields contentObject={objectContent} form={form} />
         <SuccessOrFailureAlert state={formAlertState} />

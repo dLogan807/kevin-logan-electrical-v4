@@ -50,7 +50,6 @@ export default function LoginForm() {
   });
 
   //Form message
-
   const [formAlertState, setFormAlertState] =
     useState<SuccessOrFailureAlertState>(
       loggedOut ? { message: "Successfully logged out" } : {},
@@ -58,7 +57,7 @@ export default function LoginForm() {
   const router = useRouter();
 
   //Handle submit
-  async function onSubmit(e: SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isSubmitting) return;
 
@@ -72,10 +71,10 @@ export default function LoginForm() {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
 
-    await handleSubmit(form.getValues());
+    await submit();
   }
 
-  async function handleSubmit(formValues: LoginFormValues) {
+  async function submit() {
     if (isSubmitting) return;
 
     setIsSubmitting(true);
@@ -83,12 +82,12 @@ export default function LoginForm() {
     if (passwordVisible) toggle();
 
     //Get recaptcha token
-    const action: string = "login_form_submit";
-    const token: string =
+    const action = "login_form_submit";
+    const token =
       loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
 
     const response: LoginFormResponse = await validateLoginForm(
-      formValues,
+      form.getValues(),
       token,
       action,
     ).catch(() => ({
@@ -114,7 +113,7 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className={classes.form}>
+    <form onSubmit={handleSubmit} className={classes.form}>
       <Stack className={classes.form_stack}>
         <Fieldset legend="Please log in to continue">
           <Stack>

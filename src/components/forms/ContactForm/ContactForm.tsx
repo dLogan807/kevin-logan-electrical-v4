@@ -35,7 +35,7 @@ export function ContactForm() {
   const [formAlertState, setFormAlertState] =
     useState<SuccessOrFailureAlertState>({});
 
-  const onSubmit = async (fields: ContactFormValues) => {
+  async function handleSubmit(formValues: ContactFormValues) {
     if (isSubmitting) return;
     setIsSubmitting(true);
     setFormAlertState({});
@@ -47,7 +47,7 @@ export function ContactForm() {
 
     //Send to server action for validation and sending
     const response: ContactFormResponse = await validateContactEmail(
-      fields,
+      formValues,
       token,
       action,
     ).catch(() => ({
@@ -66,10 +66,10 @@ export function ContactForm() {
     }
 
     setIsSubmitting(false);
-  };
+  }
 
   return (
-    <form onSubmit={form.onSubmit((values) => onSubmit(values))}>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
         <TextInput
           className={classes.form_field}
