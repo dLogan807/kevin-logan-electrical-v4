@@ -1,0 +1,49 @@
+.contactus_grid {
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "form details";
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    grid-template-columns: 1fr;
+    grid-template-areas: "details" "form";
+  }
+}
+
+.contact_details {
+  grid-area: details;
+  height: min-content;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+}
+
+.contact_details_box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
+}
+
+.contact_details_list {
+  word-break: break-word;
+  --list-marker-gap: var(--mantine-spacing-md);
+  --list-spacing: var(--mantine-spacing-md);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    --list-marker-gap: var(--mantine-spacing-xs);
+  }
+}
+
+.contact_details_list_label {
+  a {
+    color: var(--mantine-color-text);
+  }
+}
+
+.contact_form {
+  grid-area: form;
+  height: fit-content;
+}

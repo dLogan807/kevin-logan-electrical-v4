@@ -1,0 +1,107 @@
+"use server";
+
+import MongoDatabase from "@/actions/mongodb/db";
+import { Document, Filter, UpdateFilter } from "mongodb";
+import { GlobalRateLimitSchema } from "./schemas";
+
+interface RateLimitDocument {
+  requestType: string;
+  count: number;
+  resetDate: Date;
+}
+
+const COLLECTION: string = "global_rate_limit";
+
+//Check and increment rate limit
+export async function incrementAndCheckGlobalRateLimit(
+  requestType: string,
+): Promise<boolean> {
+  const MAX_MONTLY_REQUESTS: number = 930;
+  const DAYS_IN_MONTH: number = 31;
+  const MAX_DAILY_REQUESTS: number = MAX_MONTLY_REQUESTS / DAYS_IN_MONTH;
+
+  await MongoDatabase.createCollection(COLLECTION, GlobalRateLimitSchema);
+
+  const query = {
+    requestType: requestType,
+  };
+
+  const rateDocument = await MongoDatabase.getDocument<RateLimitDocument>(
+    COLLECTION,
+    query,
+  );
+
+  //No document exists or is missing fields
+  if (!rateDocument || rateDocument.requestType === null) {
+    const document: RateLimitDocument = {
+      requestType: requestType,
+      count: 1,
+      resetDate: getDateInOneDay(),
+    };
+
+    const createFailed = !(await MongoDatabase.addDocument<RateLimitDocument>(
+      COLLECTION,
+      document,
+    ));
+    return createFailed;
+  } else if (rateDocument.count === null || rateDocument.resetDate === null) {
+    const resetFailed = !(await reset(requestType));
+    return resetFailed;
+  }
+
+  //Reset is due
+  const currentDate = new Date();
+  if (currentDate > rateDocument.resetDate) {
+    await reset(requestType);
+
+    return false;
+  }
+
+  //Requests exceeded
+  if (rateDocument.count >= MAX_DAILY_REQUESTS) {
+    return true;
+  }
+
+  //If increment failed, prevent usage
+  const incrementFailed = !(await increment(requestType));
+  return incrementFailed;
+}
+
+//Increment rate limit
+async function increment(requestType: string): Promise<boolean> {
+  const filter: Filter<Document> = {
+    requestType,
+  };
+
+  const document: UpdateFilter<Document> = {
+    $inc: {
+      count: 1,
+    },
+  };
+
+  return MongoDatabase.updateDocument(COLLECTION, filter, document);
+}
+
+//Reset limit
+async function reset(requestType: string): Promise<boolean> {
+  const filter: Filter<Document> = {
+    requestType,
+  };
+
+  const document: UpdateFilter<Document> = {
+    $set: {
+      count: 1,
+      resetDate: getDateInOneDay(),
+    },
+  };
+
+  return await MongoDatabase.updateDocument(COLLECTION, filter, document);
+}
+
+//Returns the date-time a day from now
+function getDateInOneDay(): Date {
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+
+  return date;
+}

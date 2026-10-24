@@ -1,9 +1,9 @@
-import { Box, Group, Paper, Stack, Text } from "@mantine/core";
+import { Box, Group, Paper, Text, Title } from "@mantine/core";
 import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
-import { ServicesCard } from "@/components/services_card/services_card";
+import { ServicesCard } from "@/components/cards/ServicesCard/ServicesCard";
 import { Pages } from "@/enums/pages";
-import { RateAndServicesContent } from "@/actions/mongodb/pages/fallback_content";
+import { RateAndServicesContent } from "@/types/pageContent";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
@@ -26,34 +26,37 @@ export default async function RateAndServices() {
         withBorder
         classNames={{ root: `${classes.rateservice_rate} ${mainSection}` }}
       >
-        <div>
-          <h4>{content.rate.title}</h4>
+        <Box className={classes.rate_box}>
+          <Title order={2}>{content.rate.title}</Title>
           <Text>{content.rate.text}</Text>
-        </div>
-        <div>
-          <h4>{content.estimates.title}</h4>
+        </Box>
+        <Box className={classes.rate_box}>
+          <Title order={2}>{content.estimates.title}</Title>
           <Text>{content.estimates.text}</Text>
-        </div>
+        </Box>
       </Paper>
       <Paper
         classNames={{ root: `${classes.rateservice_services} ${mainSection}` }}
         withBorder
       >
-        <Stack>
-          <h4>{content.services.title}</h4>
+        <Box className={classes.services_box_stack}>
+          <Title order={2}>{content.services.title}</Title>
           <Text>{content.services.description}</Text>
           <Group classNames={{ root: classes.services_cards }}>
             <ServicesCard
+              titleOrder={3}
               headerIcon={<IconBulb />}
               headerText={"Interior"}
               listItems={content.services.categories.interior}
             />
             <ServicesCard
+              titleOrder={3}
               headerIcon={<IconSun />}
               headerText={"Exterior"}
               listItems={content.services.categories.exterior}
             />
             <ServicesCard
+              titleOrder={3}
               headerIcon={<IconTool />}
               headerText={"Renovations & Maintenance"}
               listItems={
@@ -61,7 +64,7 @@ export default async function RateAndServices() {
               }
             />
           </Group>
-        </Stack>
+        </Box>
       </Paper>
     </Box>
   );

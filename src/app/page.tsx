@@ -7,18 +7,19 @@ import {
   Stack,
   Text,
   ThemeIcon,
+  Title,
 } from "@mantine/core";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { IconCircleCheck } from "@tabler/icons-react";
 import tagline_image from "@/assets/tagline_background.webp";
-import { theme } from "@/components/theme";
-import GoogleMap from "./components/google_map/google_map";
-import GoogleReviewContainer from "./components/google_reviews/google_review_container";
-import { Pages } from "./enums/pages";
-import { HomeContent } from "@/actions/mongodb/pages/fallback_content";
-import { getPageContent } from "./actions/mongodb/pages/management";
+import { theme } from "@/theme";
+import GoogleMap from "@/components/google/GoogleMap/GoogleMap";
+import GoogleReviewContainer from "@/components/google/GoogleReviewContainer/GoogleReviewContainer";
+import { Pages } from "@/enums/pages";
+import { HomeContent } from "@/types/pageContent";
+import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -36,8 +37,8 @@ export default async function Home() {
     <Box className={`${classes.home_grid} content_grid`}>
       <Paper className={`${classes.tagline} ${mainSection}`} withBorder>
         <Stack>
-          <h1>{content.tagline.title}</h1>
-          <h2>{content.tagline.subtitle}</h2>
+          <Title order={1}>{content.tagline.title}</Title>
+          <Title order={2}>{content.tagline.subtitle}</Title>
           <Text>{content.tagline.description}</Text>
           <Link href="/contactus" className={classes.contact_button}>
             <Button>{content.tagline.button_text}</Button>
@@ -56,10 +57,10 @@ export default async function Home() {
         </Box>
       </Box>
       <Paper className={`${classes.summary} ${mainSection}`} withBorder>
-        <h2>{content.summary.title}</h2>
+        <Title order={2}>{content.summary.title}</Title>
         <List
           icon={
-            <ThemeIcon className={"checkmark"}>
+            <ThemeIcon>
               <IconCircleCheck />
             </ThemeIcon>
           }

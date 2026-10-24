@@ -1,15 +1,12 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es2025",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["node"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false, // Temporary workaround for https://github.com/vercel/next.js/issues/99919
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noEmit": true,
@@ -26,9 +23,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/app/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -38,7 +33,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
