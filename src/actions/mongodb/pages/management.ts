@@ -1,6 +1,6 @@
 "use server";
 
-import MongoDatabase from "../db";
+import MongoDatabase from "@/actions/mongodb/db";
 import { Pages } from "@/enums/pages";
 import {
   HomeMongoSchema,
@@ -9,7 +9,7 @@ import {
   ContactUsMongoSchema,
   PageSchema,
 } from "@/actions/mongodb/pages/schemas";
-import { getCurrentSession } from "../sessions/cookie";
+import { getCurrentSession } from "@/actions/mongodb/sessions/cookie";
 import { cacheLife, cacheTag } from "next/cache";
 import {
   HomeFallback,

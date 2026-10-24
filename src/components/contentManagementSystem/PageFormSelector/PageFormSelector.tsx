@@ -16,7 +16,7 @@ import { IconRefresh } from "@tabler/icons-react";
 import { useState, Suspense } from "react";
 import { Pages } from "@/enums/pages";
 import LogoutButton from "@/components/buttons/LogoutButton/LogoutButton";
-import PageFormLoader from "../PageFormLoader/PageFormLoader";
+import PageFormLoader from "@/components/contentManagementSystem/PageFormLoader/PageFormLoader";
 import classes from "./PageFormSelector.module.css";
 
 interface SelectData {
