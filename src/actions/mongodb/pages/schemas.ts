@@ -1,3 +1,5 @@
+import "server-only";
+
 //Schemas for MongoDB collections (validation performed server side via MongoDB Atlas)
 
 export type PageSchema =

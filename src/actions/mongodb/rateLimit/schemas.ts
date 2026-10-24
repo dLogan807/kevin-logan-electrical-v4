@@ -1,3 +1,5 @@
+import "server-only";
+
 export const GlobalRateLimitSchema = {
   bsonType: "object",
   title: "Schema Object Validation",

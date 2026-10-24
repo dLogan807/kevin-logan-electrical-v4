@@ -1,3 +1,5 @@
+import "server-only";
+
 export const UserMongoSchema = {
   bsonType: "object",
   title: "User Object Validation",
