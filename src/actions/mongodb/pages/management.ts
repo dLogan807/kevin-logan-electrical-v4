@@ -9,27 +9,21 @@ import {
   ContactUsMongoSchema,
   PageSchema,
 } from "@/actions/mongodb/pages/schemas";
-import {
-  HomeFallback,
-  HomeContent,
-  AboutUsFallback,
-  AboutUsContent,
-  RateAndServicesFallback,
-  RateAndServicesContent,
-  ContactUsFallback,
-  ContactUsContent,
-} from "@/actions/mongodb/pages/fallback_content";
 import { getCurrentSession } from "../sessions/cookie";
 import { cacheLife, cacheTag } from "next/cache";
+import {
+  HomeFallback,
+  AboutUsFallback,
+  RateAndServicesFallback,
+  ContactUsFallback,
+} from "@/constants/fallbackContent";
+import { PageContent } from "@/types/pageContent";
 
 interface PageDocument<T extends PageContent> {
   page_content: T;
   date_created?: Date;
   auto_created?: boolean;
 }
-
-export type PageContent =
-  HomeContent | AboutUsContent | RateAndServicesContent | ContactUsContent;
 
 const pageSchemaMap: Record<Pages, PageSchema> = {
   [Pages.Home]: HomeMongoSchema,

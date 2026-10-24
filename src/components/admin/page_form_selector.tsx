@@ -1,9 +1,7 @@
 "use client";
 
-import {
-  PageContent,
-  getStoredPageContent,
-} from "@/actions/mongodb/pages/management";
+import { getStoredPageContent } from "@/actions/mongodb/pages/management";
+import { PageContent } from "@/types/pageContent";
 import snakeCaseToTitleCase from "@/utils/snakeCaseToTitleCase";
 import {
   Box,

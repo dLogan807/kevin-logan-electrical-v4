@@ -1,19 +1,9 @@
-import { Document } from "mongodb";
-
-// Home
-export interface HomeContent extends Document {
-  tagline: {
-    title: string;
-    subtitle: string;
-    description: string;
-    button_text: string;
-  };
-  summary: {
-    title: string;
-    items: string[];
-  };
-  review_name_filter: string[];
-}
+import {
+  AboutUsContent,
+  ContactUsContent,
+  HomeContent,
+  RateAndServicesContent,
+} from "@/types/pageContent";
 
 export const HomeFallback: HomeContent = {
   tagline: {
@@ -38,17 +28,6 @@ export const HomeFallback: HomeContent = {
   review_name_filter: [],
 };
 
-// About Us
-export interface AboutUsContent extends Document {
-  top_section: {
-    text: string;
-    button_text: string;
-  };
-  bottom_section: {
-    text: string;
-  };
-}
-
 export const AboutUsFallback: AboutUsContent = {
   top_section: {
     text: "I founded Kevin Logan Electrical in 1992 and have since been proudly serving the North Shore community. Based in Torbay, you can count on me as your local electrician.",
@@ -58,27 +37,6 @@ export const AboutUsFallback: AboutUsContent = {
     text: "I specialise in residential work, offering a competent and reliable electrical service you can count on. In addition, with my friendly and professional manner, I can answer any questions you may have about my business or services. I pride myself on quality workmanship and professional service from repairs and maintenance to installations. \n\n At Kevin Logan Electrical, my goal is to provide you with a courteous, prompt, professional service of the highest calibre.",
   },
 };
-
-// Rate and Services
-export interface RateAndServicesContent extends Document {
-  rate: {
-    title: string;
-    text: string;
-  };
-  estimates: {
-    title: string;
-    text: string;
-  };
-  services: {
-    title: string;
-    description: string;
-    categories: {
-      interior: string[];
-      exterior: string[];
-      renovations_and_maintenance: string[];
-    };
-  };
-}
 
 export const RateAndServicesFallback: RateAndServicesContent = {
   rate: {
@@ -119,22 +77,6 @@ export const RateAndServicesFallback: RateAndServicesContent = {
     },
   },
 };
-
-// Contact Us
-export interface ContactUsContent extends Document {
-  contact_details: {
-    title: string;
-    location: string;
-    phone: string;
-    mobile: string;
-    email: string;
-  };
-  service_hours: {
-    title: string;
-    hours: string;
-    days: string;
-  };
-}
 
 export const ContactUsFallback: ContactUsContent = {
   contact_details: {

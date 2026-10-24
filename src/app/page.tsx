@@ -18,7 +18,7 @@ import { theme } from "@/theme";
 import GoogleMap from "@/components/google/GoogleMap/GoogleMap";
 import GoogleReviewContainer from "@/components/google/GoogleReviewContainer/GoogleReviewContainer";
 import { Pages } from "@/enums/pages";
-import { HomeContent } from "@/actions/mongodb/pages/fallback_content";
+import { HomeContent } from "@/types/pageContent";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 

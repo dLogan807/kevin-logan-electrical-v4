@@ -3,7 +3,7 @@ import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
 import { ServicesCard } from "@/components/cards/ServicesCard/ServicesCard";
 import { Pages } from "@/enums/pages";
-import { RateAndServicesContent } from "@/actions/mongodb/pages/fallback_content";
+import { RateAndServicesContent } from "@/types/pageContent";
 import { getPageContent } from "@/actions/mongodb/pages/management";
 import classes from "./page.module.css";
 

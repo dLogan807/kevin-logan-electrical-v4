@@ -14,10 +14,8 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { IconTrash, IconWorldUp } from "@tabler/icons-react";
-import {
-  addPageDocument,
-  PageContent,
-} from "@/actions/mongodb/pages/management";
+import { addPageDocument } from "@/actions/mongodb/pages/management";
+import { PageContent } from "@/types/pageContent";
 import { Pages } from "@/enums/pages";
 import { SuccessOrFailureAlert } from "@/components/alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
 import Link from "next/link";
