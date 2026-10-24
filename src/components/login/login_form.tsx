@@ -179,7 +179,7 @@ export default function LoginForm() {
             </Box>
           </Stack>
         </Fieldset>
-        <GoogleRecaptchaDisclaimer className={classes.recaptcha_disclaimer} />
+        <GoogleRecaptchaDisclaimer />
       </Stack>
     </form>
   );
