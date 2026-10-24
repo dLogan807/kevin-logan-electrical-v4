@@ -39,7 +39,7 @@ export default function PageFormSelector({
     <Box>
       <Box className={classes.header_group}>
         <LogoutButton />
-        <Title order={1}>Content Mangement</Title>
+        <Title order={1}>Content Management</Title>
       </Box>
       <Group className={classes.content_control_group}>
         <Group className={classes.inner_content_control_group}>
