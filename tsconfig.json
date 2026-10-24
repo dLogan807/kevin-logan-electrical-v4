@@ -6,7 +6,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false, // Temporary workaround for https://github.com/vercel/next.js/issues/99919
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noEmit": true,
