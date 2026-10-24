@@ -92,9 +92,7 @@ export function Navbar() {
       href={link.link}
       className={classes.link}
       data-active={activePageFromPath === link.value || undefined}
-      onClick={() => {
-        close();
-      }}
+      onClick={close}
     >
       <link.icon className={classes.link_icon} />
       <span>{link.label}</span>
