@@ -1,12 +1,8 @@
-import {
-  IconArrowRight,
-  IconBrandGoogle,
-  IconStarFilled,
-} from "@tabler/icons-react";
-import { Box, Button, Group, Rating, Text, ThemeIcon } from "@mantine/core";
-import Link from "next/link";
+import { IconBrandGoogle, IconStarFilled } from "@tabler/icons-react";
+import { Box, Group, Rating, Text, ThemeIcon } from "@mantine/core";
 import { getGoogleReviews } from "@/actions/google_reviews/get_reviews";
 import GoogleReviewCarousel from "@/components/google/GoogleReviewCarousel/GoogleReviewCarousel";
+import ReviewButton from "@/components/buttons/ReviewButton/ReviewButton";
 import classes from "./GoogleReviewContainer.module.css";
 
 type GoogleReviewContainerProps = {
@@ -66,21 +62,5 @@ export default async function GoogleReviewContainer({
       </Box>
       <GoogleReviewCarousel reviews={googleReviews.reviews} />
     </Group>
-  );
-}
-
-function ReviewButton() {
-  return (
-    <Link
-      href="https://www.google.com/search?q=kevin+logan+electrical"
-      className={classes.review_button}
-    >
-      <Button
-        variant="light"
-        rightSection={<IconArrowRight aria-label="Right arrow" />}
-      >
-        Review
-      </Button>
-    </Link>
   );
 }
