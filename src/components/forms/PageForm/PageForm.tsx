@@ -70,11 +70,12 @@ export default function PageForm({ selectedPage, content }: PageFormProps) {
         <SuccessOrFailureAlert state={formAlertState} />
         <Group className={classes.submit_button_group}>
           <Tooltip label="Submit and update website content">
-            <Button type="submit" loading={isSubmitting}>
-              <Group>
-                Update {formattedPageTitle}
-                <IconWorldUp aria-label="Internet submission" />
-              </Group>
+            <Button
+              type="submit"
+              loading={isSubmitting}
+              rightSection={<IconWorldUp aria-label="Internet submission" />}
+            >
+              Update {formattedPageTitle}
             </Button>
           </Tooltip>
         </Group>

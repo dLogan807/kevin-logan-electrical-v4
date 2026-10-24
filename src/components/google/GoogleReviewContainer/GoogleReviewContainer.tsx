@@ -75,11 +75,11 @@ function ReviewButton() {
       href="https://www.google.com/search?q=kevin+logan+electrical"
       className={classes.review_button}
     >
-      <Button variant="light">
-        <Group>
-          <Text>Review</Text>
-          <IconArrowRight aria-label="Right arrow" />
-        </Group>
+      <Button
+        variant="light"
+        rightSection={<IconArrowRight aria-label="Right arrow" />}
+      >
+        Review
       </Button>
     </Link>
   );
