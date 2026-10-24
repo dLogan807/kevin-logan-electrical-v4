@@ -5,9 +5,9 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
-import classes from "./theme_selector.module.css";
+import classes from "./ThemeSelectorActionIcon.module.css";
 
-export function ThemeSelector() {
+export function ThemeSelectorActionIcon() {
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("dark", {
     getInitialValueInEffect: true,

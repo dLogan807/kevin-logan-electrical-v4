@@ -13,10 +13,10 @@ import {
   IconPhoneCall,
   IconPlugConnected,
 } from "@tabler/icons-react";
+import { ThemeSelectorActionIcon } from "../buttons/ThemeSelectorActionIcon/ThemeSelectorActionIcon";
 import { Pages } from "@/enums/pages";
 import classes from "./navbar.module.css";
 import { theme } from "@/theme";
-import { ThemeSelector } from "../theme_selector/theme_selector";
 
 //Return the index of the currently navigated route
 function getRoute(path: string): Pages | undefined {
@@ -128,7 +128,7 @@ export function Navbar() {
         </nav>
 
         <div className={classes.inner_end}>
-          <ThemeSelector />
+          <ThemeSelectorActionIcon />
           <Burger
             opened={mobileNavOpened}
             onClick={toggle}
