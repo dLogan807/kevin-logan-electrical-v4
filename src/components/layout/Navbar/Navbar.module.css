@@ -12,11 +12,10 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  --container-size: var(--container-size-md);
 
   @media (max-width: $mantine-breakpoint-sm) {
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 0 var(--mantine-spacing-lg);
   }
 }
 
@@ -45,8 +44,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0;
-  padding: 0;
   z-index: 13;
 
   @media (max-width: $mantine-breakpoint-sm) {
@@ -54,8 +51,6 @@
   }
 
   button:last-child {
-    --burger-size: var(--burger-size-sm);
-
     @media (min-width: $mantine-breakpoint-sm) {
       display: none;
     }
