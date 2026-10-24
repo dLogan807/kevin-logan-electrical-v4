@@ -66,21 +66,6 @@ h5 {
   margin: 0;
 }
 
-.list_icon {
-  --ti-size: var(--ti-size-xl);
-  --ti-bg: transparent;
-  --ti-color: var(--mantine-color-pleasant-blue-light-color);
-  --ti-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
-}
-
-.checkmark {
-  --ti-size: calc(1.5rem * var(--mantine-scale));
-  --ti-radius: var(--mantine-radius-xl);
-  --ti-bg: var(--mantine-color-pleasant-blue-light);
-  --ti-color: var(--mantine-color-pleasant-blue-light-color);
-  --ti-bd: calc(0.0625rem * var(--mantine-scale)) solid transparent;
-}
-
 .grecaptcha-badge {
   visibility: hidden;
 }

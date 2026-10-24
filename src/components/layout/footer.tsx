@@ -17,7 +17,7 @@ export function Footer() {
         <h3>Call Us</h3>
         <Anchor href="tel:+64274978473" aria-label="Mobile phone number">
           <Group>
-            <ThemeIcon className={"checkmark"}>
+            <ThemeIcon>
               <IconPhone aria-label="Phone" />
             </ThemeIcon>
             0274 978 473
@@ -41,7 +41,7 @@ export function Footer() {
             href={"https://nextjs.org/"}
             aria-label="Next.js"
           >
-            <ThemeIcon className={"checkmark"}>
+            <ThemeIcon>
               <IconBrandNextjs aria-label="Next.js icon" />
             </ThemeIcon>
           </Link>
@@ -50,7 +50,7 @@ export function Footer() {
             href={"https://mantine.dev/"}
             aria-label="Mantine"
           >
-            <ThemeIcon className={"checkmark"}>
+            <ThemeIcon>
               <IconBrandMantine aria-label="Mantine icon" />
             </ThemeIcon>
           </Link>

@@ -2,6 +2,7 @@ import { Paper, List, ListItem, ThemeIcon } from "@mantine/core";
 import { ReactElement } from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import classes from "./services_card.module.css";
+import TransparentThemeIcon from "../icons/TransparentThemeIcon/TransparentThemeIcon";
 
 type ServicesCardProps = {
   headerIcon: ReactElement;
@@ -20,12 +21,12 @@ export function ServicesCard({
       classNames={{ root: `${classes.services_list_container} main_section` }}
       withBorder
     >
-      <ThemeIcon className={"list_icon"}>{headerIcon}</ThemeIcon>
+      <TransparentThemeIcon>{headerIcon}</TransparentThemeIcon>
       <h5>{headerText}</h5>
       <List
         classNames={{ root: classes.services_list }}
         icon={
-          <ThemeIcon className={"checkmark"}>
+          <ThemeIcon>
             <IconCircleCheck />
           </ThemeIcon>
         }

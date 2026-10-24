@@ -1,26 +1,31 @@
-import {
-  createTheme,
-  mergeMantineTheme,
-  MantineColorsTuple,
-  DEFAULT_THEME,
-} from "@mantine/core";
-
-//Theme colours
-const siteColors: MantineColorsTuple = [
-  "#e4f8ff",
-  "#d2eafc",
-  "#a8d2f2",
-  "#7bb8e7",
-  "#56a3df",
-  "#3d96da",
-  "#2d8fd9",
-  "#1a7bc1",
-  "#056eae",
-  "#005f9c",
-];
+import { createTheme, DEFAULT_THEME, mergeMantineTheme } from "@mantine/core";
+import classes from "./theme.module.css";
 
 //Theme
 const themeOverride = createTheme({
+  primaryColor: "pleasant-blue",
+  colors: {
+    "pleasant-blue": [
+      "#e4f8ff",
+      "#d2eafc",
+      "#a8d2f2",
+      "#7bb8e7",
+      "#56a3df",
+      "#3d96da",
+      "#2d8fd9",
+      "#1a7bc1",
+      "#056eae",
+      "#005f9c",
+    ],
+  },
+  autoContrast: true,
+  components: {
+    ThemeIcon: {
+      classNames: {
+        root: classes.theme_icon,
+      },
+    },
+  },
   breakpoints: {
     xs: "30em",
     sm: "52em",
@@ -28,11 +33,6 @@ const themeOverride = createTheme({
     lg: "71em",
     xl: "88em",
   },
-  primaryColor: "pleasant-blue",
-  colors: {
-    "pleasant-blue": siteColors,
-  },
-  autoContrast: true,
 });
 
 export const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);

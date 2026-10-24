@@ -1,6 +1,5 @@
 "use client";
 
-import { ReactElement } from "react";
 import {
   Anchor,
   Box,
@@ -21,6 +20,7 @@ import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { ContactForm } from "@/components/contact_form/contact_form";
 import { ContactUsContent } from "@/actions/mongodb/pages/fallback_content";
 import classes from "./ContactUsClient.module.css";
+import TransparentThemeIcon from "@/components/icons/TransparentThemeIcon/TransparentThemeIcon";
 
 type ContactUsClientProps = {
   content: ContactUsContent;
@@ -34,15 +34,29 @@ export default function ContactUsClient({
   const mainSection = "main_section";
 
   const mapIcon = (
-    <ListIcon icon={<IconMapPin aria-label="Location marker" />} />
+    <TransparentThemeIcon>
+      <IconMapPin aria-label="Location marker" />
+    </TransparentThemeIcon>
   );
-  const phoneIcon = <ListIcon icon={<IconPhone aria-label="Phone" />} />;
+  const phoneIcon = (
+    <TransparentThemeIcon>
+      <IconPhone aria-label="Phone" />
+    </TransparentThemeIcon>
+  );
   const mobilePhoneIcon = (
-    <ListIcon icon={<IconDeviceMobile aria-label="Mobile phone" />} />
+    <TransparentThemeIcon>
+      <IconDeviceMobile aria-label="Mobile phone" />
+    </TransparentThemeIcon>
   );
-  const emailIcon = <ListIcon icon={<IconMail aria-label="Email" />} />;
+  const emailIcon = (
+    <TransparentThemeIcon>
+      <IconMail aria-label="Email" />
+    </TransparentThemeIcon>
+  );
   const serviceHoursIcon = (
-    <ListIcon icon={<IconClockHour2 aria-label="Service hours" />} />
+    <TransparentThemeIcon>
+      <IconClockHour2 aria-label="Service hours" />
+    </TransparentThemeIcon>
   );
 
   return (
@@ -107,12 +121,6 @@ export default function ContactUsClient({
       </Box>
     </ReCaptchaProvider>
   );
-}
-
-type ListIconProps = { icon: ReactElement };
-
-function ListIcon({ icon }: ListIconProps) {
-  return <ThemeIcon classNames={{ root: "list_icon" }}>{icon}</ThemeIcon>;
 }
 
 type TelLinkProps = {

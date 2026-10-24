@@ -59,7 +59,7 @@ export default async function Home() {
         <h2>{content.summary.title}</h2>
         <List
           icon={
-            <ThemeIcon className={"checkmark"}>
+            <ThemeIcon>
               <IconCircleCheck />
             </ThemeIcon>
           }
