@@ -16,7 +16,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { theme } from "@/theme";
 import logo from "@/assets/logo.webp";
-import classes from "./footer.module.css";
+import classes from "./Footer.module.css";
 
 export function Footer() {
   return (

@@ -13,9 +13,9 @@ import {
   IconPhoneCall,
   IconPlugConnected,
 } from "@tabler/icons-react";
-import { ThemeSelectorActionIcon } from "../buttons/ThemeSelectorActionIcon/ThemeSelectorActionIcon";
+import { ThemeSelectorActionIcon } from "../../buttons/ThemeSelectorActionIcon/ThemeSelectorActionIcon";
 import { Pages } from "@/enums/pages";
-import classes from "./navbar.module.css";
+import classes from "./Navbar.module.css";
 import { theme } from "@/theme";
 
 const routePageRecord: Record<string, Pages> = {
