@@ -1,12 +1,8 @@
 "use server";
 
 import { verifyRecaptcha } from "@/actions/validate_recaptcha";
-import {
-  FormSchema,
-  FormType,
-  FormValues,
-  getFormSchema,
-} from "@/utils/schemas/form_schemas/schemas";
+import { FormKind } from "@/types/formKind";
+import { schemas } from "@/utils/schemas/form/schemas";
 
 export type FormResponse = {
   validated: boolean;
@@ -16,14 +12,13 @@ export type FormResponse = {
 };
 
 //Validate and return whether successful and any errors
-export async function validateForm(
-  formType: FormType,
-  formValues: FormValues,
+export async function validateForm<T>(
+  kind: FormKind,
+  formValues: T,
   token: string,
   action: string,
 ): Promise<FormResponse> {
-  const schema: FormSchema = getFormSchema(formType);
-
+  const schema = schemas[kind];
   const parseResult = schema.safeParse(formValues);
 
   //Map zod errors to form errors

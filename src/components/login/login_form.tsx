@@ -18,15 +18,10 @@ import { useReCaptcha } from "next-recaptcha-v3";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "@/components/form/honeypot";
-import { FormType, getFormSchema } from "@/utils/schemas/form_schemas/schemas";
 import { useDisclosure } from "@mantine/hooks";
+import { loginFormSchema } from "@/utils/schemas/form/loginFormSchema";
+import { LoginFormValues } from "@/types/formValues";
 import classes from "./login_form.module.css";
-
-export type LoginFormData = {
-  username: string;
-  password: string;
-  website?: string;
-};
 
 function getFormMessage(response: LoginFormResponse): FormMessage {
   if (response.submitError) {
@@ -65,15 +60,14 @@ export default function LoginForm() {
   const { executeRecaptcha, loaded, error } = useReCaptcha();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordVisible, { toggle }] = useDisclosure(false);
-  const schema = getFormSchema(FormType.LOGIN);
-  const form = useForm<LoginFormData>({
+  const form = useForm<LoginFormValues>({
     mode: "uncontrolled",
     initialValues: {
       username: "",
       password: "",
       website: "",
     },
-    validate: zod4Resolver(schema),
+    validate: zod4Resolver(loginFormSchema),
     validateInputOnBlur: true,
   });
 
@@ -102,7 +96,7 @@ export default function LoginForm() {
     await handleSubmit(form.getValues());
   }
 
-  async function handleSubmit(formValues: LoginFormData) {
+  async function handleSubmit(formValues: LoginFormValues) {
     if (isSubmitting) return;
 
     setIsSubmitting(true);

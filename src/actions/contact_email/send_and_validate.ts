@@ -1,11 +1,10 @@
 "use server";
 
 import { FormResponse, validateForm } from "@/actions/validate_form";
-import { FormType } from "@/utils/schemas/form_schemas/schemas";
-import { ContactFormData } from "@/components/contact_form/contact_form";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
+import { ContactFormValues } from "@/types/formValues";
 
 export type ContactFormResponse = FormResponse & {
   sendSuccess: boolean;
@@ -13,12 +12,12 @@ export type ContactFormResponse = FormResponse & {
 
 //Validate and return whether successful and any errors
 export async function validateContactEmail(
-  formValues: ContactFormData,
+  formValues: ContactFormValues,
   token: string,
   action: string,
 ): Promise<ContactFormResponse> {
-  const validationResult = await validateForm(
-    FormType.CONTACT_US,
+  const validationResult = await validateForm<ContactFormValues>(
+    "contact",
     formValues,
     token,
     action,
@@ -44,7 +43,7 @@ export async function validateContactEmail(
   return response;
 }
 
-async function sendContactEmail(fields: ContactFormData): Promise<boolean> {
+async function sendContactEmail(fields: ContactFormValues): Promise<boolean> {
   if (!fields?.email || !fields.name || !fields.jobDetails || fields.website) {
     return false;
   }

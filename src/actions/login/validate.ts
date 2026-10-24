@@ -1,6 +1,5 @@
 "use server";
 
-import { LoginFormData } from "@/components/login/login_form";
 import { verifyPasswordHash } from "@/actions/login/password";
 import MongoDatabase from "@/actions/mongodb/db";
 import {
@@ -9,8 +8,8 @@ import {
   UserDocument,
 } from "@/actions/mongodb/sessions/management";
 import { FormResponse, validateForm } from "@/actions/validate_form";
-import { FormType } from "@/utils/schemas/form_schemas/schemas";
 import { setSessionTokenCookie } from "@/actions/mongodb/sessions/cookie";
+import { LoginFormValues } from "@/types/formValues";
 
 type SessionInfo = {
   token: string;
@@ -22,7 +21,7 @@ export type LoginFormResponse = FormResponse & {
 };
 
 async function validateUser(
-  formValues: LoginFormData,
+  formValues: LoginFormValues,
 ): Promise<SessionInfo | null> {
   const query = {
     username: formValues.username,
@@ -48,12 +47,12 @@ async function validateUser(
 
 //Validate and return whether successful and any errors
 export async function validateLoginForm(
-  formValues: LoginFormData,
+  formValues: LoginFormValues,
   token: string,
   action: string,
 ): Promise<LoginFormResponse> {
-  const validationResult: FormResponse = await validateForm(
-    FormType.LOGIN,
+  const validationResult = await validateForm<LoginFormValues>(
+    "login",
     formValues,
     token,
     action,

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { z } from "zod";
-import { serverOnlyEnvSchema } from "./schemas/server_only_env_schema";
+import { serverOnlyEnvSchema } from "./schemas/serverOnlyEnvSchema";
 
 enum ServerOnlyEnv {
   EMAIL_HOST = "EMAIL_HOST",

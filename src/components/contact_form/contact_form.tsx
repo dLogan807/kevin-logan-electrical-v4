@@ -11,17 +11,10 @@ import { useReCaptcha } from "next-recaptcha-v3";
 import { useState } from "react";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "../form/honeypot";
-import { FormType, getFormSchema } from "@/utils/schemas/form_schemas/schemas";
 import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
+import { contactFormSchema } from "@/utils/schemas/form/contactFormSchema";
+import { ContactFormValues } from "@/types/formValues";
 import classes from "./contact_form.module.css";
-
-export type ContactFormData = {
-  name: string;
-  email: string;
-  phone: string | null;
-  jobDetails: string;
-  website?: string;
-};
 
 function getFormMessage(response: ContactFormResponse): FormMessage {
   if (response.submitError) {
@@ -58,12 +51,12 @@ export function ContactForm() {
       jobDetails: "",
       website: "",
     },
-    validate: zod4Resolver(getFormSchema(FormType.CONTACT_US)),
+    validate: zod4Resolver(contactFormSchema),
     validateInputOnBlur: true,
   });
   const [formMessage, setFormMessage] = useState<FormMessage>({});
 
-  const onSubmit = async (fields: ContactFormData) => {
+  const onSubmit = async (fields: ContactFormValues) => {
     if (isSubmitting) return;
     setIsSubmitting(true);
     setFormMessage({});

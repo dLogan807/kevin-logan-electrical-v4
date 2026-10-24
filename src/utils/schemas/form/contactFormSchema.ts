@@ -1,11 +1,11 @@
-import { ContactFormData } from "@/components/contact_form/contact_form";
+import { ContactFormValues } from "@/types/formValues";
 import { z, ZodType } from "zod";
 
 export const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
 );
 
-export const contactFormSchema: ZodType<ContactFormData> = z.object({
+export const contactFormSchema: ZodType<ContactFormValues> = z.object({
   name: z.string().min(1, { message: "Please enter your name" }),
   email: z.email({ message: "Please enter a valid email" }),
   phone: z.union([
@@ -18,4 +18,5 @@ export const contactFormSchema: ZodType<ContactFormData> = z.object({
     z.string().min(1, { message: "Please enter a few details" }),
     z.string().max(2000, { message: "Sorry, maximum 2000 characters" }),
   ),
+  website: z.string().optional(),
 });
