@@ -1,7 +1,7 @@
 import { Box, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
-import { ServicesCard } from "@/components/services_card/services_card";
+import { ServicesCard } from "@/components/cards/ServicesCard/ServicesCard";
 import { Pages } from "@/enums/pages";
 import { RateAndServicesContent } from "@/actions/mongodb/pages/fallback_content";
 import { getPageContent } from "@/actions/mongodb/pages/management";
@@ -27,11 +27,11 @@ export default async function RateAndServices() {
         classNames={{ root: `${classes.rateservice_rate} ${mainSection}` }}
       >
         <div>
-          <Title order={4}>{content.rate.title}</Title>
+          <Title order={2}>{content.rate.title}</Title>
           <Text>{content.rate.text}</Text>
         </div>
         <div>
-          <Title order={4}>{content.estimates.title}</Title>
+          <Title order={2}>{content.estimates.title}</Title>
           <Text>{content.estimates.text}</Text>
         </div>
       </Paper>
@@ -40,20 +40,23 @@ export default async function RateAndServices() {
         withBorder
       >
         <Stack>
-          <Title order={4}>{content.services.title}</Title>
+          <Title order={2}>{content.services.title}</Title>
           <Text>{content.services.description}</Text>
           <Group classNames={{ root: classes.services_cards }}>
             <ServicesCard
+              titleOrder={3}
               headerIcon={<IconBulb />}
               headerText={"Interior"}
               listItems={content.services.categories.interior}
             />
             <ServicesCard
+              titleOrder={3}
               headerIcon={<IconSun />}
               headerText={"Exterior"}
               listItems={content.services.categories.exterior}
             />
             <ServicesCard
+              titleOrder={3}
               headerIcon={<IconTool />}
               headerText={"Renovations & Maintenance"}
               listItems={

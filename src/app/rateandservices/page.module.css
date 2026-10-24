@@ -15,7 +15,7 @@
   div {
     margin-right: 1rem;
 
-    h4 {
+    h2 {
       margin-bottom: 1rem;
     }
   }
@@ -34,10 +34,6 @@
   display: grid;
   text-align: center;
   height: min-content;
-
-  h4 {
-    margin-bottom: 1rem;
-  }
 
   p {
     margin-bottom: 1rem;
