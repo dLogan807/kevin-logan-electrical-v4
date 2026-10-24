@@ -15,32 +15,7 @@ import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
 import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
 import { contactFormSchema } from "@/utils/schemas/form/contactFormSchema";
 import { ContactFormValues } from "@/types/formValues";
-import classes from "./contact_form.module.css";
-
-function getFormMessage(
-  response: ContactFormResponse,
-): SuccessOrFailureAlertState {
-  if (response.submitError) {
-    return {
-      message: "Email not sent. Check your internet connection",
-      isError: true,
-    };
-  } else if (!response.validated) {
-    return {
-      message: "Email not sent. Check required fields for errors",
-      isError: true,
-    };
-  } else if (!response.recaptchaVerified) {
-    return { message: "Email not sent. reCAPTCHA failed", isError: true };
-  } else if (!response.sendSuccess) {
-    return {
-      message: "Something went wrong. Please try again",
-      isError: true,
-    };
-  } else {
-    return { message: "Email sent! We'll get back to you soon" };
-  }
-}
+import classes from "./ContactForm.module.css";
 
 export function ContactForm() {
   const { executeRecaptcha, loaded, error } = useReCaptcha();
@@ -144,4 +119,29 @@ export function ContactForm() {
       </Stack>
     </form>
   );
+}
+
+function getFormMessage(
+  response: ContactFormResponse,
+): SuccessOrFailureAlertState {
+  if (response.submitError) {
+    return {
+      message: "Email not sent. Check your internet connection",
+      isError: true,
+    };
+  } else if (!response.validated) {
+    return {
+      message: "Email not sent. Check required fields for errors",
+      isError: true,
+    };
+  } else if (!response.recaptchaVerified) {
+    return { message: "Email not sent. reCAPTCHA failed", isError: true };
+  } else if (!response.sendSuccess) {
+    return {
+      message: "Something went wrong. Please try again",
+      isError: true,
+    };
+  } else {
+    return { message: "Email sent! We'll get back to you soon" };
+  }
 }

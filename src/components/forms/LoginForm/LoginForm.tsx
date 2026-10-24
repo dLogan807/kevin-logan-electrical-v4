@@ -18,36 +18,11 @@ import { useReCaptcha } from "next-recaptcha-v3";
 import { useRouter, useSearchParams } from "next/navigation";
 import HoneypotInput from "@/components/forms/inputs/HoneyPotInput/HoneypotInput";
 import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
-import { SuccessOrFailureAlert } from "../alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
+import { SuccessOrFailureAlert } from "../../alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
 import { useDisclosure } from "@mantine/hooks";
 import { loginFormSchema } from "@/utils/schemas/form/loginFormSchema";
 import { LoginFormValues } from "@/types/formValues";
-import classes from "./login_form.module.css";
-
-function getFormMessage(
-  response: LoginFormResponse,
-): SuccessOrFailureAlertState {
-  if (response.submitError) {
-    return {
-      message: "Check your internet connection",
-      isError: true,
-    };
-  } else if (!response.validated) {
-    return {
-      message: "Check required fields for errors",
-      isError: true,
-    };
-  } else if (!response.recaptchaVerified) {
-    return { message: "reCAPTCHA failed", isError: true };
-  } else if (!response.sessionCreated) {
-    return {
-      message: "Incorrect username or password",
-      isError: true,
-    };
-  } else {
-    return { message: "Successfully logged in! Please wait..." };
-  }
-}
+import classes from "./LoginForm.module.css";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -181,4 +156,29 @@ export default function LoginForm() {
       </Stack>
     </form>
   );
+}
+
+function getFormMessage(
+  response: LoginFormResponse,
+): SuccessOrFailureAlertState {
+  if (response.submitError) {
+    return {
+      message: "Check your internet connection",
+      isError: true,
+    };
+  } else if (!response.validated) {
+    return {
+      message: "Check required fields for errors",
+      isError: true,
+    };
+  } else if (!response.recaptchaVerified) {
+    return { message: "reCAPTCHA failed", isError: true };
+  } else if (!response.sessionCreated) {
+    return {
+      message: "Incorrect username or password",
+      isError: true,
+    };
+  } else {
+    return { message: "Successfully logged in! Please wait..." };
+  }
 }

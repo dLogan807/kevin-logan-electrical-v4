@@ -9,7 +9,7 @@ import {
   IconPhone,
 } from "@tabler/icons-react";
 import { ReCaptchaProvider } from "next-recaptcha-v3";
-import { ContactForm } from "@/components/contact_form/contact_form";
+import { ContactForm } from "@/components/forms/ContactForm/ContactForm";
 import { ContactUsContent } from "@/actions/mongodb/pages/fallback_content";
 import classes from "./ContactUsClient.module.css";
 import TransparentThemeIcon from "@/components/icons/TransparentThemeIcon/TransparentThemeIcon";
