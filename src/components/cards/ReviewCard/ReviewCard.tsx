@@ -1,10 +1,10 @@
 import { Blockquote, Group, Rating, Text } from "@mantine/core";
 import { IconStarFilled, IconUserCircle } from "@tabler/icons-react";
-import { GoogleReview } from "@/actions/google_reviews/get_reviews";
 import Link from "next/link";
 import Image from "next/image";
 import { theme } from "@/theme";
-import classes from "./google_review_card.module.css";
+import classes from "./ReviewCard.module.css";
+import { GoogleReview } from "@/types/googleReview";
 
 type UserImageProps = { uri: string };
 

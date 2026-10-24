@@ -2,18 +2,18 @@
 
 import { Carousel } from "@mantine/carousel";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import { GoogleReview } from "@/actions/google_reviews/get_reviews";
-import ReviewCard from "./google_review_card";
+import ReviewCard from "../cards/ReviewCard/ReviewCard";
 import classes from "./google_review_carousel.module.css";
+import { GoogleReview } from "@/types/googleReview";
 
 type GoogleReviewCarouselProps = {
-  googleReviews: GoogleReview[];
+  reviews: GoogleReview[];
 };
 
 export default function GoogleReviewCarousel({
-  googleReviews,
+  reviews,
 }: GoogleReviewCarouselProps) {
-  const multipleReviews = googleReviews.length > 1;
+  const multipleReviews = reviews.length > 1;
 
   return (
     <Carousel
@@ -31,7 +31,7 @@ export default function GoogleReviewCarousel({
       withControls={multipleReviews}
       slideGap="md"
     >
-      {googleReviews.map((review: GoogleReview) => (
+      {reviews.map((review: GoogleReview) => (
         <Carousel.Slide className={classes.carousel_slide} key={review.id}>
           <ReviewCard review={{ ...review }} />
         </Carousel.Slide>

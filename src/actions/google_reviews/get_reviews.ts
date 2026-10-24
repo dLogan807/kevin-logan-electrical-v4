@@ -1,6 +1,7 @@
 "use server";
 
 import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
+import { GoogleReview } from "@/types/googleReview";
 import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 import { cacheLife, cacheTag } from "next/cache";
 
@@ -10,18 +11,6 @@ export type GoogleReviews = {
   reviews: GoogleReview[];
   averageRating: number;
   totalReviewCount: number;
-};
-
-export type GoogleReview = {
-  id: number;
-  authorAttribution: {
-    displayName: string;
-    uri: string;
-    photoUri: string;
-  };
-  publishTime: string; //RFC3339 UTC
-  rating: number;
-  text: string;
 };
 
 type GooglePlacesApiReview = Omit<GoogleReview, "id" | "text"> & {

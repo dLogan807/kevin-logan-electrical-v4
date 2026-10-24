@@ -64,7 +64,7 @@ export default async function GoogleReviewContainer({
         </Group>
         <ReviewButton />
       </Box>
-      <GoogleReviewCarousel googleReviews={googleReviews.reviews} />
+      <GoogleReviewCarousel reviews={googleReviews.reviews} />
     </Group>
   );
 }
