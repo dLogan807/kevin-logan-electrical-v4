@@ -18,21 +18,12 @@ import { Pages } from "@/enums/pages";
 import classes from "./navbar.module.css";
 import { theme } from "@/theme";
 
-//Return the index of the currently navigated route
-function getRoute(path: string): Pages | undefined {
-  switch (path) {
-    case "/":
-      return Pages.Home;
-    case "/aboutus":
-      return Pages.AboutUs;
-    case "/rateandservices":
-      return Pages.RateAndServices;
-    case "/contactus":
-      return Pages.ContactUs;
-  }
-
-  return undefined;
-}
+const routePageRecord: Record<string, Pages> = {
+  ["/"]: Pages.Home,
+  ["/aboutus"]: Pages.AboutUs,
+  ["/rateandservices"]: Pages.RateAndServices,
+  ["/contactus"]: Pages.ContactUs,
+};
 
 interface ILink {
   link: string;
@@ -67,7 +58,7 @@ const linkData: ILink[] = [
 export function Navbar() {
   //Maintain path hydration
   const pathname = usePathname();
-  const activePageFromPath = getRoute(pathname);
+  const activePageFromPath = routePageRecord[pathname];
 
   const [mobileNavOpened, { toggle, close }] = useDisclosure(false);
   const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
