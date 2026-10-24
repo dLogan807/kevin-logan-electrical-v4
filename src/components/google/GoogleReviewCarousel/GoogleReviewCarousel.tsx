@@ -2,9 +2,9 @@
 
 import { Carousel } from "@mantine/carousel";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import ReviewCard from "../cards/ReviewCard/ReviewCard";
-import classes from "./google_review_carousel.module.css";
 import { GoogleReview } from "@/types/googleReview";
+import ReviewCard from "@/components/cards/ReviewCard/ReviewCard";
+import classes from "./GoogleReviewCarousel.module.css";
 
 type GoogleReviewCarouselProps = {
   reviews: GoogleReview[];
