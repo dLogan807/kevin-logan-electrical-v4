@@ -1,4 +1,4 @@
-import { Button, Paper, Text, Box } from "@mantine/core";
+import { Button, Paper, Text, Box, Title } from "@mantine/core";
 import Link from "next/link";
 import { Metadata } from "next";
 
@@ -26,8 +26,8 @@ export default function NotFound() {
   return (
     <Box className={`${classes.notfound_grid} content_grid`}>
       <Paper className={`${classes.container} ${mainSection}`} withBorder>
-        <h1>404</h1>
-        <h2>Page Not Found</h2>
+        <Title order={1}>404</Title>
+        <Title order={2}>Page Not Found</Title>
         <Text className={classes.explanation}>
           Sorry! Either the page you&apos;re looking for does not exist or has
           been moved.

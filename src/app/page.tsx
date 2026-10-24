@@ -7,6 +7,7 @@ import {
   Stack,
   Text,
   ThemeIcon,
+  Title,
 } from "@mantine/core";
 import Link from "next/link";
 import Image from "next/image";
@@ -36,8 +37,8 @@ export default async function Home() {
     <Box className={`${classes.home_grid} content_grid`}>
       <Paper className={`${classes.tagline} ${mainSection}`} withBorder>
         <Stack>
-          <h1>{content.tagline.title}</h1>
-          <h2>{content.tagline.subtitle}</h2>
+          <Title order={1}>{content.tagline.title}</Title>
+          <Title order={2}>{content.tagline.subtitle}</Title>
           <Text>{content.tagline.description}</Text>
           <Link href="/contactus" className={classes.contact_button}>
             <Button>{content.tagline.button_text}</Button>
@@ -56,7 +57,7 @@ export default async function Home() {
         </Box>
       </Box>
       <Paper className={`${classes.summary} ${mainSection}`} withBorder>
-        <h2>{content.summary.title}</h2>
+        <Title order={2}>{content.summary.title}</Title>
         <List
           icon={
             <ThemeIcon>

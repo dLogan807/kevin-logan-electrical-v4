@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Anchor,
-  Box,
-  List,
-  ListItem,
-  Paper,
-  Text,
-  ThemeIcon,
-} from "@mantine/core";
+import { Anchor, Box, List, ListItem, Paper, Text, Title } from "@mantine/core";
 import {
   IconClockHour2,
   IconDeviceMobile,
@@ -70,7 +62,7 @@ export default function ContactUsClient({
           classNames={{ root: `${classes.contact_form} ${mainSection}` }}
           withBorder
         >
-          <h4>Send an email</h4>
+          <Title order={4}>Send an email</Title>
           <ContactForm />
         </Paper>
         <Paper
@@ -78,7 +70,7 @@ export default function ContactUsClient({
           withBorder
         >
           <Box className={classes.contact_details_box}>
-            <h4>{content.contact_details.title}</h4>
+            <Title order={4}>{content.contact_details.title}</Title>
             <List
               classNames={{
                 root: classes.contact_details_list,
@@ -108,7 +100,7 @@ export default function ContactUsClient({
             </List>
           </Box>
           <Box className={classes.contact_details_box}>
-            <h4>{content.service_hours.title}</h4>
+            <Title order={4}>{content.service_hours.title}</Title>
             <List
               classNames={{
                 root: classes.contact_details_list,

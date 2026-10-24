@@ -1,4 +1,4 @@
-import { Paper, List, ListItem, ThemeIcon } from "@mantine/core";
+import { Paper, List, ListItem, ThemeIcon, Title } from "@mantine/core";
 import { ReactElement } from "react";
 import { IconCircleCheck } from "@tabler/icons-react";
 import classes from "./services_card.module.css";
@@ -22,7 +22,7 @@ export function ServicesCard({
       withBorder
     >
       <TransparentThemeIcon>{headerIcon}</TransparentThemeIcon>
-      <h5>{headerText}</h5>
+      <Title order={5}>{headerText}</Title>
       <List
         classNames={{ root: classes.services_list }}
         icon={

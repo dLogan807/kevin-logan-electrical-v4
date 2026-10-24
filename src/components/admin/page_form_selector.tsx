@@ -5,7 +5,7 @@ import {
   getStoredPageContent,
 } from "@/actions/mongodb/pages/management";
 import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
-import { Box, Group, Select, Button, Loader } from "@mantine/core";
+import { Box, Group, Select, Button, Loader, Title } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 import { useState, Suspense } from "react";
 import { Pages } from "@/enums/pages";
@@ -39,7 +39,7 @@ export default function PageFormSelector({
     <Box>
       <Box className={classes.header_group}>
         <LogoutButton />
-        <h1>Content Mangement</h1>
+        <Title order={1}>Content Mangement</Title>
       </Box>
       <Group className={classes.content_control_group}>
         <Group className={classes.inner_content_control_group}>

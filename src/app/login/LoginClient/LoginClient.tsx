@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Paper } from "@mantine/core";
+import { Box, Paper, Title } from "@mantine/core";
 import { ReCaptchaProvider } from "next-recaptcha-v3";
 import classes from "./LoginClient.module.css";
 import LoginForm from "@/components/login/login_form";
@@ -18,7 +18,9 @@ export default function LoginClient({ nonce }: LoginClientProps) {
     >
       <Box className={"content_grid"}>
         <Paper className={"main_section"} withBorder>
-          <h1 className={classes.heading}>Login</h1>
+          <Title order={1} className={classes.heading}>
+            Login
+          </Title>
           <LoginForm key={nonce} />
         </Paper>
       </Box>

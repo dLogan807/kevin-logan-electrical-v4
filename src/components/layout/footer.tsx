@@ -1,4 +1,12 @@
-import { Anchor, Box, ThemeIcon, Text, Stack, Group } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  ThemeIcon,
+  Text,
+  Stack,
+  Group,
+  Title,
+} from "@mantine/core";
 import {
   IconBrandMantine,
   IconBrandNextjs,
@@ -14,7 +22,7 @@ export function Footer() {
   return (
     <Box className={classes.footer}>
       <Box className={classes.contact}>
-        <h3>Call Us</h3>
+        <Title order={3}>Call Us</Title>
         <Anchor href="tel:+64274978473" aria-label="Mobile phone number">
           <Group>
             <ThemeIcon>

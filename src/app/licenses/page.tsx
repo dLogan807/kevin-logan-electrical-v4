@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { IconExternalLink } from "@tabler/icons-react";
-import { Box, Button, Paper, Stack, Text, ThemeIcon } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Paper,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
 import { Metadata } from "next";
 import licensesJSON from "../../../licenses.json";
 import classes from "./page.module.css";
@@ -42,7 +50,7 @@ export default function Licenses() {
     <Box className={`${classes.about_grid} content_grid`}>
       <Paper className={`${classes.about_text_1} main_section`} withBorder>
         <Stack className={classes.heading}>
-          <h1>Open Source Licenses</h1>
+          <Title order={1}>Open Source Licenses</Title>
           <Text>
             The following open source libraries were used in the making of this
             website

@@ -1,4 +1,4 @@
-import { Box, Group, Paper, Stack, Text } from "@mantine/core";
+import { Box, Group, Paper, Stack, Text, Title } from "@mantine/core";
 import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
 import { ServicesCard } from "@/components/services_card/services_card";
@@ -27,11 +27,11 @@ export default async function RateAndServices() {
         classNames={{ root: `${classes.rateservice_rate} ${mainSection}` }}
       >
         <div>
-          <h4>{content.rate.title}</h4>
+          <Title order={4}>{content.rate.title}</Title>
           <Text>{content.rate.text}</Text>
         </div>
         <div>
-          <h4>{content.estimates.title}</h4>
+          <Title order={4}>{content.estimates.title}</Title>
           <Text>{content.estimates.text}</Text>
         </div>
       </Paper>
@@ -40,7 +40,7 @@ export default async function RateAndServices() {
         withBorder
       >
         <Stack>
-          <h4>{content.services.title}</h4>
+          <Title order={4}>{content.services.title}</Title>
           <Text>{content.services.description}</Text>
           <Group classNames={{ root: classes.services_cards }}>
             <ServicesCard
