@@ -1,4 +1,4 @@
-export const RateLimitSchema = {
+export const GlobalRateLimitSchema = {
   bsonType: "object",
   title: "Schema Object Validation",
   required: ["_id", "requestType", "count", "resetDate"],

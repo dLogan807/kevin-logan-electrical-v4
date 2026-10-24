@@ -1,9 +1,9 @@
 "use server";
 
-import { rateLimitReached } from "@/actions/rate_limit/global_rate_limit";
 import { GoogleReview } from "@/types/googleReview";
 import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 import { cacheLife, cacheTag } from "next/cache";
+import { incrementAndCheckGlobalRateLimit } from "@/actions/mongodb/rateLimit/incrementAndCheckGlobalRateLimit";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
@@ -97,7 +97,7 @@ export async function getGoogleReviews(
   if (
     !searchQuery ||
     isDevelopment ||
-    (await rateLimitReached("google_reviews"))
+    (await incrementAndCheckGlobalRateLimit("google_reviews"))
   ) {
     return null;
   }

@@ -13,7 +13,6 @@ import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
 import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
-import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useRouter, useSearchParams } from "next/navigation";
 import HoneypotInput from "@/components/inputs/HoneyPotInput/HoneypotInput";
@@ -22,6 +21,8 @@ import { SuccessOrFailureAlert } from "../../alerts/SuccessOrFailureAlert/Succes
 import { useDisclosure } from "@mantine/hooks";
 import { loginFormSchema } from "@/utils/schemas/form/loginFormSchema";
 import { LoginFormValues } from "@/types/formValues";
+import { LoginFormResponse } from "@/types/formReponse";
+import { validateLoginForm } from "@/actions/form/validateLoginForm";
 import classes from "./LoginForm.module.css";
 
 export default function LoginForm() {
@@ -86,7 +87,7 @@ export default function LoginForm() {
     const token =
       loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
 
-    const response: LoginFormResponse = await validateLoginForm(
+    const response = await validateLoginForm(
       form.getValues(),
       token,
       action,

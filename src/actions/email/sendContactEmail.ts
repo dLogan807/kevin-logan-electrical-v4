@@ -1,49 +1,13 @@
 "use server";
 
-import { FormResponse, validateForm } from "@/actions/validate_form";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 import { ContactFormValues } from "@/types/formValues";
 
-export type ContactFormResponse = FormResponse & {
-  sendSuccess: boolean;
-};
-
-//Validate and return whether successful and any errors
-export async function validateContactEmail(
-  formValues: ContactFormValues,
-  token: string,
-  action: string,
-): Promise<ContactFormResponse> {
-  const validationResult = await validateForm<ContactFormValues>(
-    "contact",
-    formValues,
-    token,
-    action,
-  );
-
-  const response: ContactFormResponse = {
-    ...validationResult,
-    sendSuccess: false,
-  };
-
-  if (!response.validated || !response.recaptchaVerified) {
-    return response;
-  }
-
-  //Likely bot if filled
-  if (formValues.website) {
-    response.recaptchaVerified = false;
-    return response;
-  }
-
-  response.sendSuccess = await sendContactEmail(formValues);
-
-  return response;
-}
-
-async function sendContactEmail(fields: ContactFormValues): Promise<boolean> {
+export async function sendContactEmail(
+  fields: ContactFormValues,
+): Promise<boolean> {
   if (!fields?.email || !fields.name || !fields.jobDetails || fields.website) {
     return false;
   }

@@ -1,6 +1,6 @@
 import { IconBrandGoogle, IconStarFilled } from "@tabler/icons-react";
 import { Box, Group, Rating, Text, ThemeIcon } from "@mantine/core";
-import { getGoogleReviews } from "@/actions/google_reviews/get_reviews";
+import { getGoogleReviews } from "@/actions/google/getGoogleReviews";
 import GoogleReviewCarousel from "@/components/google/GoogleReviewCarousel/GoogleReviewCarousel";
 import ReviewButton from "@/components/buttons/ReviewButton/ReviewButton";
 import classes from "./GoogleReviewContainer.module.css";

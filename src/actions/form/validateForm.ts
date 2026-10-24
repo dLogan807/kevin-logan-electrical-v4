@@ -1,15 +1,9 @@
 "use server";
 
-import { verifyRecaptcha } from "@/actions/validate_recaptcha";
+import { verifyRecaptcha } from "@/actions/google/validateRecaptcha";
 import { FormKind } from "@/types/formKind";
+import { FormResponse } from "@/types/formReponse";
 import { schemas } from "@/utils/schemas/form/schemas";
-
-export type FormResponse = {
-  validated: boolean;
-  formErrors: { [k: string]: string };
-  recaptchaVerified: boolean;
-  submitError?: boolean;
-};
 
 //Validate and return whether successful and any errors
 export async function validateForm<T>(

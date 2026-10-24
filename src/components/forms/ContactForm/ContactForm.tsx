@@ -3,10 +3,6 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
-import {
-  ContactFormResponse,
-  validateContactEmail,
-} from "@/actions/contact_email/send_and_validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useState } from "react";
 import { SuccessOrFailureAlert } from "@/components/alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
@@ -15,6 +11,8 @@ import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
 import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
 import { contactFormSchema } from "@/utils/schemas/form/contactFormSchema";
 import { ContactFormValues } from "@/types/formValues";
+import { validateContactEmail } from "@/actions/form/validateContactFormAndSend";
+import { ContactFormResponse } from "@/types/formReponse";
 import classes from "./ContactForm.module.css";
 
 export function ContactForm() {
@@ -46,7 +44,7 @@ export function ContactForm() {
       loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
 
     //Send to server action for validation and sending
-    const response: ContactFormResponse = await validateContactEmail(
+    const response = await validateContactEmail(
       formValues,
       token,
       action,
