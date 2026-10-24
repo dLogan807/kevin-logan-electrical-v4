@@ -1,4 +1,4 @@
-import { Box, Group, Paper, Stack, Text, Title } from "@mantine/core";
+import { Box, Group, Paper, Text, Title } from "@mantine/core";
 import { IconBulb, IconSun, IconTool } from "@tabler/icons-react";
 import { Metadata } from "next";
 import { ServicesCard } from "@/components/cards/ServicesCard/ServicesCard";
