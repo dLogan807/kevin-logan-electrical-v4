@@ -1,7 +1,11 @@
 "use client";
 
 import { ReactNode } from "react";
-import { localStorageColorSchemeManager, MantineProvider } from "@mantine/core";
+import {
+  localStorageColorSchemeManager,
+  MantineProvider,
+  v8CssVariablesResolver,
+} from "@mantine/core";
 import { theme } from "@/theme";
 
 export function Providers({
@@ -21,6 +25,7 @@ export function Providers({
       defaultColorScheme="auto"
       colorSchemeManager={colorSchemeManager}
       getStyleNonce={() => nonce}
+      cssVariablesResolver={v8CssVariablesResolver}
     >
       {children}
     </MantineProvider>

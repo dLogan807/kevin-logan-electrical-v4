@@ -49,6 +49,8 @@ export default function PageFormSelector({
             data={pages}
             value={selectedPage}
             onChange={(_value, option) => {
+              if (!option) return;
+
               const newPage = option.value as Pages;
               setSelectedPage(newPage);
               setContentPromise(getStoredPageContent(newPage));
