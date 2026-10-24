@@ -5,9 +5,17 @@ import {
   getStoredPageContent,
 } from "@/actions/mongodb/pages/management";
 import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
-import { Box, Group, Select, Button, Loader, Title } from "@mantine/core";
+import {
+  Box,
+  Group,
+  Select,
+  Button,
+  Loader,
+  Title,
+  ComboboxItem,
+} from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { Pages } from "@/enums/pages";
 import LogoutButton from "@/components/buttons/LogoutButton/LogoutButton";
 import PageFormLoader from "./page_form_loader";
@@ -34,6 +42,20 @@ export default function PageFormSelector({
 }: PageFormSelectorProps) {
   const [selectedPage, setSelectedPage] = useState(initialPage);
   const [contentPromise, setContentPromise] = useState(initialContentPromise);
+  const [selectedPageChangeCount, setSelectedPageChangeCount] = useState(0);
+
+  function handlePageSelectionChange(option: ComboboxItem<Pages> | null) {
+    if (!option) return;
+
+    const newPage = option.value as Pages;
+    setSelectedPage(newPage);
+    setContentPromise(getStoredPageContent(newPage));
+  }
+
+  function handleRefresh() {
+    setSelectedPageChangeCount((prev) => prev + 1);
+    setContentPromise(getStoredPageContent(selectedPage));
+  }
 
   return (
     <Box>
@@ -48,13 +70,7 @@ export default function PageFormSelector({
             defaultValue={selectedPage}
             data={pages}
             value={selectedPage}
-            onChange={(_value, option) => {
-              if (!option) return;
-
-              const newPage = option.value as Pages;
-              setSelectedPage(newPage);
-              setContentPromise(getStoredPageContent(newPage));
-            }}
+            onChange={(_value, option) => handlePageSelectionChange(option)}
             allowDeselect={false}
             classNames={{
               root: classes.page_form_selector_root,
@@ -65,13 +81,10 @@ export default function PageFormSelector({
           <Button
             color="red"
             variant="light"
-            onClick={() =>
-              setContentPromise(getStoredPageContent(selectedPage))
-            }
+            onClick={handleRefresh}
+            rightSection={<IconRefresh aria-label="Refresh" />}
           >
-            <Group>
-              Refresh <IconRefresh aria-label="Refresh" />
-            </Group>
+            Refresh
           </Button>
         </Group>
       </Group>
@@ -84,7 +97,7 @@ export default function PageFormSelector({
         }
       >
         <PageFormLoader
-          key={selectedPage}
+          key={`${selectedPage}${selectedPageChangeCount}`}
           selectedPage={selectedPage}
           contentPromise={contentPromise}
         />
