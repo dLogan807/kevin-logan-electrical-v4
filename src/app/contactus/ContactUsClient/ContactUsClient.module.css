@@ -16,15 +16,24 @@
 .contact_details {
   grid-area: details;
   height: min-content;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
+}
+
+.contact_details_box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xs);
 }
 
 .contact_details_list {
   word-break: break-word;
-  margin-bottom: 1rem;
-  --list-marker-gap: var(--mantine-spacing-sm);
+  --list-marker-gap: var(--mantine-spacing-md);
+  --list-spacing: var(--mantine-spacing-md);
 
   @media (max-width: $mantine-breakpoint-sm) {
-    --list-marker-gap: 0;
+    --list-marker-gap: var(--mantine-spacing-xs);
   }
 }
 
