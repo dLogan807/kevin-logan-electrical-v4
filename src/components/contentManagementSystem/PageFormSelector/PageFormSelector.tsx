@@ -13,11 +13,11 @@ import {
   ComboboxItem,
 } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
-import { useState, Suspense, useEffect } from "react";
+import { useState, Suspense } from "react";
 import { Pages } from "@/enums/pages";
 import LogoutButton from "@/components/buttons/LogoutButton/LogoutButton";
-import PageFormLoader from "./page_form_loader";
-import classes from "./page_form_selector.module.css";
+import PageFormLoader from "../PageFormLoader/PageFormLoader";
+import classes from "./PageFormSelector.module.css";
 
 interface SelectData {
   value: Pages;
