@@ -17,7 +17,7 @@ import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
-import Honeypot from "@/components/form/honeypot";
+import HoneypotInput from "@/components/forms/HoneyPotInput/HoneypotInput";
 import { useDisclosure } from "@mantine/hooks";
 import { loginFormSchema } from "@/utils/schemas/form/loginFormSchema";
 import { LoginFormValues } from "@/types/formValues";
@@ -139,7 +139,7 @@ export default function LoginForm() {
       <Stack className={classes.form_stack}>
         <Fieldset legend="Please log in to continue">
           <Stack>
-            <Honeypot form={form} label="Website" fieldKey="website" />
+            <HoneypotInput form={form} label="Website" fieldKey="website" />
             <TextInput
               name="username"
               label="Username"

@@ -1,17 +1,17 @@
 import { Box, TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 
-type HoneypotProps<T> = {
+type HoneypotInputProps<T> = {
   form: UseFormReturnType<T>;
   label: string;
   fieldKey: string;
 };
 
-export default function Honeypot<T>({
+export default function HoneypotInput<T>({
   form,
   label,
   fieldKey,
-}: HoneypotProps<T>) {
+}: HoneypotInputProps<T>) {
   return (
     <Box
       aria-hidden="true"

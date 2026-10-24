@@ -10,7 +10,7 @@ import {
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useState } from "react";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
-import Honeypot from "../form/honeypot";
+import HoneypotInput from "@/components/forms/HoneyPotInput/HoneypotInput";
 import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
 import { contactFormSchema } from "@/utils/schemas/form/contactFormSchema";
 import { ContactFormValues } from "@/types/formValues";
@@ -115,7 +115,7 @@ export function ContactForm() {
           {...form.getInputProps("phone")}
           disabled={isSubmitting}
         />
-        <Honeypot form={form} label="Website" fieldKey="website" />
+        <HoneypotInput form={form} label="Website" fieldKey="website" />
         <Textarea
           className={classes.form_field}
           withAsterisk
