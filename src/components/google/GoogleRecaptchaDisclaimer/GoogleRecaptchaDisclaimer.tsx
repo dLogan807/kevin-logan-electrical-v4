@@ -1,14 +1,14 @@
 import { Box, Text } from "@mantine/core";
 import Link from "next/link";
-import classes from "./disclaimer.module.css";
+import classes from "./GoogleRecaptchaDisclaimer.module.css";
 
-type RecaptchaDisclaimerProps = {
+type GoogleRecaptchaDisclaimerProps = {
   className?: string;
 };
 
-export default function RecaptchaDisclaimer({
+export default function GoogleRecaptchaDisclaimer({
   className,
-}: RecaptchaDisclaimerProps) {
+}: GoogleRecaptchaDisclaimerProps) {
   return (
     <Box className={className}>
       {/* prettier-ignore */}

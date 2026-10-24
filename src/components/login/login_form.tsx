@@ -12,15 +12,15 @@ import {
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
-import RecaptchaDisclaimer from "@/components/recaptcha/disclaimer";
+import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
 import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
-import classes from "./login_form.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "@/components/form/honeypot";
 import { FormType, getFormSchema } from "@/utils/schemas/form_schemas/schemas";
 import { useDisclosure } from "@mantine/hooks";
+import classes from "./login_form.module.css";
 
 export type LoginFormData = {
   username: string;
@@ -179,7 +179,7 @@ export default function LoginForm() {
             </Box>
           </Stack>
         </Fieldset>
-        <RecaptchaDisclaimer className={classes.recaptcha_disclaimer} />
+        <GoogleRecaptchaDisclaimer className={classes.recaptcha_disclaimer} />
       </Stack>
     </form>
   );

@@ -9,11 +9,11 @@ import {
 } from "@/actions/contact_email/send_and_validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useState } from "react";
-import classes from "./contact_form.module.css";
-import RecaptchaDisclaimer from "../recaptcha/disclaimer";
 import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import Honeypot from "../form/honeypot";
 import { FormType, getFormSchema } from "@/utils/schemas/form_schemas/schemas";
+import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
+import classes from "./contact_form.module.css";
 
 export type ContactFormData = {
   name: string;
@@ -133,7 +133,7 @@ export function ContactForm() {
           {...form.getInputProps("jobDetails")}
           disabled={isSubmitting}
         />
-        <RecaptchaDisclaimer />
+        <GoogleRecaptchaDisclaimer />
         <FormAlert formMessage={formMessage} />
         <Group>
           <Button
