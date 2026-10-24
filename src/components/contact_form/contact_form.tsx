@@ -9,14 +9,17 @@ import {
 } from "@/actions/contact_email/send_and_validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useState } from "react";
-import { FormAlert, FormMessage } from "@/components/form/form_alert";
+import { SuccessOrFailureAlert } from "@/components/alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
 import HoneypotInput from "@/components/forms/HoneyPotInput/HoneypotInput";
+import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
 import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
 import { contactFormSchema } from "@/utils/schemas/form/contactFormSchema";
 import { ContactFormValues } from "@/types/formValues";
 import classes from "./contact_form.module.css";
 
-function getFormMessage(response: ContactFormResponse): FormMessage {
+function getFormMessage(
+  response: ContactFormResponse,
+): SuccessOrFailureAlertState {
   if (response.submitError) {
     return {
       message: "Email not sent. Check your internet connection",
@@ -54,12 +57,13 @@ export function ContactForm() {
     validate: zod4Resolver(contactFormSchema),
     validateInputOnBlur: true,
   });
-  const [formMessage, setFormMessage] = useState<FormMessage>({});
+  const [formAlertState, setFormAlertState] =
+    useState<SuccessOrFailureAlertState>({});
 
   const onSubmit = async (fields: ContactFormValues) => {
     if (isSubmitting) return;
     setIsSubmitting(true);
-    setFormMessage({});
+    setFormAlertState({});
 
     //Generate recaptcha token
     const action = "contact_form_submit";
@@ -79,7 +83,7 @@ export function ContactForm() {
       sendSuccess: false,
     }));
 
-    setFormMessage(getFormMessage(response));
+    setFormAlertState(getFormMessage(response));
     form.setErrors(response.formErrors);
 
     if (response.sendSuccess) {
@@ -127,7 +131,7 @@ export function ContactForm() {
           disabled={isSubmitting}
         />
         <GoogleRecaptchaDisclaimer />
-        <FormAlert formMessage={formMessage} />
+        <SuccessOrFailureAlert state={formAlertState} />
         <Group>
           <Button
             className={classes.submit_button}

@@ -19,10 +19,11 @@ import {
   PageContent,
 } from "@/actions/mongodb/pages/management";
 import { Pages } from "@/enums/pages";
-import { FormAlert, FormMessage } from "@/components/form/form_alert";
+import { SuccessOrFailureAlert } from "@/components/alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
 import Link from "next/link";
 import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
 import classes from "./page_form.module.css";
+import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
 
 type PageFormProps = {
   selectedPage: Pages;
@@ -34,7 +35,8 @@ export default function PageForm({ selectedPage, content }: PageFormProps) {
     mode: "uncontrolled",
     initialValues: content,
   });
-  const [formMessage, setFormMessage] = useState<FormMessage>({});
+  const [formAlertState, setFormAlertState] =
+    useState<SuccessOrFailureAlertState>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const objectContent = Object.entries(form.getValues());
@@ -46,7 +48,7 @@ export default function PageForm({ selectedPage, content }: PageFormProps) {
     setIsSubmitting(true);
 
     const submitSuccess = await addPageDocument(selectedPage, form.getValues());
-    const submitMessage: FormMessage = submitSuccess
+    const submitMessage = submitSuccess
       ? {
           message: (
             <Text>
@@ -56,7 +58,7 @@ export default function PageForm({ selectedPage, content }: PageFormProps) {
           ),
         }
       : { message: "Failed to update " + selectedPage, isError: true };
-    setFormMessage(submitMessage);
+    setFormAlertState(submitMessage);
 
     setIsSubmitting(false);
   }
@@ -65,7 +67,7 @@ export default function PageForm({ selectedPage, content }: PageFormProps) {
     <form onSubmit={form.onSubmit(() => onSubmit())}>
       <Stack>
         <FormFields contentObject={objectContent} form={form} />
-        <FormAlert formMessage={formMessage} />
+        <SuccessOrFailureAlert state={formAlertState} />
         <Group className={classes.submit_button_group}>
           <Tooltip label="Submit and update website content">
             <Button type="submit" loading={isSubmitting}>

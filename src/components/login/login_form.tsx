@@ -16,14 +16,17 @@ import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDiscla
 import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormAlert, FormMessage } from "@/components/form/form_alert";
 import HoneypotInput from "@/components/forms/HoneyPotInput/HoneypotInput";
+import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
+import { SuccessOrFailureAlert } from "../alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
 import { useDisclosure } from "@mantine/hooks";
 import { loginFormSchema } from "@/utils/schemas/form/loginFormSchema";
 import { LoginFormValues } from "@/types/formValues";
 import classes from "./login_form.module.css";
 
-function getFormMessage(response: LoginFormResponse): FormMessage {
+function getFormMessage(
+  response: LoginFormResponse,
+): SuccessOrFailureAlertState {
   if (response.submitError) {
     return {
       message: "Check your internet connection",
@@ -73,9 +76,10 @@ export default function LoginForm() {
 
   //Form message
 
-  const [formMessage, setFormMessage] = useState<FormMessage>(
-    loggedOut ? { message: "Successfully logged out" } : {},
-  );
+  const [formAlertState, setFormAlertState] =
+    useState<SuccessOrFailureAlertState>(
+      loggedOut ? { message: "Successfully logged out" } : {},
+    );
   const router = useRouter();
 
   //Handle submit
@@ -100,7 +104,7 @@ export default function LoginForm() {
     if (isSubmitting) return;
 
     setIsSubmitting(true);
-    setFormMessage({ message: "" });
+    setFormAlertState({ message: "" });
     if (passwordVisible) toggle();
 
     //Get recaptcha token
@@ -120,7 +124,7 @@ export default function LoginForm() {
       sessionCreated: false,
     }));
 
-    setFormMessage(getFormMessage(response));
+    setFormAlertState(getFormMessage(response));
     form.setErrors(response.formErrors);
 
     if (
@@ -165,7 +169,7 @@ export default function LoginForm() {
               visible={passwordVisible}
               disabled={isSubmitting}
             />
-            <FormAlert formMessage={formMessage} />
+            <SuccessOrFailureAlert state={formAlertState} />
             <Box className={classes.submit_button_group}>
               <Button type="submit" variant="filled" loading={isSubmitting}>
                 Login
