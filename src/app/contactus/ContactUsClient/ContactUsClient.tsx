@@ -62,7 +62,7 @@ export default function ContactUsClient({
           classNames={{ root: `${classes.contact_form} ${mainSection}` }}
           withBorder
         >
-          <Title order={4}>Send an email</Title>
+          <Title order={2}>Send an email</Title>
           <ContactForm />
         </Paper>
         <Paper
@@ -70,7 +70,7 @@ export default function ContactUsClient({
           withBorder
         >
           <Box className={classes.contact_details_box}>
-            <Title order={4}>{content.contact_details.title}</Title>
+            <Title order={2}>{content.contact_details.title}</Title>
             <List
               classNames={{
                 root: classes.contact_details_list,
@@ -100,7 +100,7 @@ export default function ContactUsClient({
             </List>
           </Box>
           <Box className={classes.contact_details_box}>
-            <Title order={4}>{content.service_hours.title}</Title>
+            <Title order={2}>{content.service_hours.title}</Title>
             <List
               classNames={{
                 root: classes.contact_details_list,
