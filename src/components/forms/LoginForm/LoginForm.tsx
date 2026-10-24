@@ -16,7 +16,7 @@ import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDiscla
 import { LoginFormResponse, validateLoginForm } from "@/actions/login/validate";
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useRouter, useSearchParams } from "next/navigation";
-import HoneypotInput from "@/components/forms/inputs/HoneyPotInput/HoneypotInput";
+import HoneypotInput from "@/components/inputs/HoneyPotInput/HoneypotInput";
 import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
 import { SuccessOrFailureAlert } from "../../alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
 import { useDisclosure } from "@mantine/hooks";

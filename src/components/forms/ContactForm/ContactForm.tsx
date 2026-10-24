@@ -10,7 +10,7 @@ import {
 import { useReCaptcha } from "next-recaptcha-v3";
 import { useState } from "react";
 import { SuccessOrFailureAlert } from "@/components/alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
-import HoneypotInput from "@/components/forms/inputs/HoneyPotInput/HoneypotInput";
+import HoneypotInput from "@/components/inputs/HoneyPotInput/HoneypotInput";
 import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
 import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
 import { contactFormSchema } from "@/utils/schemas/form/contactFormSchema";
