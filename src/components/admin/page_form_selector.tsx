@@ -4,7 +4,7 @@ import {
   PageContent,
   getStoredPageContent,
 } from "@/actions/mongodb/pages/management";
-import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
+import snakeCaseToTitleCase from "@/utils/snakeCaseToTitleCase";
 import {
   Box,
   Group,

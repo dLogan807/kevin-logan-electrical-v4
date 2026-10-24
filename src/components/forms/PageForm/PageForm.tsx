@@ -21,7 +21,7 @@ import {
 import { Pages } from "@/enums/pages";
 import { SuccessOrFailureAlert } from "@/components/alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
 import Link from "next/link";
-import snakeCaseToTitleCase from "@/utils/snake_case_to_title_case";
+import snakeCaseToTitleCase from "@/utils/snakeCaseToTitleCase";
 import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
 import classes from "./PageForm.module.css";
 
