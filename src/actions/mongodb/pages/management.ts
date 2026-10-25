@@ -10,7 +10,7 @@ import {
   PageSchema,
 } from "@/actions/mongodb/pages/schemas";
 import { getCurrentSession } from "@/actions/mongodb/sessions/cookie";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife, cacheTag, updateTag } from "next/cache";
 import {
   HomeFallback,
   AboutUsFallback,
@@ -71,10 +71,18 @@ export async function addPageDocument(
   const { session } = await getCurrentSession();
   if (session === null) return false;
 
-  return await new PageManager().addPageDocumentByUser(
+  const createdContent = await new PageManager().addPageDocumentByUser(
     collectionName,
     pageContent,
   );
+
+  invalidatePageCache(collectionName);
+
+  return createdContent;
+}
+
+function invalidatePageCache(page: Pages) {
+  updateTag(page);
 }
 
 //Latest page content retrieval
