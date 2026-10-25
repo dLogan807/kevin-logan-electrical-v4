@@ -24,7 +24,7 @@ export async function verifyTurnstileCaptcha(token?: string): Promise<boolean> {
         headers: {
           "Content-Type": "application/json",
         },
-        body: new URLSearchParams({
+        body: JSON.stringify({
           secret: turnstileSecretKey,
           response: token,
         }),
