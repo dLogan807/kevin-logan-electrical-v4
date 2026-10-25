@@ -10,7 +10,7 @@ import {
   Title,
 } from "@mantine/core";
 import { Metadata } from "next";
-import licensesJSON from "../../../licenses.json";
+import licenses from "@/generated/licenses.json";
 import classes from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
 };
 
-type LicenseFormat = {
+type License = {
   department: string;
   relatedTo: string;
   name: string;
@@ -43,41 +43,42 @@ type LicenseFormat = {
   author: string;
 };
 
-export default function Licenses() {
-  const licenses = licensesJSON as LicenseFormat[];
+const typedLicenses = licenses as License[];
 
+export default function Licenses() {
   return (
-    <Box className={`${classes.about_grid} content_grid`}>
-      <Paper className={`${classes.about_text_1} main_section`} withBorder>
-        <Stack className={classes.heading}>
+    <Box className={"content_grid"}>
+      <Paper className={`${classes.licenses_paper} main_section`} withBorder>
+        <Box className={classes.licenses_header}>
           <Title order={1}>Open Source Licenses</Title>
           <Text>
             The following open source libraries were used in the making of this
             website
           </Text>
-        </Stack>
-        <Stack gap="lg">
-          {licenses.map((p) => (
+        </Box>
+
+        <Box className={classes.licenses_box}>
+          {typedLicenses.map((license) => (
             <Link
-              key={p.name}
-              href={p.link.replace("git+", "").replace("ssh://", "")}
+              key={license.name}
+              href={license.link.replace("git+", "").replace("ssh://", "")}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Open Github repository for ${p.name}`}
+              aria-label={`Open Github repository for ${license.name}`}
               className={classes.package_link}
             >
-              <Button variant="outline">
-                <Box className={classes.info_container}>
-                  <p>{p.name + " " + p.installedVersion}</p>
-                  <p>{"License: " + p.licenseType}</p>
-                  <ThemeIcon className={`checkmark ${classes.link_icon}`}>
+              <Button variant="outline" className={classes.licenses_button}>
+                <Box className={classes.license_button_box}>
+                  <p>{`${license.name} ${license.installedVersion}`}</p>
+                  <p>{`License: ${license.licenseType}`}</p>
+                  <ThemeIcon classNames={{ root: classes.license_link_icon }}>
                     <IconExternalLink aria-label="External website link" />
                   </ThemeIcon>
                 </Box>
               </Button>
             </Link>
           ))}
-        </Stack>
+        </Box>
       </Paper>
     </Box>
   );

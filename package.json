@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run generate-licenses && next build",
     "start": "next start",
-    "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
-    "generate-licenses": "license-report --only=prod --output=json > licenses.json"
+    "lint": "npm run generate-licenses eslint .",
+    "typecheck": "npm run generate-licenses && tsc --noEmit",
+    "generate-licenses": "license-report --output=json > ./src/generated/licenses.json"
   },
   "dependencies": {
     "@mantine/carousel": "^9.7.3",
@@ -41,7 +41,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.2",
     "eslint-config-prettier": "^10.1.8",
-    "license-report": "^6.8.2",
+    "license-report": "^6.8.6",
     "postcss": "^8.5.28",
     "postcss-mixins": "^12.1.2",
     "postcss-preset-mantine": "^1.18.0",
