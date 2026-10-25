@@ -3,7 +3,7 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { SuccessOrFailureAlert } from "@/components/alerts/SuccessOrFailureAlert/SuccessOrFailureAlert";
 import HoneypotInput from "@/components/inputs/HoneyPotInput/HoneypotInput";
 import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
@@ -15,6 +15,7 @@ import { ContactFormResponse } from "@/types/formReponse";
 import classes from "./ContactForm.module.css";
 
 export function ContactForm() {
+  const [canSubmit, setCanSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
@@ -23,6 +24,7 @@ export function ContactForm() {
       email: "",
       phone: "",
       jobDetails: "",
+      turnstileToken: "",
       website: "",
     },
     validate: zod4Resolver(contactFormSchema),
@@ -30,6 +32,15 @@ export function ContactForm() {
   });
   const [formAlertState, setFormAlertState] =
     useState<SuccessOrFailureAlertState>({});
+
+  // Reset state once hidden
+  useLayoutEffect(() => {
+    return () => {
+      form.reset();
+      setCanSubmit(false);
+      setFormAlertState({});
+    };
+  }, []);
 
   async function handleSubmit(formValues: ContactFormValues) {
     if (isSubmitting) return;
@@ -53,6 +64,12 @@ export function ContactForm() {
     }
 
     setIsSubmitting(false);
+  }
+
+  function handleTurnstileTokenChange(token: string) {
+    form.setFieldValue("turnstileToken", token);
+
+    setCanSubmit(!!token);
   }
 
   return (
@@ -92,13 +109,16 @@ export function ContactForm() {
           {...form.getInputProps("jobDetails")}
           disabled={isSubmitting}
         />
-        <CloudflareTurnstileWidget />
+        <CloudflareTurnstileWidget
+          onTurnstileTokenChange={handleTurnstileTokenChange}
+        />
         <SuccessOrFailureAlert state={formAlertState} />
         <Group>
           <Button
             className={classes.submit_button}
             type="submit"
             loading={isSubmitting}
+            disabled={!canSubmit}
           >
             Send
           </Button>

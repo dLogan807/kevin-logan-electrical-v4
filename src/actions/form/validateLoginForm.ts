@@ -9,11 +9,9 @@ import { login } from "@/actions/mongodb/sessions/login";
 export async function validateLoginForm(
   formValues: LoginFormValues,
 ): Promise<LoginFormResponse> {
-  const token = formValues["cf-turnstile-response"];
   const validationResult = await validateForm<LoginFormValues>(
     "login",
     formValues,
-    token,
   );
 
   const response: LoginFormResponse = {

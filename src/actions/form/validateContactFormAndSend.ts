@@ -9,11 +9,9 @@ import { ContactFormResponse } from "@/types/formReponse";
 export async function validateContactEmail(
   formValues: ContactFormValues,
 ): Promise<ContactFormResponse> {
-  const token = formValues["cf-turnstile-response"];
   const validationResult = await validateForm<ContactFormValues>(
     "contact",
     formValues,
-    token,
   );
 
   const response: ContactFormResponse = {

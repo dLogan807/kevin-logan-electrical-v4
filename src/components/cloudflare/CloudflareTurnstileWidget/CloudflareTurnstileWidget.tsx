@@ -1,15 +1,24 @@
-import { useComputedColorScheme } from "@mantine/core";
+"use client";
 
-export default function CloudflareTurnstileWidget() {
-  const computedColorScheme = useComputedColorScheme("dark", {
-    getInitialValueInEffect: true,
-  });
+import { Box } from "@mantine/core";
+import { Turnstile } from "react-turnstile";
+import classes from "./CloudflareTurnstileWidget.module.css";
 
+type CloudflareTurnstileWidgetProp = {
+  onTurnstileTokenChange: (token: string) => void;
+};
+
+export default function CloudflareTurnstileWidget({
+  onTurnstileTokenChange,
+}: CloudflareTurnstileWidgetProp) {
   return (
-    <div
-      className="cf-turnstile"
-      data-theme={computedColorScheme}
-      data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY}
-    />
+    <Box className={classes.turnstile_box}>
+      <Turnstile
+        sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ?? ""}
+        onVerify={onTurnstileTokenChange}
+        onExpire={() => onTurnstileTokenChange("")}
+        onError={() => onTurnstileTokenChange("")}
+      />
+    </Box>
   );
 }

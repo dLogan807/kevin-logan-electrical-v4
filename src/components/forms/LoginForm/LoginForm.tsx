@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, SubmitEvent, useEffect } from "react";
+import { useState, SubmitEvent, useEffect, useLayoutEffect } from "react";
 import {
   Box,
   Button,
@@ -25,8 +25,17 @@ import { validateLoginForm } from "@/actions/form/validateLoginForm";
 import classes from "./LoginForm.module.css";
 
 export default function LoginForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const loggedOut = searchParams.get("logout") != null;
+
+  const [canSubmit, setCanSubmit] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [passwordVisible, { toggle }] = useDisclosure(false);
+  const [formAlertState, setFormAlertState] =
+    useState<SuccessOrFailureAlertState>(
+      loggedOut ? { message: "Successfully logged out" } : {},
+    );
 
   useEffect(() => {
     if (loggedOut) {
@@ -34,26 +43,26 @@ export default function LoginForm() {
     }
   }, [loggedOut]);
 
-  //Form
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [passwordVisible, { toggle }] = useDisclosure(false);
+  // Reset state once hidden
+  useLayoutEffect(() => {
+    return () => {
+      form.reset();
+      setCanSubmit(false);
+      setFormAlertState({});
+    };
+  }, []);
+
   const form = useForm<LoginFormValues>({
     mode: "uncontrolled",
     initialValues: {
       username: "",
       password: "",
       website: "",
+      turnstileToken: "",
     },
     validate: zod4Resolver(loginFormSchema),
     validateInputOnBlur: true,
   });
-
-  //Form message
-  const [formAlertState, setFormAlertState] =
-    useState<SuccessOrFailureAlertState>(
-      loggedOut ? { message: "Successfully logged out" } : {},
-    );
-  const router = useRouter();
 
   //Handle submit
   async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
@@ -69,12 +78,6 @@ export default function LoginForm() {
 
     const { hasErrors } = form.validate();
     if (hasErrors) return;
-
-    await submit();
-  }
-
-  async function submit() {
-    if (isSubmitting) return;
 
     setIsSubmitting(true);
     setFormAlertState({ message: "" });
@@ -96,10 +99,17 @@ export default function LoginForm() {
       response.turnstileVerfied &&
       response.sessionCreated
     ) {
+      setIsSubmitting(false);
       router.push("/admin");
     } else {
       setIsSubmitting(false);
     }
+  }
+
+  function handleTurnstileTokenChange(token: string) {
+    form.setFieldValue("turnstileToken", token);
+
+    setCanSubmit(!!token);
   }
 
   return (
@@ -109,6 +119,8 @@ export default function LoginForm() {
           <Stack>
             <HoneypotInput key={form.key("website")} label="Website" />
             <TextInput
+              key={form.key("username")}
+              {...form.getInputProps("username")}
               name="username"
               label="Username"
               leftSection={
@@ -117,8 +129,6 @@ export default function LoginForm() {
                   aria-hidden="true"
                 />
               }
-              key={form.key("username")}
-              {...form.getInputProps("username")}
               disabled={isSubmitting}
             />
             <PasswordInput
@@ -133,10 +143,17 @@ export default function LoginForm() {
               visible={passwordVisible}
               disabled={isSubmitting}
             />
-            <CloudflareTurnstileWidget />
+            <CloudflareTurnstileWidget
+              onTurnstileTokenChange={handleTurnstileTokenChange}
+            />
             <SuccessOrFailureAlert state={formAlertState} />
             <Box className={classes.submit_button_group}>
-              <Button type="submit" variant="filled" loading={isSubmitting}>
+              <Button
+                type="submit"
+                variant="filled"
+                loading={isSubmitting}
+                disabled={!canSubmit}
+              >
                 Login
               </Button>
             </Box>

@@ -2,12 +2,15 @@
 
 import { getServerOnlyEnv } from "@/utils/getServerOnlyEnv";
 
-export type TurnstileResponse = {
+type TurnstileResponse = {
   success: boolean;
+  messages: string[];
+  challenge_ts: Date;
+  hostname: string;
   "error-codes"?: string[];
 };
 
-export async function verifyTurnstileCaptcha(token?: string): Promise<boolean> {
+export async function verifyTurnstileCaptcha(token: string): Promise<boolean> {
   if (process.env.NODE_ENV === "development") return true;
 
   const turnstileSecretKey = getServerOnlyEnv().CLOUDFLARE_TURNSTILE_SECRET_KEY;

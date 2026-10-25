@@ -1,15 +1,17 @@
-export type ContactFormValues = {
+export type CloudflareTurnstileFormValues = {
+  turnstileToken: string;
+};
+
+export type ContactFormValues = CloudflareTurnstileFormValues & {
   name: string;
   email: string;
   phone: string | null;
   jobDetails: string;
   website?: string;
-  "cf-turnstile-response"?: string;
 };
 
-export type LoginFormValues = {
+export type LoginFormValues = CloudflareTurnstileFormValues & {
   username: string;
   password: string;
   website?: string;
-  "cf-turnstile-response"?: string;
 };
