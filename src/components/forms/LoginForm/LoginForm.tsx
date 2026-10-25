@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, SubmitEvent, useEffect } from "react";
+import { useState, SubmitEvent, useEffect, useLayoutEffect } from "react";
 import {
   Box,
   Button,
@@ -12,8 +12,7 @@ import {
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { IconLock, IconUserCircle } from "@tabler/icons-react";
-import GoogleRecaptchaDisclaimer from "@/components/google/GoogleRecaptchaDisclaimer/GoogleRecaptchaDisclaimer";
-import { useReCaptcha } from "next-recaptcha-v3";
+import CloudflareTurnstileWidget from "@/components/cloudflare/CloudflareTurnstileWidget/CloudflareTurnstileWidget";
 import { useRouter, useSearchParams } from "next/navigation";
 import HoneypotInput from "@/components/inputs/HoneyPotInput/HoneypotInput";
 import { SuccessOrFailureAlertState } from "@/types/successOrFailureAlertState";
@@ -26,8 +25,17 @@ import { validateLoginForm } from "@/actions/form/validateLoginForm";
 import classes from "./LoginForm.module.css";
 
 export default function LoginForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const loggedOut = searchParams.get("logout") != null;
+
+  const [canSubmit, setCanSubmit] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [passwordVisible, { toggle }] = useDisclosure(false);
+  const [formAlertState, setFormAlertState] =
+    useState<SuccessOrFailureAlertState>(
+      loggedOut ? { message: "Successfully logged out" } : {},
+    );
 
   useEffect(() => {
     if (loggedOut) {
@@ -35,27 +43,26 @@ export default function LoginForm() {
     }
   }, [loggedOut]);
 
-  //Form
-  const { executeRecaptcha, loaded, error } = useReCaptcha();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [passwordVisible, { toggle }] = useDisclosure(false);
+  // Reset state once hidden
+  useLayoutEffect(() => {
+    return () => {
+      form.reset();
+      setCanSubmit(false);
+      setFormAlertState({});
+    };
+  }, []);
+
   const form = useForm<LoginFormValues>({
     mode: "uncontrolled",
     initialValues: {
       username: "",
       password: "",
       website: "",
+      turnstileToken: "",
     },
     validate: zod4Resolver(loginFormSchema),
     validateInputOnBlur: true,
   });
-
-  //Form message
-  const [formAlertState, setFormAlertState] =
-    useState<SuccessOrFailureAlertState>(
-      loggedOut ? { message: "Successfully logged out" } : {},
-    );
-  const router = useRouter();
 
   //Handle submit
   async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
@@ -72,29 +79,14 @@ export default function LoginForm() {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
 
-    await submit();
-  }
-
-  async function submit() {
-    if (isSubmitting) return;
-
     setIsSubmitting(true);
     setFormAlertState({ message: "" });
     if (passwordVisible) toggle();
 
-    //Get recaptcha token
-    const action = "login_form_submit";
-    const token =
-      loaded && !error ? await executeRecaptcha(action).catch(() => "") : "";
-
-    const response = await validateLoginForm(
-      form.getValues(),
-      token,
-      action,
-    ).catch(() => ({
+    const response = await validateLoginForm(form.getValues()).catch(() => ({
       validated: false,
       formErrors: {},
-      recaptchaVerified: false,
+      turnstileVerfied: false,
       submitError: true,
       sessionCreated: false,
     }));
@@ -104,13 +96,20 @@ export default function LoginForm() {
 
     if (
       response.validated &&
-      response.recaptchaVerified &&
+      response.turnstileVerfied &&
       response.sessionCreated
     ) {
+      setIsSubmitting(false);
       router.push("/admin");
     } else {
       setIsSubmitting(false);
     }
+  }
+
+  function handleTurnstileTokenChange(token: string) {
+    form.setFieldValue("turnstileToken", token);
+
+    setCanSubmit(!!token);
   }
 
   return (
@@ -118,8 +117,10 @@ export default function LoginForm() {
       <Stack className={classes.form_stack}>
         <Fieldset legend="Please log in to continue">
           <Stack>
-            <HoneypotInput form={form} label="Website" fieldKey="website" />
+            <HoneypotInput key={form.key("website")} label="Website" />
             <TextInput
+              key={form.key("username")}
+              {...form.getInputProps("username")}
               name="username"
               label="Username"
               leftSection={
@@ -128,8 +129,6 @@ export default function LoginForm() {
                   aria-hidden="true"
                 />
               }
-              key={form.key("username")}
-              {...form.getInputProps("username")}
               disabled={isSubmitting}
             />
             <PasswordInput
@@ -144,15 +143,22 @@ export default function LoginForm() {
               visible={passwordVisible}
               disabled={isSubmitting}
             />
+            <CloudflareTurnstileWidget
+              onTurnstileTokenChange={handleTurnstileTokenChange}
+            />
             <SuccessOrFailureAlert state={formAlertState} />
             <Box className={classes.submit_button_group}>
-              <Button type="submit" variant="filled" loading={isSubmitting}>
+              <Button
+                type="submit"
+                variant="filled"
+                loading={isSubmitting}
+                disabled={!canSubmit}
+              >
                 Login
               </Button>
             </Box>
           </Stack>
         </Fieldset>
-        <GoogleRecaptchaDisclaimer />
       </Stack>
     </form>
   );
@@ -171,8 +177,8 @@ function getFormMessage(
       message: "Check required fields for errors",
       isError: true,
     };
-  } else if (!response.recaptchaVerified) {
-    return { message: "reCAPTCHA failed", isError: true };
+  } else if (!response.turnstileVerfied) {
+    return { message: "Turnstile captcha failed", isError: true };
   } else if (!response.sessionCreated) {
     return {
       message: "Incorrect username or password",

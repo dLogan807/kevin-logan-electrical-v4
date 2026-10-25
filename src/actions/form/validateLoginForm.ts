@@ -8,14 +8,10 @@ import { login } from "@/actions/mongodb/sessions/login";
 
 export async function validateLoginForm(
   formValues: LoginFormValues,
-  token: string,
-  action: string,
 ): Promise<LoginFormResponse> {
   const validationResult = await validateForm<LoginFormValues>(
     "login",
     formValues,
-    token,
-    action,
   );
 
   const response: LoginFormResponse = {
@@ -23,13 +19,13 @@ export async function validateLoginForm(
     sessionCreated: false,
   };
 
-  if (!response.validated || !response.recaptchaVerified) {
+  if (!response.validated || !response.turnstileVerfied) {
     return response;
   }
 
   //Likely bot if filled
   if (formValues.website) {
-    response.recaptchaVerified = false;
+    response.turnstileVerfied = false;
     return response;
   }
 

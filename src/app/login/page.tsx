@@ -1,8 +1,9 @@
 import { Metadata } from "next";
-import { headers } from "next/headers";
 import { getCurrentSession } from "@/actions/mongodb/sessions/cookie";
 import { redirect } from "next/navigation";
-import LoginClient from "@/app/login/LoginClient/LoginClient";
+import LoginForm from "@/components/forms/LoginForm/LoginForm";
+import { Box, Paper, Title } from "@mantine/core";
+import classes from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Login | Kevin Logan Electrical - Your Trusted Electrician",
@@ -23,7 +24,17 @@ export default async function LoginPage() {
   const { session } = await getCurrentSession();
   if (session !== null) return redirect("/admin");
 
-  const nonce = (await headers()).get("x-nonce") || "";
-
-  return <LoginClient nonce={nonce} />;
+  return (
+    <Box className={"content_grid"}>
+      <Paper
+        classNames={{ root: `${classes.login_paper} main_section` }}
+        withBorder
+      >
+        <Title order={1} classNames={{ root: classes.login_title }}>
+          Login
+        </Title>
+        <LoginForm />
+      </Paper>
+    </Box>
+  );
 }

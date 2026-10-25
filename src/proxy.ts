@@ -35,16 +35,15 @@ export function proxy(request: NextRequest) {
       'nonce-${nonce}'
       'strict-dynamic'
       ${isDevelopment ? "'unsafe-eval'" : ""}
-      https://www.google.com/recaptcha/
-      https://www.gstatic.com/recaptcha/;
-    connect-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/;
+      https://challenges.cloudflare.com;
+    connect-src 'self';
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data:;
     font-src 'self';
     object-src 'none';
     base-uri 'self';
     form-action 'self';
-    frame-src https://www.google.com https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/;
+    frame-src https://www.google.com https://challenges.cloudflare.com;
     frame-ancestors 'none';
     upgrade-insecure-requests;
 `;

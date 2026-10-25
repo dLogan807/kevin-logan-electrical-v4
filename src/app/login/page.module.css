@@ -1,0 +1,9 @@
+.login_title {
+  text-align: center;
+}
+
+.login_paper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xl);
+}

@@ -1,16 +1,15 @@
 "use server";
 
-import { verifyRecaptcha } from "@/actions/google/validateRecaptcha";
+import { verifyTurnstileCaptcha } from "@/actions/cloudflare/verifyTurnstileCaptcha";
 import { FormKind } from "@/types/formKind";
 import { FormResponse } from "@/types/formReponse";
+import { CloudflareTurnstileFormValues } from "@/types/formValues";
 import { schemas } from "@/utils/schemas/form/schemas";
 
 //Validate and return whether successful and any errors
-export async function validateForm<T>(
+export async function validateForm<T extends CloudflareTurnstileFormValues>(
   kind: FormKind,
   formValues: T,
-  token: string,
-  action: string,
 ): Promise<FormResponse> {
   const schema = schemas[kind];
   const parseResult = schema.safeParse(formValues);
@@ -24,7 +23,7 @@ export async function validateForm<T>(
   const response: FormResponse = {
     validated: parseResult.success,
     formErrors: formParseErrors,
-    recaptchaVerified: false,
+    turnstileVerfied: false,
   };
 
   if (Object.values(formParseErrors).length > 0) {
@@ -32,9 +31,9 @@ export async function validateForm<T>(
   }
 
   //Check recaptcha
-  response.recaptchaVerified = token
-    ? await verifyRecaptcha(token, action)
-    : true;
+  response.turnstileVerfied = await verifyTurnstileCaptcha(
+    formValues.turnstileToken,
+  );
 
   return response;
 }
