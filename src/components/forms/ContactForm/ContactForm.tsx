@@ -81,7 +81,7 @@ export function ContactForm() {
           {...form.getInputProps("phone")}
           disabled={isSubmitting}
         />
-        <HoneypotInput form={form} label="Website" fieldKey="website" />
+        <HoneypotInput key={form.key("website")} label="Website" />
         <Textarea
           className={classes.form_field}
           withAsterisk

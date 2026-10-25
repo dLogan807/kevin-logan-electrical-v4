@@ -107,7 +107,7 @@ export default function LoginForm() {
       <Stack className={classes.form_stack}>
         <Fieldset legend="Please log in to continue">
           <Stack>
-            <HoneypotInput form={form} label="Website" fieldKey="website" />
+            <HoneypotInput key={form.key("website")} label="Website" />
             <TextInput
               name="username"
               label="Username"

@@ -1,17 +1,10 @@
 import { Box, TextInput } from "@mantine/core";
-import { UseFormReturnType } from "@mantine/form";
 
-type HoneypotInputProps<T> = {
-  form: UseFormReturnType<T>;
+type HoneypotInputProps = {
   label: string;
-  fieldKey: string;
 };
 
-export default function HoneypotInput<T>({
-  form,
-  label,
-  fieldKey,
-}: HoneypotInputProps<T>) {
+export default function HoneypotInput({ label }: HoneypotInputProps) {
   return (
     <Box
       aria-hidden="true"
@@ -24,13 +17,7 @@ export default function HoneypotInput<T>({
         overflow: "hidden",
       }}
     >
-      <TextInput
-        label={label}
-        key={form.key(fieldKey)}
-        {...form.getInputProps(fieldKey)}
-        tabIndex={-1}
-        autoComplete="off"
-      />
+      <TextInput label={label} tabIndex={-1} autoComplete="off" />
     </Box>
   );
 }
