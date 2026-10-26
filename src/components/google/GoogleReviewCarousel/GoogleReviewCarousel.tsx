@@ -21,8 +21,8 @@ export default function GoogleReviewCarousel({
         loop: true,
         watchDrag: multipleReviews,
       }}
-      nextControlIcon={<IconChevronRight aria-label="Right arrow" />}
-      previousControlIcon={<IconChevronLeft aria-label="Left arrow" />}
+      nextControlIcon={<IconChevronRight aria-hidden />}
+      previousControlIcon={<IconChevronLeft aria-hidden />}
       classNames={{
         root: classes.carousel,
         controls: classes.controls,

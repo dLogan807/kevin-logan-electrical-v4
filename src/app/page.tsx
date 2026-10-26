@@ -61,7 +61,7 @@ export default async function Home() {
         <List
           icon={
             <ThemeIcon>
-              <IconCircleCheck />
+              <IconCircleCheck aria-hidden />
             </ThemeIcon>
           }
         >

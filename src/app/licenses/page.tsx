@@ -72,7 +72,7 @@ export default function Licenses() {
                   <p>{`${license.name} ${license.installedVersion}`}</p>
                   <p>{`License: ${license.licenseType}`}</p>
                   <ThemeIcon classNames={{ root: classes.license_link_icon }}>
-                    <IconExternalLink aria-label="External website link" />
+                    <IconExternalLink aria-hidden />
                   </ThemeIcon>
                 </Box>
               </Button>

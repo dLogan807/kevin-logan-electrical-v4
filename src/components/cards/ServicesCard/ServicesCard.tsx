@@ -31,14 +31,14 @@ export function ServicesCard({
       withBorder
     >
       <Box>
-        <TransparentThemeIcon>{headerIcon}</TransparentThemeIcon>
+        <TransparentThemeIcon aria-hidden>{headerIcon}</TransparentThemeIcon>
         <Title order={titleOrder}>{headerText}</Title>
       </Box>
       <List
         classNames={{ root: classes.services_list }}
         icon={
           <ThemeIcon>
-            <IconCircleCheck />
+            <IconCircleCheck aria-hidden />
           </ThemeIcon>
         }
       >

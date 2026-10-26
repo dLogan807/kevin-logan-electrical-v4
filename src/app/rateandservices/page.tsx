@@ -45,19 +45,19 @@ export default async function RateAndServices() {
           <Group classNames={{ root: classes.services_cards }}>
             <ServicesCard
               titleOrder={3}
-              headerIcon={<IconBulb />}
+              headerIcon={<IconBulb aria-hidden />}
               headerText={"Interior"}
               listItems={content.services.categories.interior}
             />
             <ServicesCard
               titleOrder={3}
-              headerIcon={<IconSun />}
+              headerIcon={<IconSun aria-hidden />}
               headerText={"Exterior"}
               listItems={content.services.categories.exterior}
             />
             <ServicesCard
               titleOrder={3}
-              headerIcon={<IconTool />}
+              headerIcon={<IconTool aria-hidden />}
               headerText={"Renovations & Maintenance"}
               listItems={
                 content.services.categories.renovations_and_maintenance

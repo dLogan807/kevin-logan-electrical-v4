@@ -28,11 +28,7 @@ export function ThemeSelectorActionIcon() {
         onClick={toggleColorScheme}
         aria-label={tooltipText}
       >
-        {isDarkTheme ? (
-          <IconSun aria-hidden="true" />
-        ) : (
-          <IconMoonStars aria-hidden="true" />
-        )}
+        {isDarkTheme ? <IconSun aria-hidden /> : <IconMoonStars aria-hidden />}
       </ActionIcon>
     </Tooltip>
   );

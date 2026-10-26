@@ -80,7 +80,8 @@ export default function PageFormSelector({
             color="red"
             variant="light"
             onClick={handleRefresh}
-            rightSection={<IconRefresh aria-label="Refresh" />}
+            aria-label="Refresh changes to selected page"
+            rightSection={<IconRefresh aria-hidden />}
           >
             Refresh
           </Button>

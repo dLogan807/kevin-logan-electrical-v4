@@ -85,7 +85,7 @@ export function Navbar() {
       data-active={activePageFromPath === link.value || undefined}
       onClick={close}
     >
-      <link.icon className={classes.link_icon} />
+      <link.icon className={classes.link_icon} aria-hidden />
       <span>{link.label}</span>
     </Link>
   ));
@@ -98,7 +98,6 @@ export function Navbar() {
             <Image
               src={logo}
               alt="Kevin Logan Electrical logo"
-              aria-label="Kevin Logan Electrical Home"
               sizes={`(max-width: ${theme.breakpoints.sm}) 70vw, (max-width: ${theme.breakpoints.lg}) 50vw, (max-width: ${theme.breakpoints.xl}) 40vw`}
               priority
             />
@@ -121,7 +120,7 @@ export function Navbar() {
           <Burger
             opened={mobileNavOpened}
             onClick={toggle}
-            aria-label="Toggle navigation panel"
+            aria-label="Toggle mobile navigation panel"
           />
         </div>
       </div>

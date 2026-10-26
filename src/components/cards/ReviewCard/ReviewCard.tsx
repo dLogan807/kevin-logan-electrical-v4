@@ -10,7 +10,13 @@ type UserImageProps = { uri: string };
 
 function UserImage({ uri }: UserImageProps) {
   if (!uri) {
-    return <IconUserCircle aria-label="User" width={30} height={30} />;
+    return (
+      <IconUserCircle
+        aria-label="User profile picture"
+        width={30}
+        height={30}
+      />
+    );
   }
 
   return (
@@ -18,7 +24,7 @@ function UserImage({ uri }: UserImageProps) {
       width={30}
       height={30}
       src={uri}
-      alt="User"
+      alt="User profile picture"
       sizes={`(max-width: ${theme.breakpoints.xl}) 4vw`}
       priority
     />
@@ -55,18 +61,13 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         <Rating
           value={review.rating}
           emptySymbol={
-            <IconStarFilled
-              aria-label="Empty star"
-              className={classes.empty_star}
-            />
+            <IconStarFilled className={classes.empty_star} aria-hidden />
           }
           fullSymbol={
-            <IconStarFilled
-              aria-label="Filled yellow star"
-              className={classes.filled_star}
-            />
+            <IconStarFilled className={classes.filled_star} aria-hidden />
           }
           className={classes.star_rating}
+          aria-label={`Reviewed as ${review.rating}/5 stars`}
           readOnly
         />
       </Group>

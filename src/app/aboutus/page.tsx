@@ -28,7 +28,9 @@ export default async function AboutUs() {
           <Text>{content.top_section.text}</Text>
           <Link
             href="https://kete.mbie.govt.nz/EW/EWPRSearch/practitioner/?id=efe7cde3-b142-df11-917a-005056ae567f"
-            aria-label="Electrical Workers Registration Board website"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open certification on the Electrical Workers Registration Board"
           >
             <Button leftSection={<IconCertificate aria-label="Certificate" />}>
               {content.top_section.button_text}

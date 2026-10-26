@@ -14,9 +14,7 @@ export default async function GoogleReviewContainer({
   query,
   nameFilter,
 }: GoogleReviewContainerProps) {
-  const googleReviews = query
-    ? await getGoogleReviews(query, nameFilter)
-    : null;
+  const googleReviews = await getGoogleReviews(query, nameFilter);
 
   if (!googleReviews?.reviews || googleReviews.totalReviewCount === 0) {
     return (
@@ -29,38 +27,32 @@ export default async function GoogleReviewContainer({
 
   return (
     <Group className={classes.review_container}>
+      <GoogleReviewCarousel reviews={googleReviews.reviews} />
       <Box className={classes.review_summary}>
         <Group className={classes.average_reviews}>
           <ThemeIcon>
-            <IconBrandGoogle aria-label="Google" />
+            <IconBrandGoogle aria-hidden />
           </ThemeIcon>
           <Text>Overall Rating</Text>
         </Group>
         <Group>
           <Rating
             value={googleReviews.averageRating}
+            aria-label={`Average review rating: ${googleReviews.averageRating}/5 stars`}
             emptySymbol={
-              <IconStarFilled
-                aria-label="Empty star"
-                className={classes.empty_star}
-              />
+              <IconStarFilled aria-hidden className={classes.empty_star} />
             }
             fullSymbol={
-              <IconStarFilled
-                aria-label="Filled yellow star"
-                className={classes.filled_star}
-              />
+              <IconStarFilled aria-hidden className={classes.filled_star} />
             }
             readOnly
           />
           <Text>
-            {googleReviews.totalReviewCount} review
-            {googleReviews.totalReviewCount === 1 ? "" : "s"}
+            {`${googleReviews.totalReviewCount} review${googleReviews.totalReviewCount === 1 ? "" : "s"}`}
           </Text>
         </Group>
         <ReviewButton />
       </Box>
-      <GoogleReviewCarousel reviews={googleReviews.reviews} />
     </Group>
   );
 }
