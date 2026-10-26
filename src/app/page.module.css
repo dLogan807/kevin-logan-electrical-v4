@@ -16,34 +16,6 @@
 
 .tagline {
   grid-area: tagline;
-  text-align: center;
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    padding: 0;
-  }
-
-  div {
-    --bi-radius: var(--mantine-radius-md);
-    height: 100%;
-    padding: 1rem;
-  }
-
-  h1 {
-    font-size: 3rem;
-    color: var(--mantine-color-pleasant-blue-filled);
-    text-shadow: 0px 0px 10px #ffffff;
-    padding: 2rem 0 1rem 0;
-    z-index: 10;
-
-    @media (max-width: $mantine-breakpoint-sm) {
-      font-size: 2.5rem;
-      padding: 0 0 1rem 0;
-    }
-
-    @media (max-width: $mantine-breakpoint-xs) {
-      font-size: 2rem;
-    }
-  }
 
   h2 {
     color: #312f2f;
@@ -64,17 +36,41 @@
     font-weight: var(--title-fw);
     line-height: var(--title-lh);
     color: #312f2f;
-    margin: 3rem;
     text-shadow: 0px 0px 10px #ffffff;
     z-index: 10;
-
-    @media (max-width: $mantine-breakpoint-sm) {
-      margin: 2rem 0 1rem 0;
-    }
   }
 
   button {
     z-index: 10;
+  }
+}
+
+.tagline_box_stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-lg);
+  padding: var(--mantine-spacing-md);
+  justify-content: space-between;
+  height: 100%;
+  text-align: center;
+
+  h1 {
+    font-size: 3rem;
+    color: var(--mantine-color-pleasant-blue-filled);
+    text-shadow: 0px 0px 10px #ffffff;
+    z-index: 10;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+      font-size: 2.5rem;
+    }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    padding: 0;
   }
 }
 
@@ -99,10 +95,7 @@
   }
 }
 
-.contact_button {
-  display: inline-block;
-  position: relative;
-
+.tagline_contact_link {
   button {
     --button-height: var(--button-height-xl);
     --button-padding-x: var(--button-padding-x-xl);
@@ -118,15 +111,19 @@
 
 .summary {
   grid-area: summary;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-radius-lg);
 
   h2 {
     text-align: center;
-    margin-bottom: 1rem;
   }
+}
 
-  li {
-    margin-bottom: 1rem;
-  }
+.summary_list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-radius-lg);
 }
 
 .review_carousel_container {

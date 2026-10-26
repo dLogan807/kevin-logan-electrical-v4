@@ -2,6 +2,10 @@
   --paper-radius: var(--mantine-radius-md);
   --paper-shadow: var(--mantine-shadow-sm);
   padding: var(--mantine-spacing-xl);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    padding: var(--mantine-spacing-md);
+  }
 }
 
 .content_grid {
@@ -9,9 +13,9 @@
   position: relative;
   left: 5%;
   width: 90%;
-  gap: 2rem;
+  gap: var(--mantine-spacing-xl);
 
   @media (max-width: $mantine-breakpoint-sm) {
-    gap: 1rem;
+    gap: var(--mantine-spacing-md);
   }
 }

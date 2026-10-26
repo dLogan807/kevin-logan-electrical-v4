@@ -18,10 +18,10 @@ export default async function GoogleReviewContainer({
 
   if (!googleReviews?.reviews || googleReviews.totalReviewCount === 0) {
     return (
-      <Group className={classes.no_reviews_prompt}>
+      <Box className={classes.no_reviews_prompt}>
         <Text>Had work done? Consider leaving a review!</Text>
         <ReviewButton />
-      </Group>
+      </Box>
     );
   }
 
