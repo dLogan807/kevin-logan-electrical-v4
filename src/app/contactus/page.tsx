@@ -27,27 +27,27 @@ export default async function ContactUs() {
 
   const mapIcon = (
     <TransparentThemeIcon>
-      <IconMapPin aria-label="Location marker" />
+      <IconMapPin aria-hidden />
     </TransparentThemeIcon>
   );
   const phoneIcon = (
     <TransparentThemeIcon>
-      <IconPhone aria-label="Phone" />
+      <IconPhone aria-hidden />
     </TransparentThemeIcon>
   );
   const mobilePhoneIcon = (
     <TransparentThemeIcon>
-      <IconDeviceMobile aria-label="Mobile phone" />
+      <IconDeviceMobile aria-hidden />
     </TransparentThemeIcon>
   );
   const emailIcon = (
     <TransparentThemeIcon>
-      <IconMail aria-label="Email" />
+      <IconMail aria-hidden />
     </TransparentThemeIcon>
   );
   const serviceHoursIcon = (
     <TransparentThemeIcon>
-      <IconClockHour2 aria-label="Service hours" />
+      <IconClockHour2 aria-hidden />
     </TransparentThemeIcon>
   );
 
