@@ -26,7 +26,7 @@ export function Footer() {
         <Anchor href="tel:+64274978473" aria-label="Mobile phone number">
           <Group>
             <ThemeIcon>
-              <IconPhone aria-label="Phone" />
+              <IconPhone aria-hidden />
             </ThemeIcon>
             0274 978 473
           </Group>
@@ -47,19 +47,23 @@ export function Footer() {
           <Link
             className={classes.centered_icon_link}
             href={"https://nextjs.org/"}
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Next.js"
           >
             <ThemeIcon>
-              <IconBrandNextjs aria-label="Next.js icon" />
+              <IconBrandNextjs aria-hidden />
             </ThemeIcon>
           </Link>
           <Link
             className={classes.centered_icon_link}
             href={"https://mantine.dev/"}
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Mantine"
           >
             <ThemeIcon>
-              <IconBrandMantine aria-label="Mantine icon" />
+              <IconBrandMantine aria-hidden />
             </ThemeIcon>
           </Link>
         </Group>
