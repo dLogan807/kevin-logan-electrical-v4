@@ -1,0 +1,34 @@
+.services_paper_root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+  height: 100%;
+  width: 100%;
+  padding: var(--mantine-spacing-xl);
+
+  @media (max-width: $mantine-breakpoint-md) {
+    margin: 0;
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 80%;
+    padding: var(--mantine-spacing-lg);
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    width: 100%;
+    padding: var(--mantine-spacing-md);
+  }
+}
+
+.services_list {
+  text-align: left;
+  --list-fz: var(--mantine-font-size-sm);
+  --list-lh: var(--mantine-line-height-sm);
+  --list-spacing: var(--mantine-spacing-xs);
+  --list-marker-gap: 0;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    --list-marker-gap: 0;
+  }
+}

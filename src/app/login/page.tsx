@@ -1,12 +1,9 @@
-import React from "react";
 import { Metadata } from "next";
-import { headers } from "next/headers";
-import { Box, Paper } from "@mantine/core";
-import { ReCaptchaProvider } from "next-recaptcha-v3";
-import LoginForm from "../components/login/login_form";
 import { getCurrentSession } from "@/actions/mongodb/sessions/cookie";
-import classes from "./page.module.css";
 import { redirect } from "next/navigation";
+import LoginForm from "@/components/forms/LoginForm/LoginForm";
+import { Box, Paper, Title } from "@mantine/core";
+import classes from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Login | Kevin Logan Electrical - Your Trusted Electrician",
@@ -23,26 +20,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Login() {
+export default async function LoginPage() {
   const { session } = await getCurrentSession();
   if (session !== null) return redirect("/admin");
 
-  const nonce: string = await headers()
-    .then((headers) => headers.get("x-nonce"))
-    .then((rawNonce) => rawNonce ?? "");
-
   return (
-    <ReCaptchaProvider
-      className={classes.recaptcha}
-      nonce={nonce}
-      strategy="lazyOnload"
-    >
-      <Box className={"content_grid"}>
-        <Paper className={"main_section"} withBorder>
-          <h1 className={classes.heading}>Login</h1>
-          <LoginForm />
-        </Paper>
-      </Box>
-    </ReCaptchaProvider>
+    <Box className={"content_grid"}>
+      <Paper
+        classNames={{ root: `${classes.login_paper} main_section` }}
+        withBorder
+      >
+        <Title order={1} classNames={{ root: classes.login_title }}>
+          Login
+        </Title>
+        <LoginForm />
+      </Paper>
+    </Box>
   );
 }

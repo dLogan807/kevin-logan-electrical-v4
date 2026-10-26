@@ -1,10 +1,10 @@
 "use client";
 
-import { Button, Paper, Text, Box } from "@mantine/core";
+import { Button, Paper, Text, Box, Title } from "@mantine/core";
 import Link from "next/link";
 import { Metadata } from "next";
 
-import classes from "@/error.module.css";
+import classes from "@/app/error.module.css";
 
 export const metadata: Metadata = {
   title: "Page Error | Kevin Logan Electrical - Your Trusted Electrician",
@@ -28,8 +28,8 @@ export default function NotFound() {
   return (
     <Box className={`${classes.error_grid} content_grid`}>
       <Paper className={`${classes.container} ${mainSection}`} withBorder>
-        <h1>Error</h1>
-        <h2>Something unexpected happened.</h2>
+        <Title order={1}>Error</Title>
+        <Title order={2}>Something unexpected happened.</Title>
         <Text className={classes.explanation}>
           Sorry! Please check your internet connection and try again.
         </Text>

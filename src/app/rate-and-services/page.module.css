@@ -1,0 +1,51 @@
+.rateservice_grid {
+  grid-template-rows: 0.4fr auto;
+  grid-template-columns: 1fr;
+  grid-template-areas: "rate rate" "services services";
+}
+
+.rateservice_rate {
+  grid-area: rate;
+  display: flex;
+  gap: var(--mantine-spacing-md);
+
+  p {
+    white-space: pre-line;
+  }
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    flex-direction: column;
+  }
+}
+
+.rate_box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+}
+
+.rateservice_services {
+  grid-area: services;
+  display: grid;
+  text-align: center;
+  height: min-content;
+}
+
+.services_box_stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+}
+
+.services_cards {
+  width: 100%;
+  height: min-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    flex-direction: column;
+  }
+}

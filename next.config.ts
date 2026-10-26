@@ -1,0 +1,84 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  cacheComponents: true,
+  partialPrefetching: true,
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains; preload",
+          },
+        ],
+      },
+    ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/index.php",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/aboutus.php",
+        destination: "/about-us",
+        permanent: true,
+      },
+      {
+        source: "/rateandservices.php",
+        destination: "/rate-and-services",
+        permanent: true,
+      },
+      {
+        source: "/contactus.php",
+        destination: "/contact-us",
+        permanent: true,
+      },
+      {
+        source: "/aboutus",
+        destination: "/about-us",
+        permanent: true,
+      },
+      {
+        source: "/rateandservices",
+        destination: "/rate-and-services",
+        permanent: true,
+      },
+      {
+        source: "/contactus",
+        destination: "/contact-us",
+        permanent: true,
+      },
+    ];
+  },
+  experimental: { optimizePackageImports: ["@mantine/core", "@mantine/hooks"] },
+};
+
+export default nextConfig;

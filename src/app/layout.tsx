@@ -1,11 +1,10 @@
 import { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "./components/layout/footer";
-import { ColorSchemeScript, Box, Paper, mantineHtmlProps } from "@mantine/core";
-import { Providers } from "@/components/layout/providers";
+import { Box, ColorSchemeScript, mantineHtmlProps, Paper } from "@mantine/core";
 import { headers } from "next/headers";
-
+import { Providers } from "@/components/providers/Providers/Providers";
+import { Footer } from "@/components/layout/Footer/Footer";
+import { Navbar } from "@/components/layout/Navbar/Navbar";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import classes from "./layout.module.css";
@@ -26,11 +25,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
-  children,
-}: {
+export const instant = false;
+
+type RootLayoutProps = {
   children: ReactNode;
-}) {
+};
+
+export default async function RootLayout({ children }: RootLayoutProps) {
   const nonce = (await headers()).get("x-nonce") || "";
 
   return (

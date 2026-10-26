@@ -1,0 +1,11 @@
+.review_button_root {
+  svg {
+    transition: 0.1s ease;
+  }
+
+  &:hover {
+    svg {
+      transform: translateX(3px);
+    }
+  }
+}
