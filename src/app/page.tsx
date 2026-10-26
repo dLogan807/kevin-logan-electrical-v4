@@ -4,7 +4,6 @@ import {
   List,
   ListItem,
   Paper,
-  Stack,
   Text,
   ThemeIcon,
   Title,
@@ -36,14 +35,14 @@ export default async function Home() {
   return (
     <Box className={`${classes.home_grid} content_grid`}>
       <Paper className={`${classes.tagline} ${mainSection}`} withBorder>
-        <Stack>
+        <Box className={classes.tagline_box_stack}>
           <Title order={1}>{content.tagline.title}</Title>
           <Title order={2}>{content.tagline.subtitle}</Title>
           <Text>{content.tagline.description}</Text>
-          <Link href="/contact-us" className={classes.contact_button}>
+          <Link href="/contact-us" className={classes.tagline_contact_link}>
             <Button>{content.tagline.button_text}</Button>
           </Link>
-        </Stack>
+        </Box>
       </Paper>
       <Box className={classes.tagline_image_container}>
         <Box>
@@ -59,6 +58,7 @@ export default async function Home() {
       <Paper className={`${classes.summary} ${mainSection}`} withBorder>
         <Title order={2}>{content.summary.title}</Title>
         <List
+          classNames={{ root: classes.summary_list }}
           icon={
             <ThemeIcon>
               <IconCircleCheck aria-hidden />
