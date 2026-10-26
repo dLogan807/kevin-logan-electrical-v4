@@ -40,7 +40,7 @@ export default async function Home() {
           <Title order={1}>{content.tagline.title}</Title>
           <Title order={2}>{content.tagline.subtitle}</Title>
           <Text>{content.tagline.description}</Text>
-          <Link href="/contactus" className={classes.contact_button}>
+          <Link href="/contact-us" className={classes.contact_button}>
             <Button>{content.tagline.button_text}</Button>
           </Link>
         </Stack>

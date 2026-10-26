@@ -20,9 +20,9 @@ import { theme } from "@/theme";
 
 const routePageRecord: Record<string, Pages> = {
   ["/"]: Pages.Home,
-  ["/aboutus"]: Pages.AboutUs,
-  ["/rateandservices"]: Pages.RateAndServices,
-  ["/contactus"]: Pages.ContactUs,
+  ["/about-us"]: Pages.AboutUs,
+  ["/rate-and-services"]: Pages.RateAndServices,
+  ["/contact-us"]: Pages.ContactUs,
 };
 
 interface ILink {
@@ -35,19 +35,19 @@ interface ILink {
 const linkData: ILink[] = [
   { link: "/", label: "Home", icon: IconHome, value: Pages.Home },
   {
-    link: "/aboutus",
+    link: "/about-us",
     label: "About Us",
     icon: IconInfoSquare,
     value: Pages.AboutUs,
   },
   {
-    link: "/rateandservices",
+    link: "/rate-and-services",
     label: "Rate & Services",
     icon: IconPlugConnected,
     value: Pages.RateAndServices,
   },
   {
-    link: "/contactus",
+    link: "/contact-us",
     label: "Contact Us",
     icon: IconPhoneCall,
     value: Pages.ContactUs,

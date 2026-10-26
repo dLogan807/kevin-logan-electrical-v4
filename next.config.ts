@@ -48,17 +48,32 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/aboutus.php",
-        destination: "/aboutus",
+        destination: "/about-us",
         permanent: true,
       },
       {
         source: "/rateandservices.php",
-        destination: "/rateandservices",
+        destination: "/rate-and-services",
         permanent: true,
       },
       {
         source: "/contactus.php",
-        destination: "/contactus",
+        destination: "/contact-us",
+        permanent: true,
+      },
+      {
+        source: "/aboutus",
+        destination: "/about-us",
+        permanent: true,
+      },
+      {
+        source: "/rateandservices",
+        destination: "/rate-and-services",
+        permanent: true,
+      },
+      {
+        source: "/contactus",
+        destination: "/contact-us",
         permanent: true,
       },
     ];
