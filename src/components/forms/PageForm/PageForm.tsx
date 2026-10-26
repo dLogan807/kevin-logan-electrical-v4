@@ -85,7 +85,7 @@ export default function PageForm({ selectedPage, content }: PageFormProps) {
 function getPageRoute(page: Pages): string {
   if (page === Pages.Home) return "/";
 
-  return page.replaceAll("_", "");
+  return page.replaceAll("_", "-");
 }
 
 type FormFieldsProps = {
