@@ -27,7 +27,6 @@ export default async function GoogleReviewContainer({
 
   return (
     <Group className={classes.review_container}>
-      <GoogleReviewCarousel reviews={googleReviews.reviews} />
       <Box className={classes.review_summary}>
         <Group className={classes.average_reviews}>
           <ThemeIcon>
@@ -53,6 +52,7 @@ export default async function GoogleReviewContainer({
         </Group>
         <ReviewButton />
       </Box>
+      <GoogleReviewCarousel reviews={googleReviews.reviews} />
     </Group>
   );
 }
