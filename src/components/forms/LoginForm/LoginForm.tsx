@@ -124,10 +124,7 @@ export default function LoginForm() {
               name="username"
               label="Username"
               leftSection={
-                <IconUserCircle
-                  className={classes.input_icon}
-                  aria-hidden="true"
-                />
+                <IconUserCircle className={classes.input_icon} aria-hidden />
               }
               disabled={isSubmitting}
             />
@@ -135,7 +132,7 @@ export default function LoginForm() {
               name="password"
               label="Password"
               leftSection={
-                <IconLock className={classes.input_icon} aria-hidden="true" />
+                <IconLock className={classes.input_icon} aria-hidden />
               }
               key={form.key("password")}
               {...form.getInputProps("password")}

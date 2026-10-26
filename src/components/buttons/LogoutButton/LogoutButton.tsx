@@ -19,7 +19,7 @@ export default function LogoutButton() {
       variant="default"
       loading={isPending}
       onClick={handleLogout}
-      rightSection={<IconLogout aria-hidden="true" />}
+      rightSection={<IconLogout aria-hidden />}
     >
       Logout
     </Button>

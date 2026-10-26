@@ -7,7 +7,7 @@ type HoneypotInputProps = {
 export default function HoneypotInput({ label }: HoneypotInputProps) {
   return (
     <Box
-      aria-hidden="true"
+      aria-hidden
       inert
       style={{
         position: "absolute",
