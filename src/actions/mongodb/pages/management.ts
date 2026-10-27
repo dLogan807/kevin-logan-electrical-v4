@@ -57,9 +57,7 @@ export async function getPageContent<T extends PageContent>(
 
   const contentDocument = await new PageManager().getPageDocument<T>(page);
 
-  const fallbackContent = getPageFallbackContent<T>(page);
-
-  return contentDocument?.page_content ?? fallbackContent;
+  return contentDocument?.page_content ?? getPageFallbackContent<T>(page);
 }
 
 //Update (add) latest page content

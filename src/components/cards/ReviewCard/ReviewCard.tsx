@@ -59,6 +59,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       <Group>
         <UserImage uri={review.authorAttribution.photoUri} />
         <Rating
+          role="img"
           value={review.rating}
           emptySymbol={
             <IconStarFilled className={classes.empty_star} aria-hidden />
@@ -67,7 +68,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
             <IconStarFilled className={classes.filled_star} aria-hidden />
           }
           className={classes.star_rating}
-          aria-label={`Reviewed as ${review.rating}/5 stars`}
+          aria-label={`Reviewed as ${review.rating} out of 5 stars`}
           readOnly
         />
       </Group>
